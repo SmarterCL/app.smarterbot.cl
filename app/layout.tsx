@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "User Authentication System",
   description: "Complete user management with Clerk and Supabase",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -16,15 +16,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Check if we're in demo mode
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+  // Safely check environment variables
+  let isDemoMode = false
+  let hasValidClerkKey = false
 
-  // Check if Clerk keys are properly configured
-  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  const hasValidClerkKey =
-    clerkPublishableKey &&
-    clerkPublishableKey !== "pk_test_your_actual_publishable_key_here" &&
-    clerkPublishableKey.startsWith("pk_")
+  try {
+    isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+    const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+    hasValidClerkKey = Boolean(
+      clerkPublishableKey &&
+        clerkPublishableKey !== "pk_test_your_actual_publishable_key_here" &&
+        clerkPublishableKey.startsWith("pk_"),
+    )
+  } catch (error) {
+    console.warn("Environment variable check failed:", error)
+    // Default to demo mode if there's an error
+    isDemoMode = true
+  }
 
   // If in demo mode, don't use ClerkProvider at all
   if (isDemoMode) {
@@ -81,11 +89,32 @@ export default function RootLayout({
   }
 
   // Only use ClerkProvider when we have valid keys
-  return (
-    <ClerkProvider>
+  try {
+    return (
+      <ClerkProvider>
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      </ClerkProvider>
+    )
+  } catch (error) {
+    // Fallback if ClerkProvider fails
+    return (
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="min-h-screen bg-red-50 flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
+              <div className="text-center">
+                <h1 className="text-xl font-bold text-gray-900 mb-2">Authentication Error</h1>
+                <p className="text-gray-600 mb-4">There was an issue initializing the authentication system.</p>
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">Please check your environment variables and try again.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
       </html>
-    </ClerkProvider>
-  )
+    )
+  }
 }

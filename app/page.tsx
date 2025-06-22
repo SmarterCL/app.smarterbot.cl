@@ -4,8 +4,14 @@ import AuthForm from "@/components/auth-form"
 import DemoModeToggle from "@/components/demo-mode-toggle"
 
 export default async function Home() {
-  // Check if we're in demo mode first
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+  // Safely check if we're in demo mode
+  let isDemoMode = false
+  try {
+    isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+  } catch (error) {
+    console.warn("Failed to check demo mode:", error)
+    isDemoMode = true // Default to demo mode on error
+  }
 
   if (isDemoMode) {
     return (
@@ -29,7 +35,8 @@ export default async function Home() {
       redirect("/dashboard")
     }
   } catch (error) {
-    // If there's an auth error, redirect to setup
+    console.warn("Auth check failed:", error)
+    // If there's an auth error, show demo mode option
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-100 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
@@ -56,11 +63,11 @@ export default async function Home() {
             <div className="bg-blue-50 rounded-lg p-4">
               <h3 className="font-semibold text-blue-900 mb-2">Quick Fix:</h3>
               <div className="text-sm text-blue-800">
-                <p>Add this to your .env.local file:</p>
+                <p>Add this to your Vercel environment variables:</p>
                 <div className="bg-gray-900 text-gray-100 rounded p-2 font-mono text-xs mt-2">
                   NEXT_PUBLIC_DEMO_MODE=true
                 </div>
-                <p className="mt-2">Then restart your server to use demo mode.</p>
+                <p className="mt-2">Then redeploy to use demo mode.</p>
               </div>
             </div>
           </div>
