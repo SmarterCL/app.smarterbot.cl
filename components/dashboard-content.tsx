@@ -4,7 +4,6 @@ import { useState } from "react"
 import { UserButton } from "@clerk/nextjs"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import SoftBackground from "@/components/soft-background"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -40,8 +39,7 @@ export default function DashboardContent() {
   const [activeTab, setActiveTab] = useState("overview")
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      <SoftBackground />
+    <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">

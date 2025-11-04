@@ -3,7 +3,6 @@ import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-reac
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
-import SoftBackground from "@/components/soft-background"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
@@ -115,8 +114,7 @@ export default function Home() {
 
   if (isDemoMode) {
     return (
-      <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-        <SoftBackground />
+      <div className="min-h-screen bg-background text-foreground">
         <Header badgeLabel="Demo Mode" />
         <main className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-16 sm:px-6">
           <section className="space-y-8 text-center">
@@ -137,8 +135,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-        <SoftBackground />
+    <div className="min-h-screen bg-background text-foreground">
       <Header badgeLabel="Versión 2.0" />
       <main className="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-16 sm:px-6">
         <section className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
