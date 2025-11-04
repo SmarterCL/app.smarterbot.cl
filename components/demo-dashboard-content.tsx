@@ -280,10 +280,10 @@ export default function DemoDashboardContent() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/10">
-                <Database className="h-6 w-6 text-cyan-300" />
+                <Database className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-white">Demo Database Management</h1>
-              <Badge variant="secondary" className="bg-cyan-500/15 text-cyan-200 border-cyan-500/30 uppercase tracking-[0.2em]">
+              <Badge variant="secondary" className="bg-white/10 text-white border-white/20 uppercase tracking-[0.2em]">
                 Demo Mode
               </Badge>
             </div>
@@ -323,7 +323,7 @@ export default function DemoDashboardContent() {
           <p className="text-slate-300">Experience full CRUD operations across all database tables</p>
           <div className="mt-4 bg-white/5 border border-white/10 rounded-lg p-4">
             <p className="text-sm text-slate-200">
-              <strong className="text-cyan-300">Demo Mode:</strong> All changes are temporary and will reset when you
+              <strong className="text-white">Demo Mode:</strong> All changes are temporary and will reset when you
               refresh the page. This demonstrates the full functionality without requiring database setup.
             </p>
           </div>
@@ -333,28 +333,28 @@ export default function DemoDashboardContent() {
           <TabsList className="grid w-full grid-cols-4 bg-white/10 border border-white/20 backdrop-blur">
             <TabsTrigger
               value="profiles"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+              className="flex items-center gap-2 text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
             >
               <Users className="h-4 w-4" />
               Profiles
             </TabsTrigger>
             <TabsTrigger
               value="contacts"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+              className="flex items-center gap-2 text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
             >
               <Contact className="h-4 w-4" />
               Contacts
             </TabsTrigger>
             <TabsTrigger
               value="api-keys"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+              className="flex items-center gap-2 text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
             >
               <Key className="h-4 w-4" />
               API Keys
             </TabsTrigger>
             <TabsTrigger
               value="qr-codes"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+              className="flex items-center gap-2 text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
             >
               <QrCode className="h-4 w-4" />
               QR Codes
@@ -375,7 +375,7 @@ export default function DemoDashboardContent() {
                   </div>
                   <Button
                     onClick={() => setShowAddForms({ ...showAddForms, profile: !showAddForms.profile })}
-                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                    className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   >
                     {showAddForms.profile ? "Cancel" : "Add Profile"}
                   </Button>
@@ -454,7 +454,7 @@ export default function DemoDashboardContent() {
                           <Button variant="outline" onClick={cancelEdit} className="border-white/20 text-white hover:bg-white/10">
                             Cancel
                           </Button>
-                          <Button onClick={() => updateProfile(profile.id)} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                          <Button onClick={() => updateProfile(profile.id)} className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                             Save Changes
                           </Button>
                         </div>
@@ -521,7 +521,7 @@ export default function DemoDashboardContent() {
                   </div>
                   <Button
                     onClick={() => setShowAddForms({ ...showAddForms, contact: !showAddForms.contact })}
-                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                    className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   >
                     {showAddForms.contact ? "Cancel" : "Add Contact"}
                   </Button>
@@ -565,7 +565,7 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createContact} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button onClick={createContact} className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       Create Contact
                     </Button>
                   </div>
@@ -593,7 +593,7 @@ export default function DemoDashboardContent() {
                             {contact.status}
                           </Badge>
                           {contact.was_notified && (
-                            <Badge className="bg-cyan-500/15 text-cyan-200 border-cyan-500/30">Notified</Badge>
+                            <Badge className="bg-white/10 text-white border-white/20">Notified</Badge>
                           )}
                         </div>
                       </div>
@@ -623,7 +623,7 @@ export default function DemoDashboardContent() {
                   </div>
                   <Button
                     onClick={() => setShowAddForms({ ...showAddForms, apiKey: !showAddForms.apiKey })}
-                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                    className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   >
                     {showAddForms.apiKey ? "Cancel" : "Add API Key"}
                   </Button>
@@ -650,7 +650,7 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createApiKey} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button onClick={createApiKey} className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       Create API Key
                     </Button>
                   </div>
@@ -714,7 +714,7 @@ export default function DemoDashboardContent() {
                   </div>
                   <Button
                     onClick={() => setShowAddForms({ ...showAddForms, qrCode: !showAddForms.qrCode })}
-                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                    className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   >
                     {showAddForms.qrCode ? "Cancel" : "Add QR Code"}
                   </Button>
@@ -741,7 +741,7 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createQrCode} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button onClick={createQrCode} className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       Create QR Code
                     </Button>
                   </div>

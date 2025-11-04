@@ -35,7 +35,7 @@ export default function AuthForm() {
           variant="outline"
           className="w-full h-12 bg-white/5 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group"
         >
-          <Mail className="mr-3 h-5 w-5 text-cyan-400 group-hover:scale-110 transition-transform" />
+          <Mail className="mr-3 h-5 w-5 text-white group-hover:scale-110 transition-transform" />
           Iniciar Sesión
           <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
         </Button>
@@ -43,7 +43,7 @@ export default function AuthForm() {
 
       {/* Sign Up */}
       <SignUpButton mode="modal">
-        <Button className="w-full h-12 bg-cyan-500 hover:bg-cyan-400 text-black border-0 shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105">
+        <Button className="w-full h-12 bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
           Crear Cuenta Gratis
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
@@ -51,11 +51,11 @@ export default function AuthForm() {
 
       <p className="text-xs text-center text-slate-400 leading-relaxed">
         Al continuar, aceptas nuestros{" "}
-        <a href="#" className="text-cyan-400 hover:text-cyan-300 underline">
+        <a href="#" className="text-white underline decoration-white/40 hover:decoration-white">
           Términos de Servicio
         </a>{" "}
         y{" "}
-        <a href="#" className="text-cyan-400 hover:text-cyan-300 underline">
+        <a href="#" className="text-white underline decoration-white/40 hover:decoration-white">
           Política de Privacidad
         </a>
       </p>

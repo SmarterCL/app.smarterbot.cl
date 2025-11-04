@@ -95,11 +95,11 @@ export default function DashboardContent() {
             <Card className="bg-white/10 backdrop-blur-xl border-white/20">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-white">Automatizaciones</CardTitle>
-                <Zap className="h-4 w-4 text-cyan-400" />
+                <Zap className="h-4 w-4 text-slate-200" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">12</div>
-                <p className="text-xs text-cyan-400">3 activas</p>
+                <p className="text-xs text-slate-200">3 activas</p>
               </CardContent>
             </Card>
 
@@ -117,45 +117,45 @@ export default function DashboardContent() {
 
           {/* Main Content */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 bg-white/10 backdrop-blur-xl border-white/20">
+            <TabsList className="grid w-full grid-cols-6 bg-white/10 backdrop-blur-xl border border-white/20">
               <TabsTrigger
                 value="overview"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <BarChart3 className="h-4 w-4 mr-2" />
                 Overview
               </TabsTrigger>
               <TabsTrigger
                 value="contacts"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <Users className="h-4 w-4 mr-2" />
                 Contactos
               </TabsTrigger>
               <TabsTrigger
                 value="automation"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <Zap className="h-4 w-4 mr-2" />
                 Automatización
               </TabsTrigger>
               <TabsTrigger
                 value="qr"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <QrCode className="h-4 w-4 mr-2" />
                 QR Codes
               </TabsTrigger>
               <TabsTrigger
                 value="api"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <Key className="h-4 w-4 mr-2" />
                 API Keys
               </TabsTrigger>
               <TabsTrigger
                 value="settings"
-                className="data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white text-slate-300"
+                className="text-slate-300 border border-transparent data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border-white/40"
               >
                 <Settings className="h-4 w-4 mr-2" />
                 Configuración
@@ -172,7 +172,7 @@ export default function DashboardContent() {
                   <CardContent className="space-y-4">
                     {[1, 2, 3, 4].map((item) => (
                       <div key={item} className="flex items-center space-x-3 p-3 rounded-lg bg-white/5">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center bg-white/10 border border-white/20">
                           <MessageSquare className="h-4 w-4 text-white" />
                         </div>
                         <div className="flex-1">
@@ -206,7 +206,7 @@ export default function DashboardContent() {
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5">
                       <div className="flex items-center space-x-3">
-                        <Bot className="h-5 w-5 text-cyan-400" />
+                        <Bot className="h-5 w-5 text-slate-200" />
                         <span className="text-white">IA Assistant</span>
                       </div>
                       <Badge className="bg-green-500/20 text-green-300 border-green-500/30">Activo</Badge>
@@ -225,7 +225,7 @@ export default function DashboardContent() {
                       <CardDescription className="text-slate-300">Administra tu base de contactos</CardDescription>
                     </div>
                     <div className="flex space-x-2">
-                      <Button className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                      <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                         <Plus className="h-4 w-4 mr-2" />
                         Nuevo Contacto
                       </Button>
@@ -254,7 +254,7 @@ export default function DashboardContent() {
                     <Users className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                     <p className="text-slate-300">No hay contactos registrados</p>
                     <p className="text-sm text-slate-400 mb-4">Comienza agregando tu primer contacto</p>
-                    <Button className="bg-cyan-500 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20">
                       Agregar Contacto
                     </Button>
                   </div>
@@ -270,7 +270,7 @@ export default function DashboardContent() {
                       <CardTitle className="text-white">Automatizaciones</CardTitle>
                       <CardDescription className="text-slate-300">Configura flujos automáticos</CardDescription>
                     </div>
-                    <Button className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       <Plus className="h-4 w-4 mr-2" />
                       Nueva Automatización
                     </Button>
@@ -281,7 +281,7 @@ export default function DashboardContent() {
                     <Zap className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                     <p className="text-slate-300">No hay automatizaciones configuradas</p>
                     <p className="text-sm text-slate-400 mb-4">Crea tu primera automatización para WhatsApp</p>
-                    <Button className="bg-cyan-500 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20">
                       Crear Automatización
                     </Button>
                   </div>
@@ -297,7 +297,7 @@ export default function DashboardContent() {
                       <CardTitle className="text-white">Códigos QR</CardTitle>
                       <CardDescription className="text-slate-300">Genera códigos QR para WhatsApp</CardDescription>
                     </div>
-                    <Button className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       <Plus className="h-4 w-4 mr-2" />
                       Generar QR
                     </Button>
@@ -308,7 +308,7 @@ export default function DashboardContent() {
                     <QrCode className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                     <p className="text-slate-300">No hay códigos QR generados</p>
                     <p className="text-sm text-slate-400 mb-4">Crea códigos QR para facilitar el contacto</p>
-                    <Button className="bg-cyan-500 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20">
                       Generar Primer QR
                     </Button>
                   </div>
@@ -324,7 +324,7 @@ export default function DashboardContent() {
                       <CardTitle className="text-white">API Keys</CardTitle>
                       <CardDescription className="text-slate-300">Gestiona tus claves de API</CardDescription>
                     </div>
-                    <Button className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20">
                       <Plus className="h-4 w-4 mr-2" />
                       Nueva API Key
                     </Button>
@@ -354,7 +354,7 @@ export default function DashboardContent() {
                         />
                       </div>
                     </div>
-                    <Button className="bg-cyan-500 text-black">
+                    <Button className="bg-white/10 text-white border border-white/20">
                       Guardar Configuración
                     </Button>
                   </div>
@@ -390,7 +390,7 @@ export default function DashboardContent() {
                         className="bg-white/10 border-white/20 text-white placeholder:text-slate-400"
                       />
                     </div>
-                    <Button className="bg-cyan-500 text-black">Guardar Cambios</Button>
+                    <Button className="bg-white/10 text-white border border-white/20">Guardar Cambios</Button>
                   </div>
                 </CardContent>
               </Card>

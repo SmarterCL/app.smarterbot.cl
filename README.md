@@ -1,6 +1,6 @@
 # SmarterOS Frontend
 
-SmarterOS is the operations hub for SmarterBot customers. This repo hosts the public marketing page (`/`) and the authenticated dashboard (`/dashboard`) used in the `app.smarterbot.cl` subdomain. The UI has been restyled to match the SmarterOS brand: a dark grid background, cyan/emerald accents, and a consistent typography system.
+SmarterOS is the operations hub for SmarterBot customers. This repo hosts the public marketing page (`/`) and the authenticated dashboard (`/dashboard`) used in the `app.smarterbot.cl` subdomain. The UI has been restyled to match the SmarterOS brand: a dark grid background, monochrome accents, and a consistent typography system.
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/smarterbotcl/app-smarterbot-cl)
 

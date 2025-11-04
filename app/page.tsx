@@ -24,7 +24,7 @@ export default function Home() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/10">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/20">
                     <Bot className="h-6 w-6 text-white" />
                   </div>
                   <div>
@@ -32,7 +32,7 @@ export default function Home() {
                     <p className="text-xs text-slate-400">Dashboard de Automatización</p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="bg-cyan-500/15 text-cyan-300 border-cyan-500/30">
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 uppercase tracking-[0.2em]">
                   DEMO MODE
                 </Badge>
               </div>
@@ -44,9 +44,7 @@ export default function Home() {
               <Badge className="bg-white/10 text-white border-white/20 uppercase tracking-[0.2em] mb-4">
                 🚀 Modo Demostración
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                Explora <span className="text-cyan-400">SmarterBot</span> sin configuración
-              </h1>
+              <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">Explora SmarterBot sin configuración</h1>
               <p className="text-xl text-slate-300 leading-relaxed mb-8">
                 Experimenta todas las funcionalidades de automatización con WhatsApp + IA sin necesidad de configurar
                 API keys.
@@ -72,7 +70,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/10">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/20">
                   <Bot className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -80,7 +78,7 @@ export default function Home() {
                   <p className="text-xs text-slate-400">Dashboard de Automatización</p>
                 </div>
               </div>
-              <Badge variant="secondary" className="bg-cyan-500/15 text-cyan-300 border-cyan-500/30">
+              <Badge variant="secondary" className="bg-white/10 text-white border-white/20 uppercase tracking-[0.2em]">
                 v2.0
               </Badge>
             </div>
@@ -95,9 +93,7 @@ export default function Home() {
                 <Badge className="bg-white/10 text-white border-white/20 uppercase tracking-[0.2em]">
                   🚀 Automatización con IA
                 </Badge>
-                <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Automatiza tu negocio con <span className="text-cyan-400">WhatsApp + IA</span>
-                </h1>
+                <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight">Automatiza tu negocio con WhatsApp + IA</h1>
                 <p className="text-xl text-slate-300 leading-relaxed">
                   Gestiona contactos, API keys, códigos QR y perfiles de usuario desde un dashboard centralizado y
                   potente.
@@ -107,8 +103,8 @@ export default function Home() {
               {/* Features */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-cyan-400" />
+                  <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                    <Zap className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-white">Automatización</p>
@@ -116,8 +112,8 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-emerald-400" />
+                  <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                    <Shield className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-white">Seguridad</p>
@@ -125,8 +121,8 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="w-10 h-10 bg-sky-500/10 rounded-lg flex items-center justify-center">
-                    <Database className="h-5 w-5 text-sky-400" />
+                  <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                    <Database className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-white">Base de Datos</p>
@@ -134,8 +130,8 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5 text-amber-300" />
+                  <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                    <CheckCircle className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-white">Tiempo Real</p>
@@ -146,7 +142,7 @@ export default function Home() {
 
               {/* CTA Button */}
               <div className="flex items-center space-x-4">
-                <button className="group bg-cyan-500 text-black px-8 py-4 rounded-xl font-semibold flex items-center space-x-2 hover:bg-cyan-400 transition-all duration-300 transform hover:scale-105">
+                <button className="group bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold flex items-center space-x-2 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
                   <span>Probar el Demo</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -201,7 +197,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center space-x-3 mb-4 md:mb-0">
-                <div className="w-8 h-8 bg-cyan-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center">
                   <Bot className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-white font-semibold">SmarterBot.cl</span>
