@@ -1,6 +1,9 @@
 import type React from "react"
 import { ClerkProvider } from "@clerk/nextjs"
+import Script from "next/script"
 import { Onest } from "next/font/google"
+
+import BackgroundFX from "@/components/background-fx"
 import "./globals.css"
 
 const onest = Onest({
@@ -8,6 +11,33 @@ const onest = Onest({
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
 })
+
+const themeInitScript = `
+;(function () {
+  var STORAGE_KEY = 'smarteros-theme';
+  var THEMES = ['theme-light', 'theme-bw'];
+  try {
+    var root = document.documentElement;
+    var stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored && THEMES.indexOf(stored) !== -1) {
+      THEMES.forEach(function (name) {
+        root.classList.remove(name);
+      });
+      root.classList.add(stored);
+      root.dataset.theme = stored;
+      return;
+    }
+    if (!root.classList.contains('theme-light')) {
+      root.classList.add('theme-light');
+    }
+    root.dataset.theme = 'theme-light';
+  } catch (error) {
+    if (root && !root.dataset.theme) {
+      root.dataset.theme = 'theme-light';
+    }
+  }
+})();
+`
 
 export const metadata = {
   title: "SmarterOS Hub",
@@ -37,11 +67,19 @@ export default function RootLayout({
     isDemoMode = true
   }
 
-  const htmlAttributes = { lang: "es", className: "dark", suppressHydrationWarning: true as const }
+  const htmlAttributes = {
+    lang: "es",
+    className: "theme-light",
+    "data-theme": "theme-light",
+    suppressHydrationWarning: true as const,
+  }
 
   const errorScreen = (
     <html {...htmlAttributes}>
       <body className={`${onest.variable} antialiased`}>
+        <Script id="smarteros-theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
         <div className="flex min-h-screen items-center justify-center bg-secondary/40 p-6">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl">
             <div className="space-y-6 text-center">
@@ -85,7 +123,13 @@ export default function RootLayout({
   if (isDemoMode) {
     return (
       <html {...htmlAttributes}>
-        <body className={`${onest.variable} antialiased`}>{children}</body>
+        <body className={`${onest.variable} antialiased`}>
+          <Script id="smarteros-theme-init" strategy="beforeInteractive">
+            {themeInitScript}
+          </Script>
+          <BackgroundFX />
+          {children}
+        </body>
       </html>
     )
   }
@@ -97,7 +141,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html {...htmlAttributes}>
-        <body className={`${onest.variable} antialiased`}>{children}</body>
+        <body className={`${onest.variable} antialiased`}>
+          <Script id="smarteros-theme-init" strategy="beforeInteractive">
+            {themeInitScript}
+          </Script>
+          <BackgroundFX />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   )

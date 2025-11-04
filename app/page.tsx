@@ -4,6 +4,7 @@ import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-reac
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
+import ThemeToggle from "@/components/theme-toggle"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -45,6 +46,7 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
           </div>
         </div>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <HeaderBadge label={badgeLabel} />
           <Button asChild variant="outline" className="border border-border text-sm">
             <Link href="https://app.smarterbot.cl" target="_blank" rel="noopener noreferrer">
@@ -149,7 +151,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative z-0 min-h-screen bg-background text-foreground">
       <Header badgeLabel="Versión 2.0" />
       <main className="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-16 sm:px-6">
         <section className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
