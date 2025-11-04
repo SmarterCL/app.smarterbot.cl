@@ -37,7 +37,7 @@ export default function RootLayout({
     isDemoMode = true
   }
 
-  const htmlAttributes = { lang: "es", className: "light", suppressHydrationWarning: true as const }
+  const htmlAttributes = { lang: "es", className: "dark", suppressHydrationWarning: true as const }
 
   const errorScreen = (
     <html {...htmlAttributes}>
