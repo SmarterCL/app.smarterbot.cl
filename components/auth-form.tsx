@@ -12,9 +12,9 @@ export default function AuthForm() {
       <SignInButton mode="modal">
         <Button
           variant="outline"
-          className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 group"
+          className="group flex h-12 w-full items-center justify-center gap-3 border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-secondary/80"
         >
-          <Chrome className="mr-3 h-5 w-5 text-blue-400 group-hover:scale-110 transition-transform" />
+          <Chrome className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
           Continuar con Google
           <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
         </Button>
@@ -22,10 +22,12 @@ export default function AuthForm() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <Separator className="w-full bg-white/20" />
+          <Separator className="w-full bg-border" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-transparent px-2 text-slate-400">o continúa con email</span>
+          <span className="bg-background px-2 text-xs font-medium tracking-[0.25em] text-muted-foreground">
+            o continúa con email
+          </span>
         </div>
       </div>
 
@@ -33,9 +35,9 @@ export default function AuthForm() {
       <SignInButton mode="modal">
         <Button
           variant="outline"
-          className="w-full h-12 bg-white/5 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group"
+          className="group flex h-12 w-full items-center justify-center gap-3 border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-secondary/80"
         >
-          <Mail className="mr-3 h-5 w-5 text-white group-hover:scale-110 transition-transform" />
+          <Mail className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
           Iniciar Sesión
           <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
         </Button>
@@ -43,19 +45,19 @@ export default function AuthForm() {
 
       {/* Sign Up */}
       <SignUpButton mode="modal">
-        <Button className="w-full h-12 bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+        <Button className="flex h-12 w-full items-center justify-center gap-2 bg-accent text-accent-foreground transition-transform duration-300 hover:translate-y-[-1px] hover:bg-accent/90">
           Crear Cuenta Gratis
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </SignUpButton>
 
-      <p className="text-xs text-center text-slate-400 leading-relaxed">
+      <p className="text-xs text-center text-muted-foreground leading-relaxed">
         Al continuar, aceptas nuestros{" "}
-        <a href="#" className="text-white underline decoration-white/40 hover:decoration-white">
+        <a href="#" className="text-accent underline decoration-accent/40 hover:decoration-accent">
           Términos de Servicio
         </a>{" "}
         y{" "}
-        <a href="#" className="text-white underline decoration-white/40 hover:decoration-white">
+        <a href="#" className="text-accent underline decoration-accent/40 hover:decoration-accent">
           Política de Privacidad
         </a>
       </p>

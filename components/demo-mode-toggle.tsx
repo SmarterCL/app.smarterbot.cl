@@ -32,14 +32,14 @@ export default function DemoModeToggle() {
 
   if (isLoggedIn) {
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="mx-auto w-full max-w-md border border-border bg-card shadow-sm">
         <CardContent className="p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Shield className="h-8 w-8 text-green-600" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
+            <Shield className="h-8 w-8" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Logging in as {currentUser}...</h3>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-sm">Redirecting to dashboard...</p>
+          <h3 className="mb-2 text-lg font-semibold text-foreground">Logging in as {currentUser}...</h3>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
+          <p className="text-sm text-muted-foreground">Redirecting to dashboard...</p>
         </CardContent>
       </Card>
     )
@@ -47,19 +47,21 @@ export default function DemoModeToggle() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="border border-border bg-card shadow-sm">
         <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2">
-            <Database className="h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center justify-center gap-2 text-foreground">
+            <Database className="h-5 w-5 text-accent" />
             Demo Authentication System
           </CardTitle>
-          <CardDescription>Try the full authentication system without any setup required</CardDescription>
+          <CardDescription className="text-muted-foreground">
+            Try the full authentication system without any setup required
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-900 mb-2">Demo Features:</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="rounded-lg border border-border bg-secondary p-4">
+              <h4 className="mb-2 font-semibold text-foreground">Demo Features:</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Full CRUD operations on all database tables</li>
                 <li>• User profile management</li>
                 <li>• Contact management system</li>
@@ -70,24 +72,30 @@ export default function DemoModeToggle() {
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-semibold text-gray-900">Choose a demo user:</h4>
+              <h4 className="font-semibold text-foreground">Choose a demo user:</h4>
               {demoUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between rounded-lg border border-border bg-background p-3 transition-colors hover:bg-secondary"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-gray-600" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-secondary">
+                      <User className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{user.name}</p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
+                      <p className="font-medium text-foreground">{user.name}</p>
+                      <p className="text-sm text-muted-foreground">{user.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="secondary">{user.role}</Badge>
-                    <Button size="sm" onClick={() => handleDemoLogin(user)} className="flex items-center gap-1">
+                    <Badge variant="secondary" className="border border-border bg-secondary text-muted-foreground">
+                      {user.role}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      onClick={() => handleDemoLogin(user)}
+                      className="flex items-center gap-1 bg-accent text-accent-foreground hover:bg-accent/90"
+                    >
                       Login <ArrowRight className="h-3 w-3" />
                     </Button>
                   </div>
@@ -95,9 +103,9 @@ export default function DemoModeToggle() {
               ))}
             </div>
 
-            <div className="bg-yellow-50 rounded-lg p-4 mt-4">
-              <h4 className="font-semibold text-yellow-900 mb-2">Note:</h4>
-              <p className="text-sm text-yellow-800">
+            <div className="rounded-lg border border-border bg-secondary p-4">
+              <h4 className="mb-2 font-semibold text-foreground">Note:</h4>
+              <p className="text-sm text-muted-foreground">
                 This is a demo mode. No real authentication is performed, and data changes are temporary. To use real
                 authentication with Google OAuth, configure your Clerk API keys.
               </p>
