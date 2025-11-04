@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -436,10 +437,13 @@ export default function DemoDashboardContent() {
                         <div className="flex justify-between items-start mb-4">
                           <div className="flex items-center space-x-4">
                             {profile.avatar_url && (
-                              <img
+                              <Image
                                 src={profile.avatar_url || "/placeholder.svg"}
                                 alt={profile.full_name}
+                                width={48}
+                                height={48}
                                 className="w-12 h-12 rounded-full object-cover"
+                                sizes="48px"
                               />
                             )}
                             <div>

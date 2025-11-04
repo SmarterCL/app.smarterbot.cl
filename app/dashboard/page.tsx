@@ -6,6 +6,8 @@ import AuthDebug from "@/components/auth-debug"
 export default async function Dashboard() {
   // Check if we're in demo mode
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+  const shouldRenderAuthDebug =
+    process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
 
   if (isDemoMode) {
     // In demo mode, redirect to demo dashboard
@@ -26,10 +28,12 @@ export default async function Dashboard() {
   return (
     <div className="space-y-6">
       <DashboardContent />
-      {/* Debug component - remove in production */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AuthDebug />
-      </div>
+      {/* Debug component - gated to non-production environments */}
+      {shouldRenderAuthDebug ? (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AuthDebug />
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -184,8 +184,8 @@ export default function SetupGuide() {
                 <h4 className="font-semibold mb-1">Run SQL Scripts</h4>
                 <p className="text-sm text-gray-600">Execute the database setup scripts in Supabase</p>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm font-bold">
+              <div className="text-center p-4 bg-cyan-50 rounded-lg">
+                <div className="w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm font-bold">
                   3
                 </div>
                 <h4 className="font-semibold mb-1">Restart Server</h4>

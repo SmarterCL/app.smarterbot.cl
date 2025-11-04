@@ -10,9 +10,16 @@ function isDemoMode() {
 // Check if Clerk is properly configured
 function hasValidClerkConfig() {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  return (
-    publishableKey && publishableKey.startsWith("pk_") && publishableKey !== "pk_test_your_actual_publishable_key_here"
-  )
+  const secretKey = process.env.CLERK_SECRET_KEY
+
+  const hasValidPublishableKey =
+    Boolean(publishableKey) &&
+    publishableKey.startsWith("pk_") &&
+    publishableKey !== "pk_test_your_actual_publishable_key_here"
+  const hasValidSecretKey =
+    Boolean(secretKey) && secretKey.startsWith("sk_") && secretKey !== "sk_test_your_actual_secret_key_here"
+
+  return hasValidPublishableKey && hasValidSecretKey
 }
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"])
