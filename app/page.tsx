@@ -1,10 +1,12 @@
 import { Suspense } from "react"
+import Link from "next/link"
 import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-react"
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 export const dynamic = "force-dynamic"
 
@@ -42,7 +44,14 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
             <p className="text-xs text-muted-foreground">Automatización comercial con IA</p>
           </div>
         </div>
-        <HeaderBadge label={badgeLabel} />
+        <div className="flex items-center gap-4">
+          <HeaderBadge label={badgeLabel} />
+          <Button asChild variant="outline" className="border border-border text-sm">
+            <Link href="https://app.smarterbot.cl" target="_blank" rel="noopener noreferrer">
+              ACCESO
+            </Link>
+          </Button>
+        </div>
       </div>
     </header>
   )
@@ -96,10 +105,15 @@ function HeroContent() {
       <FeatureGrid />
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <button className="group inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 text-base font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
-          Probar el demo
+        <Link
+          href="https://app.smarterbot.cl"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 text-base font-semibold text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-accent/90"
+        >
+          Automatizar mi tarea ahora
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </button>
+        </Link>
         <div className="text-sm text-muted-foreground">
           <p>✨ Sin tarjeta de crédito</p>
           <p>⚡ Configuración en 2 minutos</p>
