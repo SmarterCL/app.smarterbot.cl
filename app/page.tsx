@@ -35,24 +35,41 @@ function HeaderBadge({ label }: { label: string }) {
 function Header({ badgeLabel }: { badgeLabel: string }) {
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
-            <Bot className="h-6 w-6 text-primary" />
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="flex items-center justify-between gap-3 py-3 sm:h-16 sm:py-0">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
+              <Bot className="h-6 w-6 text-primary" />
+            </div>
+            <div className="hidden sm:block">
+              <p className="text-sm font-semibold text-foreground">SmarterOS Hub</p>
+              <p className="text-xs text-muted-foreground">Automatización comercial con IA</p>
+            </div>
           </div>
-          <div>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <ThemeToggle />
+            <div className="hidden sm:block">
+              <HeaderBadge label={badgeLabel} />
+            </div>
+            <Button
+              asChild
+              variant="outline"
+              className="border border-border px-4 py-2 text-xs font-semibold sm:px-6 sm:text-sm"
+            >
+              <Link href="https://app.smarterbot.cl" target="_blank" rel="noopener noreferrer">
+                ACCESO
+              </Link>
+            </Button>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 pb-3 sm:hidden">
+          <div className="space-y-1">
             <p className="text-sm font-semibold text-foreground">SmarterOS Hub</p>
             <p className="text-xs text-muted-foreground">Automatización comercial con IA</p>
           </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <HeaderBadge label={badgeLabel} />
-          <Button asChild variant="outline" className="border border-border text-sm">
-            <Link href="https://app.smarterbot.cl" target="_blank" rel="noopener noreferrer">
-              ACCESO
-            </Link>
-          </Button>
+          <div className="flex">
+            <HeaderBadge label={badgeLabel} />
+          </div>
         </div>
       </div>
     </header>
@@ -61,7 +78,7 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
 
 function FeatureGrid() {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {featureCards.map(({ icon: Icon, title, description }) => (
         <div key={title} className="flex items-center gap-3 rounded-xl border border-border bg-secondary p-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-accent/20 bg-accent/10 text-accent">
@@ -79,7 +96,7 @@ function FeatureGrid() {
 
 function StatGrid() {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {statCards.map((stat) => (
         <div key={stat.label} className="rounded-xl border border-border bg-secondary p-4 text-center">
           <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
