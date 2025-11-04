@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, UserPlus, Edit, Trash2, Key, QrCode, Contact, Database, LogOut } from "lucide-react"
+import BackgroundPattern from "@/components/background-pattern"
 
 interface UserProfile {
   id: string
@@ -270,34 +271,43 @@ export default function DemoDashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen overflow-hidden bg-[#050508] text-white">
+      <BackgroundPattern />
+
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="border-b border-white/10 bg-white/5 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <Database className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Demo Database Management</h1>
-              <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 border border-white/10">
+                <Database className="h-6 w-6 text-cyan-300" />
+              </div>
+              <h1 className="text-2xl font-bold text-white">Demo Database Management</h1>
+              <Badge variant="secondary" className="bg-cyan-500/15 text-cyan-200 border-cyan-500/30 uppercase tracking-[0.2em]">
                 Demo Mode
               </Badge>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex space-x-2">
-                <Badge variant="secondary" className="px-3 py-1">
+                <Badge variant="secondary" className="px-3 py-1 bg-white/10 text-slate-200 border-white/20">
                   {profiles.length} Profiles
                 </Badge>
-                <Badge variant="secondary" className="px-3 py-1">
+                <Badge variant="secondary" className="px-3 py-1 bg-white/10 text-slate-200 border-white/20">
                   {contacts.length} Contacts
                 </Badge>
-                <Badge variant="secondary" className="px-3 py-1">
+                <Badge variant="secondary" className="px-3 py-1 bg-white/10 text-slate-200 border-white/20">
                   {apiKeys.length} API Keys
                 </Badge>
-                <Badge variant="secondary" className="px-3 py-1">
+                <Badge variant="secondary" className="px-3 py-1 bg-white/10 text-slate-200 border-white/20">
                   {qrCodes.length} QR Codes
                 </Badge>
               </div>
-              <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-2 border-white/20 text-white hover:bg-white/10"
+              >
                 <LogOut className="h-4 w-4" />
                 Exit Demo
               </Button>
@@ -306,34 +316,46 @@ export default function DemoDashboardContent() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to the Demo!</h2>
-          <p className="text-gray-600">Experience full CRUD operations across all database tables</p>
-          <div className="mt-4 bg-blue-50 rounded-lg p-4">
-            <p className="text-blue-800 text-sm">
-              <strong>Demo Mode:</strong> All changes are temporary and will reset when you refresh the page. This
-              demonstrates the full functionality without requiring database setup.
+          <h2 className="text-3xl font-bold text-white mb-2">Welcome to the Demo!</h2>
+          <p className="text-slate-300">Experience full CRUD operations across all database tables</p>
+          <div className="mt-4 bg-white/5 border border-white/10 rounded-lg p-4">
+            <p className="text-sm text-slate-200">
+              <strong className="text-cyan-300">Demo Mode:</strong> All changes are temporary and will reset when you
+              refresh the page. This demonstrates the full functionality without requiring database setup.
             </p>
           </div>
         </div>
 
         <Tabs defaultValue="profiles" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profiles" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-4 bg-white/10 border border-white/20 backdrop-blur">
+            <TabsTrigger
+              value="profiles"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+            >
               <Users className="h-4 w-4" />
               Profiles
             </TabsTrigger>
-            <TabsTrigger value="contacts" className="flex items-center gap-2">
+            <TabsTrigger
+              value="contacts"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+            >
               <Contact className="h-4 w-4" />
               Contacts
             </TabsTrigger>
-            <TabsTrigger value="api-keys" className="flex items-center gap-2">
+            <TabsTrigger
+              value="api-keys"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+            >
               <Key className="h-4 w-4" />
               API Keys
             </TabsTrigger>
-            <TabsTrigger value="qr-codes" className="flex items-center gap-2">
+            <TabsTrigger
+              value="qr-codes"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white"
+            >
               <QrCode className="h-4 w-4" />
               QR Codes
             </TabsTrigger>
@@ -341,17 +363,20 @@ export default function DemoDashboardContent() {
 
           {/* Profiles Tab */}
           <TabsContent value="profiles" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur border border-white/20 text-white">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-white">
                       <UserPlus className="h-5 w-5" />
                       Add New Profile
                     </CardTitle>
-                    <CardDescription>Create a new user profile</CardDescription>
+                    <CardDescription className="text-slate-300">Create a new user profile</CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddForms({ ...showAddForms, profile: !showAddForms.profile })}>
+                  <Button
+                    onClick={() => setShowAddForms({ ...showAddForms, profile: !showAddForms.profile })}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                  >
                     {showAddForms.profile ? "Cancel" : "Add Profile"}
                   </Button>
                 </div>
@@ -397,20 +422,20 @@ export default function DemoDashboardContent() {
 
             <div className="space-y-4">
               {profiles.map((profile) => (
-                <Card key={profile.id}>
+                <Card key={profile.id} className="bg-white/10 backdrop-blur border border-white/20 text-white">
                   <CardContent className="p-6">
                     {editingProfile === profile.id ? (
                       <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label>Full Name</Label>
+                            <Label className="text-slate-200">Full Name</Label>
                             <Input
                               value={editForm.full_name || ""}
                               onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
                             />
                           </div>
                           <div>
-                            <Label>Email</Label>
+                            <Label className="text-slate-200">Email</Label>
                             <Input
                               type="email"
                               value={editForm.email || ""}
@@ -418,7 +443,7 @@ export default function DemoDashboardContent() {
                             />
                           </div>
                           <div className="md:col-span-2">
-                            <Label>Avatar URL</Label>
+                            <Label className="text-slate-200">Avatar URL</Label>
                             <Input
                               value={editForm.avatar_url || ""}
                               onChange={(e) => setEditForm({ ...editForm, avatar_url: e.target.value })}
@@ -426,10 +451,12 @@ export default function DemoDashboardContent() {
                           </div>
                         </div>
                         <div className="flex justify-end space-x-2">
-                          <Button variant="outline" onClick={cancelEdit}>
+                          <Button variant="outline" onClick={cancelEdit} className="border-white/20 text-white hover:bg-white/10">
                             Cancel
                           </Button>
-                          <Button onClick={() => updateProfile(profile.id)}>Save Changes</Button>
+                          <Button onClick={() => updateProfile(profile.id)} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                            Save Changes
+                          </Button>
                         </div>
                       </div>
                     ) : (
@@ -447,26 +474,31 @@ export default function DemoDashboardContent() {
                               />
                             )}
                             <div>
-                              <h4 className="text-lg font-semibold text-gray-900">{profile.full_name}</h4>
-                              <p className="text-gray-600">{profile.email}</p>
+                              <h4 className="text-lg font-semibold text-white">{profile.full_name}</h4>
+                              <p className="text-slate-300">{profile.email}</p>
                             </div>
                           </div>
                           <div className="flex space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => startEdit(profile)}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => startEdit(profile)}
+                              className="border-white/20 text-white hover:bg-white/10"
+                            >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => deleteProfile(profile.id)}
-                              className="text-red-600 hover:text-red-700"
+                              className="border-red-400/40 text-red-300 hover:bg-red-500/10"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
                         <Separator className="my-4" />
-                        <div className="flex justify-between text-sm text-gray-500">
+                        <div className="flex justify-between text-sm text-slate-300">
                           <span>Created: {new Date(profile.created_at).toLocaleDateString()}</span>
                           <span>Updated: {new Date(profile.updated_at).toLocaleDateString()}</span>
                         </div>
@@ -480,14 +512,17 @@ export default function DemoDashboardContent() {
 
           {/* Contacts Tab */}
           <TabsContent value="contacts" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur border border-white/20 text-white">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>Add New Contact</CardTitle>
-                    <CardDescription>Create a new contact entry</CardDescription>
+                    <CardTitle className="text-white">Add New Contact</CardTitle>
+                    <CardDescription className="text-slate-300">Create a new contact entry</CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddForms({ ...showAddForms, contact: !showAddForms.contact })}>
+                  <Button
+                    onClick={() => setShowAddForms({ ...showAddForms, contact: !showAddForms.contact })}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                  >
                     {showAddForms.contact ? "Cancel" : "Add Contact"}
                   </Button>
                 </div>
@@ -496,7 +531,7 @@ export default function DemoDashboardContent() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label>Name</Label>
+                      <Label className="text-slate-200">Name</Label>
                       <Input
                         value={newContact.name}
                         onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
@@ -504,7 +539,7 @@ export default function DemoDashboardContent() {
                       />
                     </div>
                     <div>
-                      <Label>Email</Label>
+                      <Label className="text-slate-200">Email</Label>
                       <Input
                         type="email"
                         value={newContact.email}
@@ -513,7 +548,7 @@ export default function DemoDashboardContent() {
                       />
                     </div>
                     <div>
-                      <Label>Source</Label>
+                      <Label className="text-slate-200">Source</Label>
                       <Input
                         value={newContact.source}
                         onChange={(e) => setNewContact({ ...newContact, source: e.target.value })}
@@ -521,7 +556,7 @@ export default function DemoDashboardContent() {
                       />
                     </div>
                     <div>
-                      <Label>Status</Label>
+                      <Label className="text-slate-200">Status</Label>
                       <Input
                         value={newContact.status}
                         onChange={(e) => setNewContact({ ...newContact, status: e.target.value })}
@@ -530,7 +565,9 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createContact}>Create Contact</Button>
+                    <Button onClick={createContact} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                      Create Contact
+                    </Button>
                   </div>
                 </CardContent>
               )}
@@ -538,25 +575,33 @@ export default function DemoDashboardContent() {
 
             <div className="grid gap-4">
               {contacts.map((contact) => (
-                <Card key={contact.id}>
+                <Card key={contact.id} className="bg-white/10 backdrop-blur border border-white/20 text-white">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="text-lg font-semibold">{contact.name}</h4>
-                        <p className="text-gray-600">{contact.email}</p>
+                        <h4 className="text-lg font-semibold text-white">{contact.name}</h4>
+                        <p className="text-slate-300">{contact.email}</p>
                         <div className="flex space-x-2 mt-2">
-                          <Badge variant="outline">{contact.source}</Badge>
-                          <Badge variant={contact.status === "active" ? "default" : "secondary"}>
+                          <Badge className="bg-white/10 text-slate-200 border-white/20">{contact.source}</Badge>
+                          <Badge
+                            className={
+                              contact.status === "active"
+                                ? "bg-emerald-500/20 text-emerald-200 border-emerald-500/40"
+                                : "bg-white/10 text-slate-200 border-white/20"
+                            }
+                          >
                             {contact.status}
                           </Badge>
-                          {contact.was_notified && <Badge variant="secondary">Notified</Badge>}
+                          {contact.was_notified && (
+                            <Badge className="bg-cyan-500/15 text-cyan-200 border-cyan-500/30">Notified</Badge>
+                          )}
                         </div>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => deleteContact(contact.id)}
-                        className="text-red-600 hover:text-red-700"
+                        className="border-red-400/40 text-red-300 hover:bg-red-500/10"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -569,14 +614,17 @@ export default function DemoDashboardContent() {
 
           {/* API Keys Tab */}
           <TabsContent value="api-keys" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur border border-white/20 text-white">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>Add New API Key</CardTitle>
-                    <CardDescription>Create a new API key</CardDescription>
+                    <CardTitle className="text-white">Add New API Key</CardTitle>
+                    <CardDescription className="text-slate-300">Create a new API key</CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddForms({ ...showAddForms, apiKey: !showAddForms.apiKey })}>
+                  <Button
+                    onClick={() => setShowAddForms({ ...showAddForms, apiKey: !showAddForms.apiKey })}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                  >
                     {showAddForms.apiKey ? "Cancel" : "Add API Key"}
                   </Button>
                 </div>
@@ -585,7 +633,7 @@ export default function DemoDashboardContent() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label>Key Name</Label>
+                      <Label className="text-slate-200">Key Name</Label>
                       <Input
                         value={newApiKey.key_name}
                         onChange={(e) => setNewApiKey({ ...newApiKey, key_name: e.target.value })}
@@ -593,7 +641,7 @@ export default function DemoDashboardContent() {
                       />
                     </div>
                     <div>
-                      <Label>API Key</Label>
+                      <Label className="text-slate-200">API Key</Label>
                       <Input
                         value={newApiKey.api_key}
                         onChange={(e) => setNewApiKey({ ...newApiKey, api_key: e.target.value })}
@@ -602,7 +650,9 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createApiKey}>Create API Key</Button>
+                    <Button onClick={createApiKey} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                      Create API Key
+                    </Button>
                   </div>
                 </CardContent>
               )}
@@ -610,14 +660,20 @@ export default function DemoDashboardContent() {
 
             <div className="grid gap-4">
               {apiKeys.map((apiKey) => (
-                <Card key={apiKey.id}>
+                <Card key={apiKey.id} className="bg-white/10 backdrop-blur border border-white/20 text-white">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="text-lg font-semibold">{apiKey.key_name}</h4>
-                        <p className="text-gray-600 font-mono text-sm">{apiKey.api_key}</p>
+                        <h4 className="text-lg font-semibold text-white">{apiKey.key_name}</h4>
+                        <p className="text-slate-300 font-mono text-sm">{apiKey.api_key}</p>
                         <div className="flex space-x-2 mt-2">
-                          <Badge variant={apiKey.is_active ? "default" : "secondary"}>
+                          <Badge
+                            className={
+                              apiKey.is_active
+                                ? "bg-emerald-500/20 text-emerald-200 border-emerald-500/40"
+                                : "bg-white/10 text-slate-200 border-white/20"
+                            }
+                          >
                             {apiKey.is_active ? "Active" : "Inactive"}
                           </Badge>
                         </div>
@@ -627,6 +683,7 @@ export default function DemoDashboardContent() {
                           variant="outline"
                           size="sm"
                           onClick={() => toggleApiKeyStatus(apiKey.id, apiKey.is_active)}
+                          className="border-white/20 text-white hover:bg-white/10"
                         >
                           {apiKey.is_active ? "Deactivate" : "Activate"}
                         </Button>
@@ -634,7 +691,7 @@ export default function DemoDashboardContent() {
                           variant="outline"
                           size="sm"
                           onClick={() => deleteApiKey(apiKey.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="border-red-400/40 text-red-300 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -648,14 +705,17 @@ export default function DemoDashboardContent() {
 
           {/* QR Codes Tab */}
           <TabsContent value="qr-codes" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur border border-white/20 text-white">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>Add New QR Code</CardTitle>
-                    <CardDescription>Create a new QR code entry</CardDescription>
+                    <CardTitle className="text-white">Add New QR Code</CardTitle>
+                    <CardDescription className="text-slate-300">Create a new QR code entry</CardDescription>
                   </div>
-                  <Button onClick={() => setShowAddForms({ ...showAddForms, qrCode: !showAddForms.qrCode })}>
+                  <Button
+                    onClick={() => setShowAddForms({ ...showAddForms, qrCode: !showAddForms.qrCode })}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-black"
+                  >
                     {showAddForms.qrCode ? "Cancel" : "Add QR Code"}
                   </Button>
                 </div>
@@ -664,7 +724,7 @@ export default function DemoDashboardContent() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label>Bot ID</Label>
+                      <Label className="text-slate-200">Bot ID</Label>
                       <Input
                         value={newQrCode.bot_id}
                         onChange={(e) => setNewQrCode({ ...newQrCode, bot_id: e.target.value })}
@@ -672,7 +732,7 @@ export default function DemoDashboardContent() {
                       />
                     </div>
                     <div>
-                      <Label>Description</Label>
+                      <Label className="text-slate-200">Description</Label>
                       <Input
                         value={newQrCode.description}
                         onChange={(e) => setNewQrCode({ ...newQrCode, description: e.target.value })}
@@ -681,7 +741,9 @@ export default function DemoDashboardContent() {
                     </div>
                   </div>
                   <div className="flex justify-end mt-4">
-                    <Button onClick={createQrCode}>Create QR Code</Button>
+                    <Button onClick={createQrCode} className="bg-cyan-500 hover:bg-cyan-400 text-black">
+                      Create QR Code
+                    </Button>
                   </div>
                 </CardContent>
               )}
@@ -689,14 +751,20 @@ export default function DemoDashboardContent() {
 
             <div className="grid gap-4">
               {qrCodes.map((qrCode) => (
-                <Card key={qrCode.id}>
+                <Card key={qrCode.id} className="bg-white/10 backdrop-blur border border-white/20 text-white">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="text-lg font-semibold">{qrCode.description}</h4>
-                        <p className="text-gray-600">Bot ID: {qrCode.bot_id}</p>
+                        <h4 className="text-lg font-semibold text-white">{qrCode.description}</h4>
+                        <p className="text-slate-300">Bot ID: {qrCode.bot_id}</p>
                         <div className="flex space-x-2 mt-2">
-                          <Badge variant={qrCode.is_active ? "default" : "secondary"}>
+                          <Badge
+                            className={
+                              qrCode.is_active
+                                ? "bg-emerald-500/20 text-emerald-200 border-emerald-500/40"
+                                : "bg-white/10 text-slate-200 border-white/20"
+                            }
+                          >
                             {qrCode.is_active ? "Active" : "Inactive"}
                           </Badge>
                         </div>
@@ -706,6 +774,7 @@ export default function DemoDashboardContent() {
                           variant="outline"
                           size="sm"
                           onClick={() => toggleQrCodeStatus(qrCode.id, qrCode.is_active)}
+                          className="border-white/20 text-white hover:bg-white/10"
                         >
                           {qrCode.is_active ? "Deactivate" : "Activate"}
                         </Button>
@@ -713,7 +782,7 @@ export default function DemoDashboardContent() {
                           variant="outline"
                           size="sm"
                           onClick={() => deleteQrCode(qrCode.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="border-red-400/40 text-red-300 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
