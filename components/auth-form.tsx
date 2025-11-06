@@ -102,10 +102,10 @@ export default function AuthForm() {
       <div className="space-y-6 rounded-3xl border border-border/70 bg-background/90 p-6 shadow-lg backdrop-blur">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2 text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Create your account</p>
-            <h2 className="text-2xl font-semibold text-foreground">Bienvenido/a, estamos listos 👋</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Crea tu cuenta</p>
+            <h2 className="text-2xl font-semibold text-foreground">¡Bienvenido/a, estamos listos! 👋</h2>
             <p className="text-sm text-muted-foreground">
-              Welcome! Completa los siguientes datos para comenzar a automatizar tu negocio con SmarterOS.
+              ¡Completa los siguientes datos para comenzar a automatizar tu negocio con SmarterOS!
             </p>
           </div>
           <ThemeIconSelector value={theme} onChange={handleThemeChange} />
@@ -129,14 +129,14 @@ export default function AuthForm() {
             </div>
             <div className="relative flex justify-center">
               <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                or
+                o
               </span>
             </div>
           </div>
 
           <form className="space-y-4">
             <div className="space-y-2 text-left">
-              <Label htmlFor="login-email">Email address / Correo electrónico</Label>
+              <Label htmlFor="login-email">Correo electrónico</Label>
               <Input
                 id="login-email"
                 type="email"
@@ -146,7 +146,7 @@ export default function AuthForm() {
               />
             </div>
             <div className="space-y-2 text-left">
-              <Label htmlFor="login-password">Password / Contraseña</Label>
+              <Label htmlFor="login-password">Contraseña</Label>
               <Input
                 id="login-password"
                 type="password"
@@ -155,7 +155,7 @@ export default function AuthForm() {
                 className="tracking-[0.35em]"
               />
               <p className="text-xs font-medium text-emerald-500">
-                Your password meets all the necessary requirements.
+                Tu contraseña cumple con todos los requisitos necesarios.
               </p>
             </div>
             <SignUpButton mode="modal">
@@ -172,13 +172,13 @@ export default function AuthForm() {
               {" "}
               <SignInButton mode="modal">
                 <span className="cursor-pointer font-semibold text-foreground underline-offset-2 hover:underline">
-                  Sign in / Iniciar sesión
+                  Iniciar sesión
                 </span>
               </SignInButton>
             </p>
             <p className="flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
               <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              Secured by Development mode
+              Protegido por Development mode
             </p>
           </div>
         </div>

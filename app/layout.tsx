@@ -12,6 +12,8 @@ const onest = Onest({
   variable: "--font-sans",
 })
 
+const baseBodyClass = `${onest.variable} font-sans antialiased`
+
 const themeInitScript = `
 ;(function () {
   var STORAGE_KEY = 'smarteros-theme';
@@ -76,7 +78,7 @@ export default function RootLayout({
 
   const errorScreen = (
     <html {...htmlAttributes}>
-      <body className={`${onest.variable} antialiased`}>
+      <body className={baseBodyClass}>
         <Script id="smarteros-theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
@@ -123,7 +125,7 @@ export default function RootLayout({
   if (isDemoMode) {
     return (
       <html {...htmlAttributes}>
-        <body className={`${onest.variable} antialiased`}>
+        <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
@@ -141,7 +143,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html {...htmlAttributes}>
-        <body className={`${onest.variable} antialiased`}>
+        <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
