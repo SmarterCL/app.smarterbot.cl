@@ -53,11 +53,10 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
             </div>
             <Button
               asChild
-              variant="outline"
-              className="border border-border px-4 py-2 text-xs font-semibold sm:px-6 sm:text-sm"
+              className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:from-emerald-500 hover:via-emerald-600 hover:to-emerald-700 hover:shadow lg:px-6 lg:text-sm"
             >
-              <Link href="https://app.smarterbot.cl" target="_blank" rel="noopener noreferrer">
-                ACCESO
+              <Link href="https://wa.me/56979540471" target="_blank" rel="noopener noreferrer">
+                CHAT
               </Link>
             </Button>
           </div>
@@ -78,14 +77,17 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
 
 function FeatureGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {featureCards.map(({ icon: Icon, title, description }) => (
-        <div key={title} className="flex items-center gap-3 rounded-xl border border-border bg-secondary p-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-accent/20 bg-accent/10 text-accent">
-            <Icon className="h-5 w-5" />
+        <div
+          key={title}
+          className="flex items-center gap-3 rounded-2xl border border-border/60 bg-gradient-to-br from-background via-secondary/80 to-secondary p-4 transition-shadow hover:shadow-lg"
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/10 bg-accent/10 text-accent">
+            <Icon className="h-5 w-5" strokeWidth={2} />
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">{title}</p>
+            <p className="text-sm font-semibold text-foreground/90">{title}</p>
             <p className="text-xs text-muted-foreground">{description}</p>
           </div>
         </div>
@@ -96,13 +98,77 @@ function FeatureGrid() {
 
 function StatGrid() {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {statCards.map((stat) => (
-        <div key={stat.label} className="rounded-xl border border-border bg-secondary p-4 text-center">
+        <div
+          key={stat.label}
+          className="rounded-2xl border border-border/60 bg-gradient-to-br from-secondary via-background to-secondary p-4 text-center shadow-sm"
+        >
           <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
           <p className="text-xs text-muted-foreground">{stat.label}</p>
         </div>
       ))}
+    </div>
+  )
+}
+
+function MobileHero() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8">
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-40">
+        <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
+        <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
+      </div>
+      <div className="space-y-6 text-center">
+        <HeaderBadge label="Automatización con IA" />
+        <div className="space-y-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Tu asistente inteligente para WhatsApp
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Responde clientes, gestiona leads y automatiza procesos sin salir de tu teléfono.
+          </p>
+        </div>
+        <div className="flex flex-col gap-3">
+          <Link
+            href="https://wa.me/56979540471"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-md transition hover:shadow-lg"
+          >
+            Hablar por WhatsApp
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="https://app.smarterbot.cl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border/80 bg-background/60 px-6 py-3 text-sm font-semibold text-foreground/90 shadow-sm transition hover:border-border"
+          >
+            Ingresar al dashboard
+          </Link>
+        </div>
+        <div className="-mx-2 flex snap-x gap-3 overflow-x-auto pb-2">
+          {featureCards.map(({ icon: Icon, title, description }) => (
+            <div
+              key={title}
+              className="min-w-[200px] snap-center rounded-2xl border border-border/40 bg-secondary/70 p-4 text-left shadow-sm"
+            >
+              <Icon className="mb-3 h-5 w-5 text-accent" />
+              <p className="text-sm font-semibold text-foreground/90">{title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {statCards.map((stat) => (
+            <div key={stat.label} className="rounded-2xl border border-border/50 bg-background/80 p-3 shadow-sm">
+              <p className="text-lg font-semibold text-foreground">{stat.value}</p>
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -170,13 +236,18 @@ export default function Home() {
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground">
       <Header badgeLabel="Versión 2.0" />
-      <main className="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-16 sm:px-6">
-        <section className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
-          <HeroContent />
+      <main className="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-14 sm:px-6 lg:gap-16 lg:py-16">
+        <section className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
+          <div className="lg:hidden">
+            <MobileHero />
+          </div>
+          <div className="hidden lg:block">
+            <HeroContent />
+          </div>
 
           <div className="space-y-8 lg:pl-8">
-            <Card className="border border-border bg-card shadow-xl">
-              <CardContent className="space-y-8 p-8">
+            <Card className="border border-border bg-card/80 backdrop-blur-sm shadow-xl">
+              <CardContent className="space-y-8 p-6 sm:p-8">
                 <div className="space-y-2 text-center">
                   <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
                   <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
@@ -190,9 +261,27 @@ export default function Home() {
                 >
                   <AuthChecker />
                 </Suspense>
+                <div className="rounded-2xl border border-dashed border-emerald-400/40 bg-emerald-500/10 p-4 text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-foreground">¿Necesitas ayuda con tu login?</p>
+                    <p className="text-xs text-muted-foreground">
+                      Nuestro equipo te guía paso a paso desde WhatsApp.
+                    </p>
+                  </div>
+                  <Link
+                    href="https://wa.me/56979540471?text=Hola%20SmarterOS%2C%20necesito%20ayuda%20con%20mi%20inicio%20de%20sesión."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-emerald-600 sm:mt-0"
+                  >
+                    Abrir chat
+                  </Link>
+                </div>
               </CardContent>
             </Card>
-            <StatGrid />
+            <div className="hidden lg:block">
+              <StatGrid />
+            </div>
           </div>
         </section>
 
