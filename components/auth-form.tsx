@@ -15,7 +15,12 @@ export default function AuthForm() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2 text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Crea tu cuenta</p>
-            <h2 className="text-2xl font-semibold text-foreground">¡Bienvenido/a, estamos listos! 👋</h2>
+            <h2 className="flex flex-wrap items-center gap-2 text-2xl font-semibold text-foreground">
+              <span>¡Bienvenido/a, estamos listos!</span>
+              <span aria-hidden="true" className="text-2xl leading-none">
+                👋
+              </span>
+            </h2>
             <p className="text-sm text-muted-foreground">
               ¡Completa los siguientes datos para comenzar a automatizar tu negocio con SmarterOS!
             </p>
@@ -27,7 +32,7 @@ export default function AuthForm() {
             <Button
               variant="outline"
               type="button"
-              className="group flex h-12 w-full items-center justify-center gap-3 border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-secondary/80"
+              className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground"
             >
               <Chrome className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
               Continuar con Google

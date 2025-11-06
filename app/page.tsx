@@ -130,7 +130,7 @@ function MobileHero() {
         <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
         <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
       </div>
-      <div className="space-y-6 text-center">
+      <div className="space-y-5 text-center sm:space-y-6">
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Tu asistente inteligente para WhatsApp
@@ -248,7 +248,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Header />
-        <main className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-16 sm:px-6">
+        <main className="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-16">
           <section className="space-y-8 text-center">
             <div className="space-y-4">
               <HeaderBadge label="Acceso libre" />
@@ -269,8 +269,8 @@ export default function Home() {
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground">
       <Header />
-      <main className="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-14 sm:px-6 lg:gap-16 lg:py-16">
-        <section className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
+      <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:gap-16 lg:py-16">
+        <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
           <div className="lg:hidden">
             <MobileHero />
           </div>

@@ -37,9 +37,9 @@ export default function DemoModeToggle() {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
             <Shield className="h-8 w-8" />
           </div>
-          <h3 className="mb-2 text-lg font-semibold text-foreground">Logging in as {currentUser}...</h3>
+          <h3 className="mb-2 text-lg font-semibold text-foreground">Iniciando sesión como {currentUser}...</h3>
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Redirecting to dashboard...</p>
+          <p className="text-sm text-muted-foreground">Redirigiendo al panel principal...</p>
         </CardContent>
       </Card>
     )
@@ -51,28 +51,28 @@ export default function DemoModeToggle() {
         <CardHeader className="text-center">
           <CardTitle className="flex items-center justify-center gap-2 text-foreground">
             <Database className="h-5 w-5 text-accent" />
-            Demo Authentication System
+            Sistema de autenticación demo
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Try the full authentication system without any setup required
+            Prueba todo el sistema de autenticación sin configurar nada
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-secondary p-4">
-              <h4 className="mb-2 font-semibold text-foreground">Demo Features:</h4>
+              <h4 className="mb-2 font-semibold text-foreground">¿Qué incluye?</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>• Full CRUD operations on all database tables</li>
-                <li>• User profile management</li>
-                <li>• Contact management system</li>
-                <li>• API key management</li>
-                <li>• QR code management</li>
-                <li>• Responsive design</li>
+                <li>• CRUD completo sobre todas las tablas</li>
+                <li>• Gestión de perfiles de usuario</li>
+                <li>• Administración de contactos</li>
+                <li>• Manejo de API Keys</li>
+                <li>• Control de códigos QR</li>
+                <li>• Diseño responsivo</li>
               </ul>
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-semibold text-foreground">Choose a demo user:</h4>
+              <h4 className="font-semibold text-foreground">Elige un usuario demo:</h4>
               {demoUsers.map((user) => (
                 <div
                   key={user.id}
@@ -96,7 +96,7 @@ export default function DemoModeToggle() {
                       onClick={() => handleDemoLogin(user)}
                       className="flex items-center gap-1 bg-accent text-accent-foreground hover:bg-accent/90"
                     >
-                      Login <ArrowRight className="h-3 w-3" />
+                      Entrar <ArrowRight className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
@@ -104,10 +104,10 @@ export default function DemoModeToggle() {
             </div>
 
             <div className="rounded-lg border border-border bg-secondary p-4">
-              <h4 className="mb-2 font-semibold text-foreground">Note:</h4>
+              <h4 className="mb-2 font-semibold text-foreground">Nota:</h4>
               <p className="text-sm text-muted-foreground">
-                This is a demo mode. No real authentication is performed, and data changes are temporary. To use real
-                authentication with Google OAuth, configure your Clerk API keys.
+                Este es un modo demo. No se realiza autenticación real y los cambios de datos son temporales. Para usar
+                autenticación real con Google OAuth, configura tus llaves de Clerk.
               </p>
             </div>
           </div>

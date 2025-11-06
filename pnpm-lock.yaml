@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@clerk/localizations':
+        specifier: ^3.27.0
+        version: 3.27.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/nextjs':
         specifier: latest
         version: 6.22.0(next@15.2.4(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -275,6 +278,10 @@ packages:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
+  '@clerk/localizations@3.27.0':
+    resolution: {integrity: sha512-XQrzOtON32dXlTHEUwL0utTro6MePSM1gljCjRcY6RKh36I2BcuuG2XVu6K2HIvBL+Ef+nWF8+aU4+zc14nVcQ==}
+    engines: {node: '>=18.17.0'}
+
   '@clerk/nextjs@6.22.0':
     resolution: {integrity: sha512-Lh+hq4iuvuSgiWSDHDM9BAM8+YZU/wtADGo2TAU7FBVEZ6I3SwyXo5JEY4F7s30TpH3kS9qC/Ye3YA6VIOOu7Q==}
     engines: {node: '>=18.17.0'}
@@ -282,6 +289,18 @@ packages:
       next: ^13.5.7 || ^14.2.25 || ^15.2.3
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+
+  '@clerk/shared@3.31.1':
+    resolution: {integrity: sha512-mqxZqlzLJYJxA+ryLzhwFR0eO73teAvRd+wvA8bLUZLYvCRFvaiHsB9dEvbo9Z5bMYdq3NPwnx2uljMuu/tiQw==}
+    engines: {node: '>=18.17.0'}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   '@clerk/shared@3.9.7':
     resolution: {integrity: sha512-D3iuzuDoadK6BKb7qFZEH332z4Sl5mxLuHMf8rKdIMHuOu1RQK0RqFJtKPcFvDxq0RvJ9MC+rK24P2Sa2tOoNA==}
@@ -297,6 +316,10 @@ packages:
 
   '@clerk/types@4.60.1':
     resolution: {integrity: sha512-Lbt0/Q9W9BJtGz1IITdmeqal7y1zp9EaxOEMvsTEDhOxKf/0F/M1d0gJmHEU0puQzYPp9zJsIWC2yJjbgy3Y3Q==}
+    engines: {node: '>=18.17.0'}
+
+  '@clerk/types@4.97.2':
+    resolution: {integrity: sha512-xnJq3xzpmuuDnNnWuUMKJLPPkaEaLDM0kiv2Hm0gKIcL1+1P3VaGf2vL9roIhmhLswB2PUwtVvZKBmGjT5yOVw==}
     engines: {node: '>=18.17.0'}
 
   '@date-fns/tz@1.2.0':
@@ -2966,6 +2989,11 @@ packages:
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  swr@2.3.4:
+    resolution: {integrity: sha512-bYd2lrhc+VarcpkgWclcUi92wYCpOgMws9Sd1hG1ntAu0NEy+14CbotuFjshBU2kt9rYj9TSmDcybpxpeTU1fg==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   tailwind-merge@2.5.5:
     resolution: {integrity: sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==}
 
@@ -3307,6 +3335,13 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.8.1
 
+  '@clerk/localizations@3.27.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@clerk/types': 4.97.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
   '@clerk/nextjs@6.22.0(next@15.2.4(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@clerk/backend': 2.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -3318,6 +3353,18 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       server-only: 0.0.1
       tslib: 2.8.1
+
+  '@clerk/shared@3.31.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      csstype: 3.1.3
+      dequal: 2.0.3
+      glob-to-regexp: 0.4.1
+      js-cookie: 3.0.5
+      std-env: 3.9.0
+      swr: 2.3.4(react@19.0.0)
+    optionalDependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   '@clerk/shared@3.9.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -3334,6 +3381,13 @@ snapshots:
   '@clerk/types@4.60.1':
     dependencies:
       csstype: 3.1.3
+
+  '@clerk/types@4.97.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@clerk/shared': 3.31.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
 
   '@date-fns/tz@1.2.0': {}
 
@@ -6253,6 +6307,12 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   swr@2.3.3(react@19.0.0):
+    dependencies:
+      dequal: 2.0.3
+      react: 19.0.0
+      use-sync-external-store: 1.5.0(react@19.0.0)
+
+  swr@2.3.4(react@19.0.0):
     dependencies:
       dequal: 2.0.3
       react: 19.0.0

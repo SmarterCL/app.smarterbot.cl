@@ -1,5 +1,6 @@
 import type React from "react"
 import { ClerkProvider } from "@clerk/nextjs"
+import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Onest } from "next/font/google"
 
@@ -141,7 +142,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={esES}>
       <html {...htmlAttributes}>
         <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
