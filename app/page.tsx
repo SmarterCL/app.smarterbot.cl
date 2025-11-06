@@ -112,6 +112,27 @@ function StatGrid() {
   )
 }
 
+function LoginSupportPanel({ className = "", linkClassName = "" }: { className?: string; linkClassName?: string }) {
+  return (
+    <div
+      className={`rounded-2xl border border-dashed border-emerald-400/40 bg-emerald-500/10 p-4 text-left sm:flex sm:items-center sm:justify-between sm:gap-6 ${className}`}
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-semibold text-foreground">¿Necesitas ayuda con tu login?</p>
+        <p className="text-xs text-muted-foreground">Nuestro equipo te guía paso a paso desde WhatsApp.</p>
+      </div>
+      <Link
+        href="https://wa.me/56979540471?text=Hola%20SmarterOS%2C%20necesito%20ayuda%20con%20mi%20inicio%20de%20sesión."
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`mt-3 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-emerald-600 sm:mt-0 sm:w-auto ${linkClassName}`}
+      >
+        Abrir chat
+      </Link>
+    </div>
+  )
+}
+
 function MobileHero() {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8">
@@ -139,15 +160,39 @@ function MobileHero() {
             Hablar por WhatsApp
             <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link
-            href="https://app.smarterbot.cl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border/80 bg-background/60 px-6 py-3 text-sm font-semibold text-foreground/90 shadow-sm transition hover:border-border"
-          >
-            Ingresar al dashboard
-          </Link>
         </div>
+        <Card className="border border-border/50 bg-background/95 shadow-xl">
+          <CardContent className="space-y-6 p-5">
+            <div className="space-y-1 text-left">
+              <h2 className="text-xl font-semibold text-foreground">Accede a tu cuenta</h2>
+              <p className="text-xs text-muted-foreground">
+                Inicia sesión con tu correo corporativo y continúa donde quedaste.
+              </p>
+            </div>
+            <Suspense
+              fallback={
+                <div className="flex justify-center py-4">
+                  <div className="h-7 w-7 animate-spin rounded-full border-2 border-border border-t-transparent" />
+                </div>
+              }
+            >
+              <AuthChecker />
+            </Suspense>
+            <p className="text-center text-xs text-muted-foreground">
+              ¿Prefieres abrirlo directo?
+              {" "}
+              <Link
+                href="https://app.smarterbot.cl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-emerald-600 underline-offset-2 hover:underline"
+              >
+                Ir al dashboard
+              </Link>
+            </p>
+            <LoginSupportPanel className="bg-emerald-500/5" />
+          </CardContent>
+        </Card>
         <div className="-mx-2 flex snap-x gap-3 overflow-x-auto pb-2">
           {featureCards.map(({ icon: Icon, title, description }) => (
             <div
@@ -245,7 +290,7 @@ export default function Home() {
             <HeroContent />
           </div>
 
-          <div className="space-y-8 lg:pl-8">
+          <div className="hidden space-y-8 lg:block lg:pl-8">
             <Card className="border border-border bg-card/80 backdrop-blur-sm shadow-xl">
               <CardContent className="space-y-8 p-6 sm:p-8">
                 <div className="space-y-2 text-center">
@@ -261,22 +306,7 @@ export default function Home() {
                 >
                   <AuthChecker />
                 </Suspense>
-                <div className="rounded-2xl border border-dashed border-emerald-400/40 bg-emerald-500/10 p-4 text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-foreground">¿Necesitas ayuda con tu login?</p>
-                    <p className="text-xs text-muted-foreground">
-                      Nuestro equipo te guía paso a paso desde WhatsApp.
-                    </p>
-                  </div>
-                  <Link
-                    href="https://wa.me/56979540471?text=Hola%20SmarterOS%2C%20necesito%20ayuda%20con%20mi%20inicio%20de%20sesión."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-emerald-600 sm:mt-0"
-                  >
-                    Abrir chat
-                  </Link>
-                </div>
+                <LoginSupportPanel />
               </CardContent>
             </Card>
             <div className="hidden lg:block">
