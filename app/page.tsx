@@ -4,7 +4,6 @@ import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-reac
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
-import ThemeToggle from "@/components/theme-toggle"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -32,7 +31,7 @@ function HeaderBadge({ label }: { label: string }) {
   )
 }
 
-function Header({ badgeLabel }: { badgeLabel: string }) {
+function Header() {
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -43,14 +42,9 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
             </div>
             <div className="hidden sm:block">
               <p className="text-sm font-semibold text-foreground">SmarterOS Hub</p>
-              <p className="text-xs text-muted-foreground">Automatización comercial con IA</p>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <ThemeToggle />
-            <div className="hidden sm:block">
-              <HeaderBadge label={badgeLabel} />
-            </div>
             <Button
               asChild
               className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:from-emerald-500 hover:via-emerald-600 hover:to-emerald-700 hover:shadow lg:px-6 lg:text-sm"
@@ -64,10 +58,6 @@ function Header({ badgeLabel }: { badgeLabel: string }) {
         <div className="flex flex-col gap-2 pb-3 sm:hidden">
           <div className="space-y-1">
             <p className="text-sm font-semibold text-foreground">SmarterOS Hub</p>
-            <p className="text-xs text-muted-foreground">Automatización comercial con IA</p>
-          </div>
-          <div className="flex">
-            <HeaderBadge label={badgeLabel} />
           </div>
         </div>
       </div>
@@ -141,7 +131,6 @@ function MobileHero() {
         <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
       </div>
       <div className="space-y-6 text-center">
-        <HeaderBadge label="Automatización con IA" />
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Tu asistente inteligente para WhatsApp
@@ -222,7 +211,6 @@ function HeroContent() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <HeaderBadge label="Automatización con IA" />
         <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
           Automatiza tu negocio con WhatsApp + IA
         </h1>
@@ -259,7 +247,7 @@ export default function Home() {
   if (isDemoMode) {
     return (
       <div className="min-h-screen bg-background text-foreground">
-        <Header badgeLabel="Demo Mode" />
+        <Header />
         <main className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-16 sm:px-6">
           <section className="space-y-8 text-center">
             <div className="space-y-4">
@@ -280,7 +268,7 @@ export default function Home() {
 
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground">
-      <Header badgeLabel="Versión 2.0" />
+      <Header />
       <main className="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-14 sm:px-6 lg:gap-16 lg:py-16">
         <section className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
           <div className="lg:hidden">
