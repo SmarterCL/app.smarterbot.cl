@@ -145,14 +145,6 @@ function MobileHero() {
             </div>
           ))}
         </div>
-        <div className="hidden grid-cols-3 gap-2 sm:grid">
-          {statCards.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-border/50 bg-background/80 p-3 shadow-sm">
-              <p className="text-lg font-semibold text-foreground">{stat.value}</p>
-              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   )
