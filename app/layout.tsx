@@ -1,5 +1,5 @@
 import type React from "react"
-import { ClerkProvider } from "@clerk/nextjs"
+import { ClerkProvider, type ClerkProviderProps } from "@clerk/nextjs"
 import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Onest } from "next/font/google"
@@ -54,6 +54,12 @@ const localization = {
     ...esES.unstable__errors,
     form_identifier_exists__email_address:
       "El correo electrónico asociado a esta cuenta OAuth ya está vinculado a otro usuario. Inicia sesión con ese perfil o conecta un correo distinto.",
+  },
+}
+
+const clerkAppearance: ClerkProviderProps["appearance"] = {
+  layout: {
+    socialButtonsVariant: "blockButton",
   },
 }
 
@@ -151,7 +157,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider localization={localization}>
+    <ClerkProvider localization={localization} appearance={clerkAppearance}>
       <html {...htmlAttributes}>
         <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
