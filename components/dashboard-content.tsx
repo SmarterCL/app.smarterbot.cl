@@ -95,38 +95,40 @@ export default function DashboardContent() {
         </section>
 
         <section className="mt-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <div className="sm:hidden">
-              <Select value={activeTab} onValueChange={setActiveTab}>
-                <SelectTrigger className="w-full rounded-xl border border-border bg-secondary text-left">
-                  <SelectValue placeholder="Selecciona una sección" />
-                </SelectTrigger>
-                <SelectContent align="start" className="min-w-[220px]">
-                  {tabItems.map(({ value, label, icon: Icon }) => (
-                    <SelectItem key={value} value={value}>
-                      <span className="flex items-center gap-2">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                        {label}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+            <div className="flex flex-col gap-3">
+              <div className="sm:hidden">
+                <Select value={activeTab} onValueChange={setActiveTab}>
+                  <SelectTrigger className="w-full rounded-2xl border border-border bg-secondary text-left text-sm font-semibold">
+                    <SelectValue placeholder="Selecciona una sección" />
+                  </SelectTrigger>
+                  <SelectContent align="start" className="min-w-[220px] rounded-xl border border-border bg-card shadow-lg">
+                    {tabItems.map(({ value, label, icon: Icon }) => (
+                      <SelectItem key={value} value={value} className="text-sm">
+                        <span className="flex items-center gap-2">
+                          <Icon className="h-4 w-4 text-muted-foreground" />
+                          {label}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-2xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
+                {tabItems.map(({ value, label, icon: Icon }) => (
+                  <TabsTrigger
+                    key={value}
+                    value={value}
+                    className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-transparent text-sm font-semibold text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
             </div>
-            <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
-              {tabItems.map(({ value, label, icon: Icon }) => (
-                <TabsTrigger
-                  key={value}
-                  value={value}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-transparent text-sm text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
-                >
-                  <Icon className="h-4 w-4" />
-                  {label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
 
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-6 sm:space-y-8">
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="border border-border bg-card shadow-sm">
                   <CardHeader>
@@ -172,7 +174,7 @@ export default function DashboardContent() {
               </div>
             </TabsContent>
 
-            <TabsContent value="contacts" className="space-y-6">
+            <TabsContent value="contacts" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -213,7 +215,7 @@ export default function DashboardContent() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="automation" className="space-y-6">
+            <TabsContent value="automation" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -237,7 +239,7 @@ export default function DashboardContent() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="qr" className="space-y-6">
+            <TabsContent value="qr" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -261,7 +263,7 @@ export default function DashboardContent() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="api" className="space-y-6">
+            <TabsContent value="api" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -302,7 +304,7 @@ export default function DashboardContent() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="settings" className="space-y-6">
+            <TabsContent value="settings" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-foreground">Configuración general</CardTitle>
