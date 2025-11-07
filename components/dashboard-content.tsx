@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { UserButton } from "@clerk/nextjs"
+import { useEffect, useState } from "react"
+import { UserButton, useUser } from "@clerk/nextjs"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import {
   Activity,
@@ -21,6 +23,7 @@ import {
   MessageSquare,
   Plus,
   QrCode,
+  RefreshCw,
   Search,
   Settings,
   Shield,
@@ -45,8 +48,132 @@ const tabItems = [
   { value: "settings", label: "Configuración", icon: Settings },
 ]
 
+const dateTimeFormatter = new Intl.DateTimeFormat("es-CL", {
+  dateStyle: "medium",
+  timeStyle: "short",
+})
+
+const formatDateTime = (value?: number | Date | null) => {
+  if (!value) return "Sin registro"
+
+  try {
+    const date = value instanceof Date ? value : new Date(value)
+
+    if (Number.isNaN(date.getTime())) {
+      return "Sin registro"
+    }
+
+    return dateTimeFormatter.format(date)
+  } catch (error) {
+    return "Sin registro"
+  }
+}
+
+const getInitials = (value?: string | null) => {
+  if (!value) return "??"
+
+  const trimmed = value.trim()
+  if (!trimmed) return "??"
+
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase()
+  }
+
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+}
+
+type SyncedContact = {
+  id: string
+  email: string
+  name: string
+  source?: string | null
+  status?: string | null
+  was_notified?: boolean | null
+  created_at?: string | null
+  updated_at?: string | null
+}
+
 export default function DashboardContent() {
   const [activeTab, setActiveTab] = useState("overview")
+  const { user, isLoaded } = useUser()
+  const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
+  const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [syncError, setSyncError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!isLoaded || !user) {
+      return
+    }
+
+    let isMounted = true
+
+    const syncContact = async () => {
+      setSyncState("loading")
+      setSyncError(null)
+
+      try {
+        const response = await fetch("/api/contacts/me")
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}))
+          throw new Error(payload?.error || "No se pudo sincronizar el contacto")
+        }
+
+        const payload = (await response.json()) as { contact: SyncedContact }
+
+        if (!isMounted) return
+
+        setSupabaseContact(payload.contact)
+        setSyncState("success")
+      } catch (error) {
+        console.error("Failed to sync contact", error)
+        if (!isMounted) return
+        setSyncState("error")
+        setSyncError(error instanceof Error ? error.message : "No se pudo sincronizar el contacto")
+      }
+    }
+
+    syncContact()
+
+    return () => {
+      isMounted = false
+    }
+  }, [isLoaded, user])
+
+  const contactProfile = user
+    ? {
+        id: user.id,
+        name: user.fullName?.trim() || user.username || user.primaryEmailAddress?.emailAddress || "Usuario sin nombre",
+        email: user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress || "Sin correo registrado",
+        phone: user.phoneNumbers?.[0]?.phoneNumber || "Sin teléfono",
+        lastAccess: formatDateTime(user.lastSignInAt),
+        createdAt: formatDateTime(user.createdAt),
+        imageUrl: user.imageUrl,
+        emailStatus: user.primaryEmailAddress?.verification?.status ?? "pending",
+      }
+    : null
+
+  const contactDetails = contactProfile
+    ? [
+        { label: "Último acceso", value: contactProfile.lastAccess },
+        { label: "Creado el", value: contactProfile.createdAt },
+        { label: "ID Clerk", value: contactProfile.id },
+        { label: "Teléfono", value: contactProfile.phone },
+      ]
+    : []
+
+  const supabaseDetails = supabaseContact
+    ? [
+        { label: "Estado CRM", value: supabaseContact.status || "Sin estado" },
+        { label: "Fuente", value: supabaseContact.source || "Desconocida" },
+        { label: "Notificaciones", value: supabaseContact.was_notified ? "Enviadas" : "Pendiente" },
+        {
+          label: "Actualizado en Supabase",
+          value: formatDateTime(supabaseContact.updated_at ? new Date(supabaseContact.updated_at) : null),
+        },
+      ]
+    : []
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -205,12 +332,91 @@ export default function DashboardContent() {
                       <Filter className="h-4 w-4" /> Filtros
                     </Button>
                   </div>
-                  <div className="rounded-xl border border-border bg-secondary py-12 text-center">
-                    <Users className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">No hay contactos registrados</p>
-                    <p className="mb-4 text-xs text-muted-foreground">Comienza agregando tu primer contacto</p>
-                    <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Agregar contacto</Button>
-                  </div>
+                  {!isLoaded ? (
+                    <div className="rounded-xl border border-border bg-secondary/70 p-6">
+                      <div className="space-y-4">
+                        <Skeleton className="h-8 w-1/3 bg-muted" />
+                        <Skeleton className="h-4 w-1/2 bg-muted" />
+                        <Skeleton className="h-24 w-full bg-muted" />
+                      </div>
+                    </div>
+                  ) : contactProfile ? (
+                    <div className="space-y-6">
+                      <div className="flex flex-col gap-4 rounded-xl border border-border bg-secondary/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex items-center gap-4">
+                          <Avatar className="h-14 w-14 border border-border">
+                            <AvatarImage src={contactProfile.imageUrl} alt={contactProfile.name} />
+                            <AvatarFallback className="text-sm font-semibold text-foreground">
+                              {getInitials(contactProfile.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                              Contacto autenticado
+                            </p>
+                            <p className="text-lg font-semibold text-foreground">{contactProfile.name}</p>
+                            <p className="text-sm text-muted-foreground">{contactProfile.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent">
+                            Fuente: Clerk
+                          </Badge>
+                          <Badge
+                            variant="outline"
+                            className={
+                              contactProfile.emailStatus === "verified"
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
+                                : "border-amber-500/30 bg-amber-500/10 text-amber-600"
+                            }
+                          >
+                            Email {contactProfile.emailStatus === "verified" ? "verificado" : "pendiente"}
+                          </Badge>
+                          <Badge
+                            variant="outline"
+                            className={
+                              syncState === "success"
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
+                                : syncState === "error"
+                                  ? "border-destructive/30 bg-destructive/10 text-destructive"
+                                  : "border-accent/30 bg-accent/10 text-accent"
+                            }
+                          >
+                            {syncState === "loading" && (
+                              <RefreshCw className="mr-1 h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                            )}
+                            {syncState === "success"
+                              ? "Sincronizado con Supabase"
+                              : syncState === "error"
+                                ? "Error al sincronizar"
+                                : "Sincronizando..."}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {[...contactDetails, ...supabaseDetails].map(({ label, value }) => (
+                          <div key={label} className="rounded-xl border border-border bg-card/70 p-4">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+                            <p className="mt-1 text-sm font-medium text-foreground break-words">{value}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {syncError ? (
+                        <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                          {syncError}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-border bg-secondary py-12 text-center">
+                      <Users className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">
+                        No pudimos recuperar los datos del usuario autenticado
+                      </p>
+                      <p className="mb-4 text-xs text-muted-foreground">Verifica tu sesión de Clerk para continuar</p>
+                      <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Actualizar sesión</Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
