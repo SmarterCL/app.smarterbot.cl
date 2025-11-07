@@ -48,6 +48,15 @@ export const metadata = {
   generator: "v0.dev",
 }
 
+const localization = {
+  ...esES,
+  unstable__errors: {
+    ...esES.unstable__errors,
+    form_identifier_exists__email_address:
+      "El correo electrónico asociado a esta cuenta OAuth ya está vinculado a otro usuario. Inicia sesión con ese perfil o conecta un correo distinto.",
+  },
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -142,7 +151,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider localization={esES}>
+    <ClerkProvider localization={localization}>
       <html {...htmlAttributes}>
         <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
