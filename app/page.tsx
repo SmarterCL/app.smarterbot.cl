@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import Link from "next/link"
-import { ArrowRight, CheckCircle, Database, Shield, Zap } from "lucide-react"
+import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-react"
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
