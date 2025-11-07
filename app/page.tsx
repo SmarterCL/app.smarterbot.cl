@@ -88,68 +88,6 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
   )
 }
 
-function MobileHero() {
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-40">
-        <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
-        <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
-      </div>
-      <div className="space-y-4 text-center sm:space-y-6">
-        <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Tu asistente inteligente para WhatsApp
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Responde clientes, gestiona leads y automatiza procesos sin salir de tu teléfono.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-border/50 bg-background/95 p-4 text-left shadow-xl sm:p-5">
-          <div className="space-y-4 sm:space-y-5">
-            <p className="text-xs text-muted-foreground">
-              Inicia sesión con tu correo corporativo y continúa donde quedaste.
-            </p>
-            <Suspense
-              fallback={
-                <div className="flex justify-center py-4">
-                  <div className="h-7 w-7 animate-spin rounded-full border-2 border-border border-t-transparent" />
-                </div>
-              }
-            >
-              <AuthChecker />
-            </Suspense>
-            <p className="hidden text-center text-xs text-muted-foreground sm:block">
-              ¿Prefieres abrirlo directo?
-              {" "}
-              <Link
-                href="https://app.smarterbot.cl"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-emerald-600 underline-offset-2 hover:underline"
-              >
-                Ir al dashboard
-              </Link>
-            </p>
-            <LoginSupportPanel className="hidden bg-emerald-500/5 sm:flex" />
-          </div>
-        </div>
-        <div className="hidden -mx-2 snap-x gap-3 overflow-x-auto pb-2 sm:flex">
-          {featureCards.map(({ icon: Icon, title, description }) => (
-            <div
-              key={title}
-              className="min-w-[200px] snap-center rounded-2xl border border-border/40 bg-secondary/70 p-4 text-left shadow-sm"
-            >
-              <Icon className="mb-3 h-5 w-5 text-accent" />
-              <p className="text-sm font-semibold text-foreground/90">{title}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function HeroContent() {
   return (
     <div className="space-y-8">
@@ -212,10 +150,7 @@ export default function Home() {
     <div className="relative z-0 min-h-screen bg-background text-foreground">
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:gap-16 lg:py-16">
         <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
-          <div className="lg:hidden">
-            <MobileHero />
-          </div>
-          <div className="hidden lg:block">
+          <div className="space-y-8">
             <HeroContent />
           </div>
 
