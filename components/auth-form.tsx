@@ -74,8 +74,8 @@ export default function AuthForm() {
             </SignUpButton>
           </form>
 
-          <div className="space-y-3 text-xs text-muted-foreground">
-            <p className="text-center">
+          <div className="space-y-3 text-center text-xs text-muted-foreground">
+            <p>
               ¿Ya tienes una cuenta?
               {" "}
               <SignInButton mode="modal">
@@ -84,25 +84,10 @@ export default function AuthForm() {
                 </span>
               </SignInButton>
             </p>
-            <div className="space-y-2 rounded-2xl border border-border/40 bg-secondary/70 p-4 text-left leading-relaxed text-muted-foreground">
-              <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-foreground/80">
-                <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                Protegido por Smarter SPA Chile
-              </p>
-              <p>
-                La instancia “Clerk Development & Staging” validará tu identidad para <strong>SmarterCL</strong> antes de continuar.
-              </p>
-              <ul className="list-disc space-y-1 pl-4 text-muted-foreground">
-                <li>Lectura completa de tu perfil de usuario.</li>
-                <li>Acceso de solo lectura a tus correos corporativos.</li>
-              </ul>
-              <p className="text-[10px] text-foreground/70">
-                Al autorizar serás redirigido a
-                {" "}
-                <span className="font-mono">https://clerk.shared.lcl.dev</span>
-                .
-              </p>
-            </div>
+            <p className="flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+              <ShieldCheck className="h-4 w-4 text-emerald-500" />
+              Autenticado por Clerk
+            </p>
           </div>
         </div>
       </div>
