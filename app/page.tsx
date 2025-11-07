@@ -4,7 +4,6 @@ import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-reac
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 export const dynamic = "force-dynamic"
@@ -14,12 +13,6 @@ const featureCards = [
   { icon: Shield, title: "Seguridad", description: "Datos protegidos" },
   { icon: Database, title: "Base de datos", description: "CRUD completo" },
   { icon: CheckCircle, title: "Tiempo real", description: "Sincronización" },
-]
-
-const statCards = [
-  { value: "500+", label: "Empresas" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "24/7", label: "Soporte" },
 ]
 
 function HeaderBadge({ label }: { label: string }) {
@@ -51,22 +44,6 @@ function FeatureGrid() {
   )
 }
 
-function StatGrid() {
-  return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-      {statCards.map((stat) => (
-        <div
-          key={stat.label}
-          className="rounded-2xl border border-border/60 bg-gradient-to-br from-secondary via-background to-secondary p-4 text-center shadow-sm"
-        >
-          <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
-          <p className="text-xs text-muted-foreground">{stat.label}</p>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 function LoginSupportPanel({ className = "", linkClassName = "" }: { className?: string; linkClassName?: string }) {
   return (
     <div
@@ -88,26 +65,20 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
   )
 }
 
-function LoginCard({ className = "" }: { className?: string }) {
+function LoginSection({ className = "" }: { className?: string }) {
   return (
-    <Card className={`border border-border bg-card/80 shadow-xl backdrop-blur-sm ${className}`}>
-      <CardContent className="space-y-8 p-6 sm:p-8">
-        <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
-          <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex justify-center py-6">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
-            </div>
-          }
-        >
-          <AuthChecker />
-        </Suspense>
-        <LoginSupportPanel />
-      </CardContent>
-    </Card>
+    <div className={`space-y-4 ${className}`}>
+      <Suspense
+        fallback={
+          <div className="flex justify-center py-6">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
+          </div>
+        }
+      >
+        <AuthChecker />
+      </Suspense>
+      <LoginSupportPanel />
+    </div>
   )
 }
 
@@ -175,15 +146,11 @@ export default function Home() {
         <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
           <div className="space-y-8">
             <HeroContent />
-            <LoginCard className="lg:hidden" />
-            <div className="lg:hidden">
-              <StatGrid />
-            </div>
+            <LoginSection className="lg:hidden" />
           </div>
 
-          <div className="hidden space-y-8 lg:block lg:pl-8">
-            <LoginCard />
-            <StatGrid />
+          <div className="hidden lg:block lg:pl-8">
+            <LoginSection />
           </div>
         </section>
 

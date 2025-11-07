@@ -1,9 +1,7 @@
 "use client"
 
-import { useRef } from "react"
-
 import { SignInButton, SignUpButton } from "@clerk/nextjs"
-import { Chrome, ArrowRight, ShieldCheck, Building2, Mail } from "lucide-react"
+import { Chrome, ArrowRight, ShieldCheck, Facebook, Github } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,13 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
 export default function AuthForm() {
-  const emailInputRef = useRef<HTMLInputElement>(null)
-
-  const focusEmailField = () => {
-    emailInputRef.current?.focus()
-    emailInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
-  }
-
   return (
     <div className="space-y-5">
       <div className="space-y-5 rounded-3xl border border-border/70 bg-background/90 p-5 shadow-lg backdrop-blur sm:p-6">
@@ -45,7 +36,7 @@ export default function AuthForm() {
                 className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
               >
                 <Chrome className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
-                Continuar con Google
+                Google
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </Button>
             </SignInButton>
@@ -54,24 +45,25 @@ export default function AuthForm() {
               <Button
                 variant="outline"
                 type="button"
-                className="group hidden h-12 w-full items-center justify-center gap-3 border border-border bg-secondary/80 text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex sm:flex-1"
+                className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
               >
-                <Building2 className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
-                Continuar con Microsoft
+                <Facebook className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
+                Facebook
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </Button>
             </SignInButton>
 
-            <Button
-              variant="outline"
-              type="button"
-              onClick={focusEmailField}
-              className="group hidden h-12 w-full items-center justify-center gap-3 border border-border bg-secondary/60 text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex sm:flex-1"
-            >
-              <Mail className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
-              Correo corporativo
-              <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
-            </Button>
+            <SignInButton mode="modal">
+              <Button
+                variant="outline"
+                type="button"
+                className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
+              >
+                <Github className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
+                GitHub
+                <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+              </Button>
+            </SignInButton>
           </div>
 
           <div className="relative">
@@ -88,13 +80,7 @@ export default function AuthForm() {
           <form className="space-y-4">
             <div className="space-y-2 text-left">
               <Label htmlFor="login-email">Correo electrónico</Label>
-              <Input
-                ref={emailInputRef}
-                id="login-email"
-                type="email"
-                placeholder="nombre@empresa.com"
-                autoComplete="email"
-              />
+              <Input id="login-email" type="email" placeholder="nombre@empresa.com" autoComplete="email" />
             </div>
             <div className="space-y-2 text-left">
               <Label htmlFor="login-password">Contraseña</Label>
