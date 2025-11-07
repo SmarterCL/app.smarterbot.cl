@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 import {
   Activity,
@@ -33,6 +34,15 @@ const overviewStats = [
   { title: "Contactos activos", value: "1,234", delta: "+5%", icon: Users },
   { title: "Automatizaciones", value: "12", delta: "3 activas", icon: Zap },
   { title: "Tasa de respuesta", value: "89.2%", delta: "+2.1%", icon: BarChart3 },
+]
+
+const tabItems = [
+  { value: "overview", label: "Overview", icon: BarChart3 },
+  { value: "contacts", label: "Contactos", icon: Users },
+  { value: "automation", label: "Automatización", icon: Zap },
+  { value: "qr", label: "QR Codes", icon: QrCode },
+  { value: "api", label: "API Keys", icon: Key },
+  { value: "settings", label: "Configuración", icon: Settings },
 ]
 
 export default function DashboardContent() {
@@ -86,19 +96,29 @@ export default function DashboardContent() {
 
         <section className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 gap-2 rounded-xl border border-border bg-secondary p-1">
-              {[
-                { value: "overview", label: "Overview", icon: BarChart3 },
-                { value: "contacts", label: "Contactos", icon: Users },
-                { value: "automation", label: "Automatización", icon: Zap },
-                { value: "qr", label: "QR Codes", icon: QrCode },
-                { value: "api", label: "API Keys", icon: Key },
-                { value: "settings", label: "Configuración", icon: Settings },
-              ].map(({ value, label, icon: Icon }) => (
+            <div className="sm:hidden">
+              <Select value={activeTab} onValueChange={setActiveTab}>
+                <SelectTrigger className="w-full rounded-xl border border-border bg-secondary text-left">
+                  <SelectValue placeholder="Selecciona una sección" />
+                </SelectTrigger>
+                <SelectContent align="start" className="min-w-[220px]">
+                  {tabItems.map(({ value, label, icon: Icon }) => (
+                    <SelectItem key={value} value={value}>
+                      <span className="flex items-center gap-2">
+                        <Icon className="h-4 w-4 text-muted-foreground" />
+                        {label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
+              {tabItems.map(({ value, label, icon: Icon }) => (
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-transparent text-sm text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-transparent text-sm text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
                 >
                   <Icon className="h-4 w-4" />
                   {label}
