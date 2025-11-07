@@ -18,7 +18,7 @@ export default function AuthChecker() {
   if (!isLoaded) {
     return (
       <div className="flex justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-200 border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
       </div>
     )
   }
@@ -26,7 +26,7 @@ export default function AuthChecker() {
   if (user) {
     return (
       <div className="text-center py-8">
-        <p className="text-emerald-700">Redirigiendo al dashboard...</p>
+        <p className="text-white">Redirigiendo al dashboard...</p>
       </div>
     )
   }

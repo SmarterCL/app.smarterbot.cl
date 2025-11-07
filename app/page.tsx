@@ -17,6 +17,12 @@ const featureCards = [
   { icon: CheckCircle, title: "Tiempo real", description: "Sincronización" },
 ]
 
+const statCards = [
+  { value: "500+", label: "Empresas" },
+  { value: "99.9%", label: "Uptime" },
+  { value: "24/7", label: "Soporte" },
+]
+
 function HeaderBadge({ label }: { label: string }) {
   return (
     <Badge className="flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
@@ -38,14 +44,13 @@ function Header() {
               <p className="text-sm font-semibold text-foreground">SmarterOS Hub</p>
             </div>
           </div>
-          <div className="flex flex-col gap-3 text-left sm:flex-row sm:items-center sm:gap-4">
-            <div className="flex flex-col rounded-2xl border border-accent/30 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-4 py-3 text-white shadow-sm">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">¿Necesitas ayuda con tu login?</span>
-              <span className="text-xs font-medium text-white/80">Nuestro equipo te guía paso a paso desde WhatsApp</span>
-            </div>
-            <Button asChild className="px-6 text-sm font-semibold">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Button
+              asChild
+              className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:from-emerald-500 hover:via-emerald-600 hover:to-emerald-700 hover:shadow lg:px-6 lg:text-sm"
+            >
               <Link href="https://wa.me/56979540471" target="_blank" rel="noopener noreferrer">
-                Abrir chat
+                CHAT
               </Link>
             </Button>
           </div>
@@ -81,77 +86,124 @@ function FeatureGrid() {
   )
 }
 
+function StatGrid() {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {statCards.map((stat) => (
+        <div
+          key={stat.label}
+          className="rounded-2xl border border-border/60 bg-gradient-to-br from-secondary via-background to-secondary p-4 text-center shadow-sm"
+        >
+          <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+          <p className="text-xs text-muted-foreground">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function LoginSupportPanel({ className = "", linkClassName = "" }: { className?: string; linkClassName?: string }) {
+  return (
+    <div
+      className={`rounded-2xl border border-dashed border-emerald-400/40 bg-emerald-500/10 p-4 text-left sm:flex sm:items-center sm:justify-between sm:gap-6 ${className}`}
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-semibold text-foreground">¿Necesitas ayuda con tu login?</p>
+        <p className="text-xs text-muted-foreground">Nuestro equipo te guía paso a paso desde WhatsApp.</p>
+      </div>
+      <Link
+        href="https://wa.me/56979540471?text=Hola%20SmarterOS%2C%20necesito%20ayuda%20con%20mi%20inicio%20de%20sesión."
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`mt-3 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-emerald-600 sm:mt-0 sm:w-auto ${linkClassName}`}
+      >
+        Abrir chat
+      </Link>
+    </div>
+  )
+}
+
 function MobileHero() {
   return (
-    <section className="relative flex min-h-[calc(100vh-5rem)] flex-col justify-center overflow-hidden rounded-[42px] border border-emerald-100/70 bg-gradient-to-b from-white via-emerald-50 to-white p-6 shadow-[0_60px_160px_-80px_rgba(16,185,129,0.75)] sm:p-8">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
-        <div className="absolute -left-14 top-6 h-48 w-48 rounded-full bg-emerald-200 blur-[120px]" />
-        <div className="absolute right-0 bottom-4 h-40 w-40 rounded-full bg-emerald-100 blur-[110px]" />
+    <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8">
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-40">
+        <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
+        <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
       </div>
-      <div className="space-y-4 text-center">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.45em] text-emerald-500">Smarter Login</p>
-        <h1 className="text-3xl font-semibold tracking-tight text-emerald-950 sm:text-4xl">
-          Tu asistente inteligente para WhatsApp
-        </h1>
-        <p className="text-sm text-emerald-800/80">
-          Responde clientes, gestiona leads y automatiza procesos desde un panel delicado, sin scroll innecesario.
-        </p>
-      </div>
-      <div className="mt-4 flex flex-col gap-3">
-        <Link
-          href="https://wa.me/56979540471"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-emerald-100 bg-white/90 text-sm font-semibold text-emerald-700 shadow-inner shadow-white/60 transition hover:border-emerald-200"
-        >
-          Hablar por WhatsApp
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      <div className="mt-6 rounded-[36px] border border-emerald-100 bg-white/95 p-4 shadow-[0_40px_120px_-70px_rgba(16,185,129,0.85)]">
-        <div className="space-y-1 text-left">
-          <h2 className="text-xl font-semibold text-emerald-900">Accede a tu cuenta</h2>
-          <p className="text-xs text-emerald-700/70">
-            Inicia sesión con tu correo corporativo y continúa donde quedaste.
+      <div className="space-y-5 text-center sm:space-y-6">
+        <div className="space-y-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Tu asistente inteligente para WhatsApp
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Responde clientes, gestiona leads y automatiza procesos sin salir de tu teléfono.
           </p>
         </div>
-        <div className="mt-4">
-          <Suspense
-            fallback={
-              <div className="flex justify-center py-6">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-200 border-t-transparent" />
-              </div>
-            }
-          >
-            <AuthChecker />
-          </Suspense>
-        </div>
-        <p className="pt-4 text-center text-xs text-emerald-600">
-          ¿Prefieres abrirlo directo?
-          {" "}
+        <div className="flex flex-col gap-3">
           <Link
-            href="https://app.smarterbot.cl"
+            href="https://wa.me/56979540471"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-md transition hover:shadow-lg"
           >
-            Ir al dashboard
+            Hablar por WhatsApp
+            <ArrowRight className="h-4 w-4" />
           </Link>
-        </p>
+        </div>
+        <Card className="border border-border/50 bg-background/95 shadow-xl">
+          <CardContent className="space-y-6 p-5">
+            <div className="space-y-1 text-left">
+              <h2 className="text-xl font-semibold text-foreground">Accede a tu cuenta</h2>
+              <p className="text-xs text-muted-foreground">
+                Inicia sesión con tu correo corporativo y continúa donde quedaste.
+              </p>
+            </div>
+            <Suspense
+              fallback={
+                <div className="flex justify-center py-4">
+                  <div className="h-7 w-7 animate-spin rounded-full border-2 border-border border-t-transparent" />
+                </div>
+              }
+            >
+              <AuthChecker />
+            </Suspense>
+            <p className="text-center text-xs text-muted-foreground">
+              ¿Prefieres abrirlo directo?
+              {" "}
+              <Link
+                href="https://app.smarterbot.cl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-emerald-600 underline-offset-2 hover:underline"
+              >
+                Ir al dashboard
+              </Link>
+            </p>
+            <LoginSupportPanel className="bg-emerald-500/5" />
+          </CardContent>
+        </Card>
+        <div className="-mx-2 flex snap-x gap-3 overflow-x-auto pb-2">
+          {featureCards.map(({ icon: Icon, title, description }) => (
+            <div
+              key={title}
+              className="min-w-[200px] snap-center rounded-2xl border border-border/40 bg-secondary/70 p-4 text-left shadow-sm"
+            >
+              <Icon className="mb-3 h-5 w-5 text-accent" />
+              <p className="text-sm font-semibold text-foreground/90">{title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {statCards.map((stat) => (
+            <div key={stat.label} className="rounded-2xl border border-border/50 bg-background/80 p-3 shadow-sm">
+              <p className="text-lg font-semibold text-foreground">{stat.value}</p>
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-3 text-left">
-        {featureCards.slice(0, 2).map(({ icon: Icon, title, description }) => (
-          <div
-            key={title}
-            className="rounded-3xl border border-emerald-100/70 bg-white/80 px-4 py-3 text-emerald-900 shadow-inner shadow-emerald-100"
-          >
-            <Icon className="mb-2 h-5 w-5 text-emerald-500" />
-            <p className="text-sm font-semibold">{title}</p>
-            <p className="text-xs text-emerald-700/80">{description}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    </div>
   )
 }
 
@@ -226,9 +278,13 @@ export default function Home() {
             <HeroContent />
           </div>
 
-          <div className="hidden lg:block lg:pl-8">
+          <div className="hidden space-y-8 lg:block lg:pl-8">
             <Card className="border border-border bg-card/80 backdrop-blur-sm shadow-xl">
-              <CardContent className="p-5 sm:p-8">
+              <CardContent className="space-y-8 p-6 sm:p-8">
+                <div className="space-y-2 text-center">
+                  <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
+                  <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
+                </div>
                 <Suspense
                   fallback={
                     <div className="flex justify-center py-6">
@@ -238,8 +294,12 @@ export default function Home() {
                 >
                   <AuthChecker />
                 </Suspense>
+                <LoginSupportPanel />
               </CardContent>
             </Card>
+            <div className="hidden lg:block">
+              <StatGrid />
+            </div>
           </div>
         </section>
 

@@ -6,103 +6,91 @@ import { Chrome, ArrowRight, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
 
 export default function AuthForm() {
   return (
-    <section className="relative overflow-hidden rounded-[32px] border border-emerald-100 bg-white/95 p-6 shadow-[0_40px_120px_-60px_rgba(16,185,129,0.8)] backdrop-blur">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-80">
-        <div className="absolute -top-10 left-6 h-36 w-36 rounded-full bg-emerald-200 blur-[80px]" />
-        <div className="absolute bottom-0 right-0 h-28 w-28 rounded-full bg-emerald-100 blur-[70px]" />
-      </div>
-
-      <div className="relative space-y-6 text-left">
-        <div className="space-y-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-emerald-500">Acceso seguro</p>
-          <h2 className="text-3xl font-semibold leading-snug text-emerald-900">Automatiza tu WhatsApp con estilo.</h2>
-          <p className="text-sm text-emerald-800/80">
-            Conecta tu cuenta y mantén tus flujos vivos con una experiencia delicada, sin ruido y sin scroll innecesario.
-          </p>
+    <div className="space-y-6">
+      <div className="space-y-6 rounded-3xl border border-border/70 bg-background/90 p-6 shadow-lg backdrop-blur">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-2 text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Crea tu cuenta</p>
+            <h2 className="flex flex-wrap items-center gap-2 text-2xl font-semibold text-foreground">
+              <span>¡Bienvenido/a, estamos listos!</span>
+              <span aria-hidden="true" className="text-2xl leading-none">
+                👋
+              </span>
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              ¡Completa los siguientes datos para comenzar a automatizar tu negocio con SmarterOS!
+            </p>
+          </div>
         </div>
 
-        <SignInButton mode="modal">
-          <Button
-            type="button"
-            className="group flex h-12 w-full items-center gap-3 rounded-[20px] border border-emerald-100 bg-emerald-500/10 text-emerald-900 shadow-none transition-colors hover:bg-emerald-500/20"
-          >
-            <Chrome className="h-5 w-5 text-emerald-500 transition-transform group-hover:scale-110" />
-            <span className="flex-1 text-center text-sm font-semibold tracking-wide">Continuar con Google</span>
-            <ArrowRight className="h-4 w-4 text-emerald-500 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </SignInButton>
-
-        <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-400">
-          <span className="h-px flex-1 bg-emerald-100" />
-          <span>o con correo</span>
-          <span className="h-px flex-1 bg-emerald-100" />
-        </div>
-
-        <form className="space-y-4">
-          <div className="space-y-2 text-left">
-            <Label htmlFor="login-email" className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">
-              Correo electrónico
-            </Label>
-            <Input
-              id="login-email"
-              type="email"
-              placeholder="nombre@empresa.com"
-              autoComplete="email"
-              className="h-12 rounded-2xl border border-emerald-100 bg-white/80 px-4 text-sm text-emerald-900 placeholder:text-emerald-300 focus-visible:ring-emerald-200"
-            />
-          </div>
-          <div className="space-y-2 text-left">
-            <Label htmlFor="login-password" className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">
-              Contraseña
-            </Label>
-            <Input
-              id="login-password"
-              type="password"
-              autoComplete="current-password"
-              className="h-12 rounded-2xl border border-emerald-100 bg-white/80 px-4 text-sm tracking-[0.35em] text-emerald-900 placeholder:text-emerald-300 focus-visible:ring-emerald-200"
-            />
-            <p className="text-xs font-medium text-emerald-600">Nunca compartimos estos datos con terceros.</p>
-          </div>
-          <SignUpButton mode="modal">
+        <div className="space-y-5">
+          <SignInButton mode="modal">
             <Button
+              variant="outline"
               type="button"
-              className="group flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 text-white shadow-[0_20px_50px_-24px_rgba(16,185,129,1)] transition-transform hover:-translate-y-0.5"
+              className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground"
             >
-              Crear cuenta
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Chrome className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
+              Continuar con Google
+              <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
             </Button>
-          </SignUpButton>
-        </form>
+          </SignInButton>
 
-        <div className="space-y-3 rounded-2xl border border-emerald-50 bg-emerald-50/80 p-4 text-center text-xs text-emerald-700">
-          <p>
-            ¿Ya tienes una cuenta?
-            {" "}
-            <SignInButton mode="modal">
-              <span className="cursor-pointer font-semibold underline-offset-2 hover:underline">Iniciar sesión</span>
-            </SignInButton>
-          </p>
-          <div className="space-y-2 rounded-xl border border-emerald-100/70 bg-white/80 p-3 text-left text-[11px] leading-relaxed text-emerald-700">
-            <p className="flex items-center gap-2 font-semibold uppercase tracking-[0.3em] text-emerald-500">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <Separator className="w-full bg-border" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                o
+              </span>
+            </div>
+          </div>
+
+          <form className="space-y-4">
+            <div className="space-y-2 text-left">
+              <Label htmlFor="login-email">Correo electrónico</Label>
+              <Input id="login-email" type="email" placeholder="nombre@empresa.com" autoComplete="email" />
+            </div>
+            <div className="space-y-2 text-left">
+              <Label htmlFor="login-password">Contraseña</Label>
+              <Input id="login-password" type="password" autoComplete="current-password" className="tracking-[0.35em]" />
+              <p className="text-xs font-medium text-emerald-500">
+                Tu contraseña cumple con todos los requisitos necesarios.
+              </p>
+            </div>
+            <SignUpButton mode="modal">
+              <Button
+                type="button"
+                className="group flex h-12 w-full items-center justify-center gap-2 bg-accent text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-accent/90"
+              >
+                Crear cuenta
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </SignUpButton>
+          </form>
+
+          <div className="space-y-3 text-center text-xs text-muted-foreground">
+            <p>
+              ¿Ya tienes una cuenta?
+              {" "}
+              <SignInButton mode="modal">
+                <span className="cursor-pointer font-semibold text-foreground underline-offset-2 hover:underline">
+                  Iniciar sesión
+                </span>
+              </SignInButton>
+            </p>
+            <p className="flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
               <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              Protegido por Smarter SPA Chile
-            </p>
-            <p className="text-emerald-800">
-              Las instancias “Clerk Development & Staging” autorizadas para <strong>SmarterCL</strong> necesitan validar tu identidad.
-            </p>
-            <ul className="list-disc space-y-1 pl-4 text-emerald-700/80">
-              <li>Lectura de todo tu perfil de usuario.</li>
-              <li>Acceso de solo lectura a tus correos corporativos.</li>
-            </ul>
-            <p className="text-[10px] text-emerald-600">
-              Al autorizar serás redirigido a <span className="font-mono text-[10px]">https://clerk.shared.lcl.dev</span>.
+              Protegido por Development mode
             </p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

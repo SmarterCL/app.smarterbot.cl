@@ -1,5 +1,5 @@
 import type React from "react"
-import { ClerkProvider, type ClerkProviderProps } from "@clerk/nextjs"
+import { ClerkProvider } from "@clerk/nextjs"
 import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Onest } from "next/font/google"
@@ -54,31 +54,6 @@ const localization = {
     ...esES.unstable__errors,
     form_identifier_exists__email_address:
       "El correo electrónico asociado a esta cuenta OAuth ya está vinculado a otro usuario. Inicia sesión con ese perfil o conecta un correo distinto.",
-  },
-}
-
-const clerkAppearance: ClerkProviderProps["appearance"] = {
-  layout: {
-    logoImageUrl: "/branding/logo-smarteros.svg",
-    logoPlacement: "outside",
-    socialButtonsPlacement: "bottom",
-    faviconImageUrl: "/branding/favicon-smarteros.svg",
-  },
-  variables: {
-    colorPrimary: "#10B981",
-    colorBackground: "#05040F",
-    colorInputBackground: "#0F172A",
-    colorText: "#F8FAFC",
-    borderRadius: "1rem",
-    fontFamily: "var(--font-sans)",
-  },
-  elements: {
-    card: "shadow-2xl border border-border/50 bg-background/95 backdrop-blur-xl",
-    headerSubtitle: "text-sm text-muted-foreground",
-    headerTitle: "text-2xl font-semibold text-foreground",
-    socialButtonsBlockButton:
-      "border border-border/60 bg-transparent text-foreground hover:bg-emerald-500/10 hover:text-foreground",
-    footerActionLink: "text-accent hover:text-accent/80",
   },
 }
 
@@ -176,7 +151,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider localization={localization} appearance={clerkAppearance}>
+    <ClerkProvider localization={localization}>
       <html {...htmlAttributes}>
         <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
