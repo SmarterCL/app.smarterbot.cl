@@ -88,6 +88,29 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
   )
 }
 
+function LoginCard({ className = "" }: { className?: string }) {
+  return (
+    <Card className={`border border-border bg-card/80 shadow-xl backdrop-blur-sm ${className}`}>
+      <CardContent className="space-y-8 p-6 sm:p-8">
+        <div className="space-y-2 text-center">
+          <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
+          <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
+        </div>
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-6">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
+            </div>
+          }
+        >
+          <AuthChecker />
+        </Suspense>
+        <LoginSupportPanel />
+      </CardContent>
+    </Card>
+  )
+}
+
 function HeroContent() {
   return (
     <div className="space-y-8">
@@ -152,30 +175,15 @@ export default function Home() {
         <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
           <div className="space-y-8">
             <HeroContent />
+            <LoginCard className="lg:hidden" />
+            <div className="lg:hidden">
+              <StatGrid />
+            </div>
           </div>
 
           <div className="hidden space-y-8 lg:block lg:pl-8">
-            <Card className="border border-border bg-card/80 backdrop-blur-sm shadow-xl">
-              <CardContent className="space-y-8 p-6 sm:p-8">
-                <div className="space-y-2 text-center">
-                  <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
-                  <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
-                </div>
-                <Suspense
-                  fallback={
-                    <div className="flex justify-center py-6">
-                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
-                    </div>
-                  }
-                >
-                  <AuthChecker />
-                </Suspense>
-                <LoginSupportPanel />
-              </CardContent>
-            </Card>
-            <div className="hidden lg:block">
-              <StatGrid />
-            </div>
+            <LoginCard />
+            <StatGrid />
           </div>
         </section>
 
