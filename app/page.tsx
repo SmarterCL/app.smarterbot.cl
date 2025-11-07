@@ -95,7 +95,7 @@ function MobileHero() {
         <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
         <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
       </div>
-      <div className="space-y-5 text-center sm:space-y-6">
+      <div className="space-y-4 text-center sm:space-y-6">
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Tu asistente inteligente para WhatsApp
@@ -104,25 +104,11 @@ function MobileHero() {
             Responde clientes, gestiona leads y automatiza procesos sin salir de tu teléfono.
           </p>
         </div>
-        <div className="flex flex-col gap-3">
-          <Link
-            href="https://wa.me/56979540471"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-md transition hover:shadow-lg"
-          >
-            Hablar por WhatsApp
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-        <Card className="border border-border/50 bg-background/95 shadow-xl">
-          <CardContent className="space-y-6 p-5">
-            <div className="space-y-1 text-left">
-              <h2 className="text-xl font-semibold text-foreground">Accede a tu cuenta</h2>
-              <p className="text-xs text-muted-foreground">
-                Inicia sesión con tu correo corporativo y continúa donde quedaste.
-              </p>
-            </div>
+        <div className="rounded-2xl border border-border/50 bg-background/95 p-4 text-left shadow-xl sm:p-5">
+          <div className="space-y-4 sm:space-y-5">
+            <p className="text-xs text-muted-foreground">
+              Inicia sesión con tu correo corporativo y continúa donde quedaste.
+            </p>
             <Suspense
               fallback={
                 <div className="flex justify-center py-4">
@@ -132,7 +118,7 @@ function MobileHero() {
             >
               <AuthChecker />
             </Suspense>
-            <p className="text-center text-xs text-muted-foreground">
+            <p className="hidden text-center text-xs text-muted-foreground sm:block">
               ¿Prefieres abrirlo directo?
               {" "}
               <Link
@@ -144,10 +130,10 @@ function MobileHero() {
                 Ir al dashboard
               </Link>
             </p>
-            <LoginSupportPanel className="bg-emerald-500/5" />
-          </CardContent>
-        </Card>
-        <div className="-mx-2 flex snap-x gap-3 overflow-x-auto pb-2">
+            <LoginSupportPanel className="hidden bg-emerald-500/5 sm:flex" />
+          </div>
+        </div>
+        <div className="hidden -mx-2 snap-x gap-3 overflow-x-auto pb-2 sm:flex">
           {featureCards.map(({ icon: Icon, title, description }) => (
             <div
               key={title}
@@ -159,7 +145,7 @@ function MobileHero() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="hidden grid-cols-3 gap-2 sm:grid">
           {statCards.map((stat) => (
             <div key={stat.label} className="rounded-2xl border border-border/50 bg-background/80 p-3 shadow-sm">
               <p className="text-lg font-semibold text-foreground">{stat.value}</p>
