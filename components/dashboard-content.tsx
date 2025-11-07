@@ -86,7 +86,7 @@ export default function DashboardContent() {
 
         <section className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 gap-2 rounded-xl border border-border bg-secondary p-1">
+            <TabsList className="grid w-full grid-cols-2 gap-2 rounded-2xl border border-emerald-100 bg-white/80 p-1 shadow-inner shadow-emerald-100 sm:grid-cols-3 lg:grid-cols-6">
               {[
                 { value: "overview", label: "Overview", icon: BarChart3 },
                 { value: "contacts", label: "Contactos", icon: Users },
@@ -98,7 +98,7 @@ export default function DashboardContent() {
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-transparent text-sm text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+                  className="flex min-h-[46px] items-center justify-center gap-2 rounded-xl border border-transparent px-3 text-xs font-semibold text-emerald-700/70 transition whitespace-nowrap data-[state=active]:border-emerald-200 data-[state=active]:bg-white data-[state=active]:text-emerald-900 sm:text-sm"
                 >
                   <Icon className="h-4 w-4" />
                   {label}
