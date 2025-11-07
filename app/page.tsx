@@ -88,11 +88,9 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
   )
 }
 
-function MobileHero({ className = "" }: { className?: string }) {
+function MobileHero() {
   return (
-    <div
-      className={`relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8 ${className}`}
-    >
+    <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 shadow-lg sm:p-8">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-40">
         <div className="absolute -left-24 top-6 h-32 w-32 rounded-full bg-emerald-400 blur-3xl" />
         <div className="absolute -right-20 bottom-8 h-40 w-40 rounded-full bg-primary/60 blur-3xl" />
@@ -235,24 +233,35 @@ export default function Home() {
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground">
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:gap-16 lg:py-16">
-        <section className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start lg:gap-12">
-          <div className="order-2 space-y-10 lg:order-1">
+        <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
+          <div className="lg:hidden">
+            <MobileHero />
+          </div>
+          <div className="hidden lg:block">
             <HeroContent />
-            <div className="hidden lg:block">
-              <StatGrid />
-            </div>
           </div>
 
-          <div className="order-1 flex justify-center lg:order-2">
-            <div className="w-full max-w-lg lg:sticky lg:top-14">
-              <div className="rounded-[36px] border border-border/70 bg-gradient-to-br from-background via-secondary/60 to-background p-3 shadow-2xl shadow-primary/10">
-                <div className="rounded-[28px] border border-border/60 bg-background p-2 shadow-inner shadow-black/40">
-                  <MobileHero className="border-none shadow-none" />
+          <div className="hidden space-y-8 lg:block lg:pl-8">
+            <Card className="border border-border bg-card/80 backdrop-blur-sm shadow-xl">
+              <CardContent className="space-y-8 p-6 sm:p-8">
+                <div className="space-y-2 text-center">
+                  <h2 className="text-2xl font-semibold text-foreground">Accede a tu dashboard</h2>
+                  <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta SmarterOS.</p>
                 </div>
-              </div>
-              <p className="mt-6 text-center text-sm text-muted-foreground">
-                Versión móvil incrustada para mantener el login siempre visible, sin ventanas emergentes.
-              </p>
+                <Suspense
+                  fallback={
+                    <div className="flex justify-center py-6">
+                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <AuthChecker />
+                </Suspense>
+                <LoginSupportPanel />
+              </CardContent>
+            </Card>
+            <div className="hidden lg:block">
+              <StatGrid />
             </div>
           </div>
         </section>
