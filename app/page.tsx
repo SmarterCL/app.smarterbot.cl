@@ -77,7 +77,9 @@ function LoginSection({ className = "" }: { className?: string }) {
       >
         <AuthChecker />
       </Suspense>
-      <LoginSupportPanel />
+      <div className="hidden sm:block">
+        <LoginSupportPanel />
+      </div>
     </div>
   )
 }
@@ -89,15 +91,17 @@ function HeroContent() {
         <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
           Automatiza tu negocio con WhatsApp + IA
         </h1>
-        <p className="max-w-xl text-lg text-muted-foreground">
+        <p className="hidden max-w-xl text-lg text-muted-foreground sm:block">
           Gestiona contactos, API keys y comunicaciones desde un hub centralizado alimentado por la infraestructura de
           SmarterOS.
         </p>
       </div>
 
-      <FeatureGrid />
+      <div className="hidden sm:block">
+        <FeatureGrid />
+      </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div className="hidden gap-4 sm:flex sm:flex-row sm:items-center">
         <Link
           href="https://app.smarterbot.cl"
           target="_blank"
