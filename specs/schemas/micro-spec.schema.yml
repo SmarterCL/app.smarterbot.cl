@@ -1,0 +1,86 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: SmarterOS Micro Spec
+type: object
+required:
+  - name
+  - repository
+  - role
+  - description
+  - depends_on
+  - public_endpoints
+  - agent_permissions
+  - release
+properties:
+  name:
+    type: string
+  repository:
+    type: string
+    format: uri
+  role:
+    type: string
+  description:
+    type: string
+  depends_on:
+    type: array
+    items:
+      type: object
+      required: [service, reason]
+      properties:
+        service:
+          type: string
+        reason:
+          type: string
+  public_endpoints:
+    type: array
+    items:
+      type: object
+      required: [url, purpose]
+      properties:
+        url:
+          type: string
+          format: uri
+        purpose:
+          type: string
+  private_services:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+        schedule:
+          type: string
+        notes:
+          type: string
+  auth:
+    type: object
+  data_contracts:
+    type: array
+  agent_permissions:
+    type: object
+    required: [can_edit, cannot_edit]
+    properties:
+      can_edit:
+        type: array
+        items:
+          type: string
+      cannot_edit:
+        type: array
+        items:
+          type: string
+  release:
+    type: object
+    required: [method, checklist]
+    properties:
+      method:
+        type: string
+      env:
+        type: string
+      checklist:
+        type: array
+        items:
+          type: string
