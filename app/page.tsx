@@ -92,7 +92,7 @@ function HeroIllustration({ className = "" }: { className?: string }) {
 
 function SiteHeader() {
   return (
-    <header className="hidden border-b border-border/60 bg-background/80 backdrop-blur lg:block">
+    <header className="hidden bg-background/90 shadow-sm backdrop-blur lg:block">
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-0">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
@@ -121,8 +121,8 @@ function SiteHeader() {
 
 function SiteFooter() {
   return (
-    <footer className="hidden border-t border-border/60 px-4 py-8 sm:px-6 lg:block lg:px-0">
-      <div className="mx-auto flex max-w-6xl items-center justify-between text-sm text-muted-foreground">
+    <footer className="hidden bg-background/95 px-4 py-8 text-sm text-muted-foreground shadow-inner sm:px-6 lg:block lg:px-0">
+      <div className="mx-auto flex max-w-6xl items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
             <Bot className="h-4 w-4 text-primary" />
@@ -173,11 +173,13 @@ export default function Home() {
     <div className="relative z-0 min-h-screen bg-background text-foreground lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
       <SiteHeader />
       <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0 lg:overflow-hidden">
-        <section className="hidden h-full lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
-          <HeroIllustration className="h-full" />
-          <div className="space-y-10 lg:pl-10">
-            <HeroContent />
-            <LoginSection />
+        <section className="hidden h-full lg:grid lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:items-stretch lg:gap-14">
+          <HeroIllustration className="h-full min-h-[32rem]" />
+          <div className="flex h-full flex-col justify-center gap-10 lg:pr-10">
+            <div className="w-full max-w-lg space-y-10">
+              <HeroContent />
+              <LoginSection />
+            </div>
           </div>
         </section>
         <section className="lg:hidden">
