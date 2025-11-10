@@ -4,7 +4,6 @@ import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Onest } from "next/font/google"
 
-import BackgroundFX from "@/components/background-fx"
 import "./globals.css"
 
 const onest = Onest({
@@ -145,7 +144,6 @@ export default function RootLayout({
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
-          <BackgroundFX />
           {children}
         </body>
       </html>
@@ -163,7 +161,6 @@ export default function RootLayout({
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
-          <BackgroundFX />
           {children}
         </body>
       </html>
