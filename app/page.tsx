@@ -92,8 +92,8 @@ function HeroIllustration({ className = "" }: { className?: string }) {
 
 function SiteHeader() {
   return (
-    <header className="border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-0">
+    <header className="hidden border-b border-border/60 bg-background/80 backdrop-blur lg:block">
+      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-0">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
             <Bot className="h-5 w-5 text-primary" />
@@ -121,8 +121,8 @@ function SiteHeader() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-border/60 px-4 py-8 sm:px-6 lg:px-0">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
+    <footer className="hidden border-t border-border/60 px-4 py-8 sm:px-6 lg:block lg:px-0">
+      <div className="mx-auto flex max-w-6xl items-center justify-between text-sm text-muted-foreground">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
             <Bot className="h-4 w-4 text-primary" />
