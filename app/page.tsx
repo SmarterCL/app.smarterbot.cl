@@ -60,7 +60,7 @@ function HeroContent() {
     <div className="space-y-4 text-muted-foreground">
       <HeaderBadge label="WhatsApp + IA" />
       <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground lg:text-5xl">
-        Automatiza tu negocio con WhatsApp + IA, Chatwoot, N8N, Odoo, Botpress y Tienda
+        Automatiza tu negocio con WhatsApp + IA
       </h1>
       <p className="text-sm font-semibold uppercase tracking-[0.4em] text-muted-foreground">
         Chatwoot • N8N • Odoo • Botpress • Tienda
@@ -123,23 +123,7 @@ export default function Home() {
             <HeroContent />
             <HeroIllustration className="h-[18rem] w-full lg:h-[26rem]" />
           </div>
-          <div className="rounded-3xl border border-border/60 bg-white/95 p-5 shadow-xl sm:p-6 lg:p-7">
-            <nav className="flex flex-wrap items-center justify-end gap-3 text-right text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:text-xs">
-              <a href="https://chatwoot.smarterbot.cl" className="transition-colors hover:text-foreground">
-                Chatwoot
-              </a>
-              <a href="https://n8n.smarterbot.cl" className="transition-colors hover:text-foreground">
-                N8N
-              </a>
-              <a href="https://tienda.smarterbot.cl" className="transition-colors hover:text-foreground">
-                Tienda
-              </a>
-              <a href="https://chat.smarterbot.cl" className="transition-colors hover:text-foreground">
-                Botpress
-              </a>
-            </nav>
-            <LoginSection className="pt-4" />
-          </div>
+          <LoginSection className="lg:ml-auto lg:max-w-md" />
         </section>
       </main>
     </div>
