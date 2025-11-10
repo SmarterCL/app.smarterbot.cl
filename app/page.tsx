@@ -74,7 +74,7 @@ function HeroContent() {
 function HeroIllustration({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-3xl border border-border/60 bg-secondary shadow-2xl shadow-primary/10 ${className}`}
+      className={`relative w-full overflow-hidden rounded-3xl bg-secondary shadow-2xl shadow-primary/10 ${className}`}
     >
       <Image
         src="/santi.png"
@@ -92,18 +92,18 @@ function HeroIllustration({ className = "" }: { className?: string }) {
 
 function SiteHeader() {
   return (
-    <header className="hidden bg-background/90 shadow-sm backdrop-blur lg:block">
-      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-0">
+    <header className="hidden bg-white lg:block">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-0">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
-            <Bot className="h-5 w-5 text-primary" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary">
+            <Bot className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">WhatsApp + IA</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">WhatsApp + IA</p>
             <p className="text-base font-semibold text-foreground">SmarterOS Hub</p>
           </div>
         </div>
-        <div className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+        <div className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
           <a href="#" className="transition-colors hover:text-foreground">
             Producto
           </a>
@@ -174,7 +174,7 @@ export default function Home() {
       <SiteHeader />
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:justify-center lg:gap-0 lg:px-0 lg:py-0">
         <section className="hidden h-full lg:grid lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:items-stretch lg:gap-14">
-          <HeroIllustration className="h-full min-h-[32rem]" />
+          <HeroIllustration className="h-full min-h-[24rem] lg:min-h-0" />
           <div className="flex h-full flex-col justify-center gap-10 lg:pr-10">
             <div className="w-full max-w-lg space-y-10">
               <HeroContent />
