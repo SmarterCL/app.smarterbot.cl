@@ -170,9 +170,9 @@ export default function Home() {
   }
 
   return (
-    <div className="relative z-0 min-h-screen bg-background text-foreground lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
+    <div className="relative z-0 flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
-      <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0 lg:overflow-hidden">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:justify-center lg:gap-0 lg:px-0 lg:py-0">
         <section className="hidden h-full lg:grid lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:items-stretch lg:gap-14">
           <HeroIllustration className="h-full min-h-[32rem]" />
           <div className="flex h-full flex-col justify-center gap-10 lg:pr-10">
