@@ -117,11 +117,11 @@ export default function Home() {
 
   return (
     <div className="relative z-0 flex min-h-screen flex-col bg-white text-foreground">
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:gap-12 sm:px-6 sm:py-12 lg:gap-10 lg:px-0 lg:py-14">
-        <section className="grid gap-10 lg:grid-cols-[1.05fr_minmax(0,0.95fr)] lg:items-center">
-          <div className="space-y-8 lg:pr-6">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-6 sm:gap-10 sm:px-6 sm:py-10 lg:gap-8 lg:px-0 lg:py-12">
+        <section className="grid gap-8 lg:grid-cols-[1.05fr_minmax(0,0.95fr)] lg:items-center">
+          <div className="space-y-6 lg:pr-6">
             <HeroContent />
-            <HeroIllustration className="h-[18rem] w-full lg:h-[26rem]" />
+            <HeroIllustration className="h-[16rem] w-full lg:h-[22rem]" />
           </div>
           <LoginSection className="lg:ml-auto lg:max-w-md" />
         </section>
