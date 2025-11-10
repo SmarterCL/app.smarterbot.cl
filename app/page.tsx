@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-react"
+import { Bot } from "lucide-react"
 
 import DemoModeToggle from "@/components/demo-mode-toggle"
 import AuthChecker from "@/components/auth-checker"
@@ -9,39 +9,11 @@ import { Badge } from "@/components/ui/badge"
 
 export const dynamic = "force-dynamic"
 
-const featureCards = [
-  { icon: Zap, title: "Automatización", description: "Flujos inteligentes" },
-  { icon: Shield, title: "Seguridad", description: "Datos protegidos" },
-  { icon: Database, title: "Base de datos", description: "CRUD completo" },
-  { icon: CheckCircle, title: "Tiempo real", description: "Sincronización" },
-]
-
 function HeaderBadge({ label }: { label: string }) {
   return (
     <Badge className="flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
       {label}
     </Badge>
-  )
-}
-
-function FeatureGrid() {
-  return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {featureCards.map(({ icon: Icon, title, description }) => (
-        <div
-          key={title}
-          className="flex items-center gap-3 rounded-2xl border border-border/60 bg-gradient-to-br from-background via-secondary/80 to-secondary p-4 transition-shadow hover:shadow-lg"
-        >
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/10 bg-accent/10 text-accent">
-            <Icon className="h-5 w-5" strokeWidth={2} />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-foreground/90">{title}</p>
-            <p className="text-xs text-muted-foreground">{description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
   )
 }
 
@@ -87,55 +59,39 @@ function LoginSection({ className = "" }: { className?: string }) {
 
 function HeroContent() {
   return (
-    <div className="space-y-8">
-      <div className="space-y-4">
-        <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-          Automatiza tu negocio con WhatsApp + IA
-        </h1>
-        <p className="hidden max-w-xl text-lg text-muted-foreground sm:block">
-          Gestiona contactos, API keys y comunicaciones desde un hub centralizado alimentado por la infraestructura de
-          SmarterOS.
-        </p>
-      </div>
-
-      <div className="hidden sm:block">
-        <FeatureGrid />
-      </div>
-
-      <div className="hidden gap-4 sm:flex sm:flex-row sm:items-center">
-        <Link
-          href="https://app.smarterbot.cl"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 text-base font-semibold text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-accent/90"
-        >
-          Automatizar mi tarea ahora
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Link>
-        <div className="text-sm text-muted-foreground">
-          <p>✨ Sin tarjeta de crédito</p>
-          <p>⚡ Configuración en 2 minutos</p>
-        </div>
-      </div>
+    <div className="space-y-6 text-base text-muted-foreground">
+      <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+        WhatsApp acaba de confirmar algo histórico:
+      </h1>
+      <p>En 2026 los números de teléfono dejarán de ser la identidad principal.</p>
+      <p>Llegan los Usernames y un nuevo ID digital privado para cada persona.</p>
+      <p>Esto cambia todo en CRM, soporte, ventas y automatización conversacional. La mayoría de las empresas todavía no está preparada.</p>
+      <p className="font-semibold text-foreground">Nosotros sí.</p>
+      <p>
+        SmarterOS ya es compatible con el nuevo modelo de identidad. Nuestro CRM Conversacional y el MCP (Motor de Conectividad y Pagos) integran el nuevo Business
+        Scoped User ID, para que tus conversaciones, contactos, ventas y flujos sigan funcionando sin interrupciones.
+      </p>
+      <p>2026 no es el futuro. Es ahora.</p>
+      <p className="text-sm font-semibold uppercase tracking-wide text-foreground">#SmarterOS #WhatsApp #CRM #AI #Automatización #ComercioDigital</p>
     </div>
   )
 }
 
-function HeroIllustration() {
+function HeroIllustration({ className = "" }: { className?: string }) {
   return (
-    <div className="hidden lg:flex">
-      <div className="relative w-full overflow-hidden rounded-3xl border border-border/60 bg-secondary shadow-2xl shadow-primary/10">
-        <Image
-          src="/santi.png"
-          alt="Automatización con SmarterOS"
-          width={1024}
-          height={1024}
-          priority
-          sizes="(min-width: 1024px) 520px, 100vw"
-          className="h-full w-full object-cover object-center"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
-      </div>
+    <div
+      className={`relative w-full overflow-hidden rounded-3xl border border-border/60 bg-secondary shadow-2xl shadow-primary/10 ${className}`}
+    >
+      <Image
+        src="/santi.png"
+        alt="Automatización con SmarterOS"
+        width={1024}
+        height={1024}
+        priority
+        sizes="(min-width: 1024px) 520px, 100vw"
+        className="h-full w-full object-cover object-center"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
     </div>
   )
 }
@@ -165,42 +121,42 @@ export default function Home() {
   }
 
   return (
-    <div className="relative z-0 min-h-screen bg-background text-foreground">
-      <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:gap-16 lg:py-16">
-        <section className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.05fr_minmax(0,1fr)] lg:gap-12">
-          <div className="space-y-8">
-            <HeroContent />
-            <LoginSection className="lg:hidden" />
+    <div className="relative z-0 min-h-screen bg-background text-foreground lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
+      <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0">
+        <section className="flex flex-col gap-10 lg:grid lg:h-full lg:grid-cols-2 lg:items-center lg:gap-12">
+          <div className="hidden h-full lg:block">
+            <HeroIllustration className="h-full" />
           </div>
-
-          <div className="hidden flex-col space-y-6 lg:flex lg:pl-8">
-            <HeroIllustration />
-            <LoginSection />
+          <div className="space-y-10 lg:pl-10">
+            <HeroContent />
+            <LoginSection className="hidden lg:block" />
           </div>
         </section>
-
-        <footer className="border-t border-border pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
-                <Bot className="h-4 w-4 text-primary" />
-              </div>
-              <span className="font-semibold text-foreground">SmarterOS Hub</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <a href="#" className="transition-colors hover:text-foreground">
-                Términos
-              </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                Privacidad
-              </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                Soporte
-              </a>
-            </div>
-          </div>
-        </footer>
+        <div className="lg:hidden">
+          <LoginSection />
+        </div>
       </main>
+      <footer className="border-t border-border px-4 py-8 sm:px-6 lg:px-0">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
+              <Bot className="h-4 w-4 text-primary" />
+            </div>
+            <span className="font-semibold text-foreground">SmarterOS Hub</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <a href="#" className="transition-colors hover:text-foreground">
+              Términos
+            </a>
+            <a href="#" className="transition-colors hover:text-foreground">
+              Privacidad
+            </a>
+            <a href="#" className="transition-colors hover:text-foreground">
+              Soporte
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
