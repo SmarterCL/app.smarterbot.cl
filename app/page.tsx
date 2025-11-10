@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Bot, CheckCircle, Database, Shield, Zap } from "lucide-react"
 
@@ -120,6 +121,25 @@ function HeroContent() {
   )
 }
 
+function HeroIllustration() {
+  return (
+    <div className="hidden lg:flex">
+      <div className="relative w-full overflow-hidden rounded-3xl border border-border/60 bg-secondary shadow-2xl shadow-primary/10">
+        <Image
+          src="/santi.png"
+          alt="Automatización con SmarterOS"
+          width={1024}
+          height={1024}
+          priority
+          sizes="(min-width: 1024px) 520px, 100vw"
+          className="h-full w-full object-cover object-center"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
 
@@ -153,7 +173,8 @@ export default function Home() {
             <LoginSection className="lg:hidden" />
           </div>
 
-          <div className="hidden lg:block lg:pl-8">
+          <div className="hidden flex-col space-y-6 lg:flex lg:pl-8">
+            <HeroIllustration />
             <LoginSection />
           </div>
         </section>
