@@ -59,20 +59,14 @@ function LoginSection({ className = "" }: { className?: string }) {
 
 function HeroContent() {
   return (
-    <div className="space-y-6 text-base text-muted-foreground">
-      <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-        WhatsApp acaba de confirmar algo histórico:
+    <div className="space-y-4 text-muted-foreground">
+      <HeaderBadge label="WhatsApp + IA" />
+      <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground lg:text-5xl">
+        Automatiza tu negocio con WhatsApp + IA
       </h1>
-      <p>En 2026 los números de teléfono dejarán de ser la identidad principal.</p>
-      <p>Llegan los Usernames y un nuevo ID digital privado para cada persona.</p>
-      <p>Esto cambia todo en CRM, soporte, ventas y automatización conversacional. La mayoría de las empresas todavía no está preparada.</p>
-      <p className="font-semibold text-foreground">Nosotros sí.</p>
-      <p>
-        SmarterOS ya es compatible con el nuevo modelo de identidad. Nuestro CRM Conversacional y el MCP (Motor de Conectividad y Pagos) integran el nuevo Business
-        Scoped User ID, para que tus conversaciones, contactos, ventas y flujos sigan funcionando sin interrupciones.
+      <p className="text-lg text-muted-foreground">
+        Impulsa tus ventas y operaciones desde una sola plataforma integrada.
       </p>
-      <p>2026 no es el futuro. Es ahora.</p>
-      <p className="text-sm font-semibold uppercase tracking-wide text-foreground">#SmarterOS #WhatsApp #CRM #AI #Automatización #ComercioDigital</p>
     </div>
   )
 }
@@ -123,18 +117,16 @@ export default function Home() {
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
       <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0">
-        <section className="flex flex-col gap-10 lg:grid lg:h-full lg:grid-cols-2 lg:items-center lg:gap-12">
-          <div className="hidden h-full lg:block">
-            <HeroIllustration className="h-full" />
-          </div>
+        <section className="hidden h-full lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
+          <HeroIllustration className="h-full" />
           <div className="space-y-10 lg:pl-10">
             <HeroContent />
-            <LoginSection className="hidden lg:block" />
+            <LoginSection />
           </div>
         </section>
-        <div className="lg:hidden">
+        <section className="lg:hidden">
           <LoginSection />
-        </div>
+        </section>
       </main>
       <footer className="border-t border-border px-4 py-8 sm:px-6 lg:px-0">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
