@@ -90,6 +90,61 @@ function HeroIllustration({ className = "" }: { className?: string }) {
   )
 }
 
+function SiteHeader() {
+  return (
+    <header className="border-b border-border/60 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-0">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
+            <Bot className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">WhatsApp + IA</p>
+            <p className="text-base font-semibold text-foreground">SmarterOS Hub</p>
+          </div>
+        </div>
+        <div className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+          <a href="#" className="transition-colors hover:text-foreground">
+            Producto
+          </a>
+          <a href="#" className="transition-colors hover:text-foreground">
+            Recursos
+          </a>
+          <a href="#" className="transition-colors hover:text-foreground">
+            Soporte
+          </a>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+function SiteFooter() {
+  return (
+    <footer className="border-t border-border/60 px-4 py-8 sm:px-6 lg:px-0">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
+            <Bot className="h-4 w-4 text-primary" />
+          </div>
+          <span className="font-semibold text-foreground">SmarterOS Hub</span>
+        </div>
+        <div className="flex items-center gap-6">
+          <a href="#" className="transition-colors hover:text-foreground">
+            Términos
+          </a>
+          <a href="#" className="transition-colors hover:text-foreground">
+            Privacidad
+          </a>
+          <a href="#" className="transition-colors hover:text-foreground">
+            Soporte
+          </a>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 export default function Home() {
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
 
@@ -116,7 +171,8 @@ export default function Home() {
 
   return (
     <div className="relative z-0 min-h-screen bg-background text-foreground lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
-      <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0">
+      <SiteHeader />
+      <main className="mx-auto flex h-full w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-14 sm:px-6 sm:py-14 lg:flex-1 lg:justify-center lg:gap-0 lg:px-0 lg:py-0 lg:overflow-hidden">
         <section className="hidden h-full lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
           <HeroIllustration className="h-full" />
           <div className="space-y-10 lg:pl-10">
@@ -128,27 +184,7 @@ export default function Home() {
           <LoginSection />
         </section>
       </main>
-      <footer className="border-t border-border px-4 py-8 sm:px-6 lg:px-0">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary">
-              <Bot className="h-4 w-4 text-primary" />
-            </div>
-            <span className="font-semibold text-foreground">SmarterOS Hub</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <a href="#" className="transition-colors hover:text-foreground">
-              Términos
-            </a>
-            <a href="#" className="transition-colors hover:text-foreground">
-              Privacidad
-            </a>
-            <a href="#" className="transition-colors hover:text-foreground">
-              Soporte
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
