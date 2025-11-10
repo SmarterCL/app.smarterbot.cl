@@ -38,10 +38,10 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
 
 function LoginSection({ className = "" }: { className?: string }) {
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-3 ${className}`}>
       <Suspense
         fallback={
-          <div className="flex justify-center py-6">
+          <div className="flex justify-center py-4">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
           </div>
         }
@@ -60,8 +60,11 @@ function HeroContent() {
     <div className="space-y-4 text-muted-foreground">
       <HeaderBadge label="WhatsApp + IA" />
       <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground lg:text-5xl">
-        Automatiza tu negocio con WhatsApp + IA
+        Automatiza tu negocio con WhatsApp + IA, Chatwoot, N8N, Odoo, Botpress y Tienda
       </h1>
+      <p className="text-sm font-semibold uppercase tracking-[0.4em] text-muted-foreground">
+        Chatwoot • N8N • Odoo • Botpress • Tienda
+      </p>
       <p className="text-lg text-muted-foreground">
         Impulsa tus ventas y operaciones desde una sola plataforma integrada.
       </p>
@@ -114,25 +117,28 @@ export default function Home() {
 
   return (
     <div className="relative z-0 flex min-h-screen flex-col bg-white text-foreground">
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-12 sm:gap-16 sm:px-6 sm:py-16 lg:justify-center lg:gap-12 lg:px-0 lg:py-20">
-        <section className="grid gap-12 lg:grid-cols-[1.05fr_minmax(0,0.95fr)] lg:items-center">
-          <div className="space-y-10 lg:pr-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:gap-12 sm:px-6 sm:py-12 lg:gap-10 lg:px-0 lg:py-14">
+        <section className="grid gap-10 lg:grid-cols-[1.05fr_minmax(0,0.95fr)] lg:items-center">
+          <div className="space-y-8 lg:pr-6">
             <HeroContent />
-            <HeroIllustration className="h-[20rem] w-full lg:h-[30rem]" />
+            <HeroIllustration className="h-[18rem] w-full lg:h-[26rem]" />
           </div>
-          <div className="flex flex-col gap-6 lg:pl-10">
-            <div className="flex flex-wrap items-center justify-end gap-4 text-right text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground sm:text-sm lg:text-right">
-              <a href="#" className="transition-colors hover:text-foreground">
-                Producto
+          <div className="rounded-3xl border border-border/60 bg-white/95 p-5 shadow-xl sm:p-6 lg:p-7">
+            <nav className="flex flex-wrap items-center justify-end gap-3 text-right text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:text-xs">
+              <a href="https://chatwoot.smarterbot.cl" className="transition-colors hover:text-foreground">
+                Chatwoot
               </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                Recursos
+              <a href="https://n8n.smarterbot.cl" className="transition-colors hover:text-foreground">
+                N8N
               </a>
-              <a href="#" className="transition-colors hover:text-foreground">
-                Soporte
+              <a href="https://tienda.smarterbot.cl" className="transition-colors hover:text-foreground">
+                Tienda
               </a>
-            </div>
-            <LoginSection className="rounded-3xl border border-border/60 bg-white/95 p-6 shadow-xl" />
+              <a href="https://chat.smarterbot.cl" className="transition-colors hover:text-foreground">
+                Botpress
+              </a>
+            </nav>
+            <LoginSection className="pt-4" />
           </div>
         </section>
       </main>

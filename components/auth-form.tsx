@@ -1,7 +1,7 @@
 "use client"
 
 import { SignInButton, SignUpButton } from "@clerk/nextjs"
-import { Chrome, ArrowRight, ShieldCheck, Facebook, Github } from "lucide-react"
+import { Chrome, ArrowRight, ShieldCheck, Facebook } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,12 +10,12 @@ import { Separator } from "@/components/ui/separator"
 
 export default function AuthForm() {
   return (
-    <div className="space-y-5">
-      <div className="space-y-5 rounded-3xl border border-border/70 bg-background/90 p-5 shadow-lg backdrop-blur sm:p-6">
+    <div className="space-y-4">
+      <div className="space-y-4 rounded-3xl border border-border/70 bg-white/95 p-4 shadow-lg sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2 text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Crea tu cuenta</p>
-            <h2 className="flex flex-wrap items-center gap-2 text-2xl font-semibold text-foreground">
+            <h2 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-foreground">
               <span>¡Bienvenido/a, estamos listos!</span>
               <span aria-hidden="true" className="text-2xl leading-none">
                 👋
@@ -28,14 +28,14 @@ export default function AuthForm() {
         </div>
 
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <SignInButton mode="modal">
               <Button
                 variant="outline"
                 type="button"
-                className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
+                className="group flex h-10 w-full items-center justify-center gap-3 border border-border bg-secondary text-sm text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
               >
-                <Chrome className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
+                <Chrome className="h-4 w-4 text-accent transition-transform group-hover:scale-110" />
                 Google
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </Button>
@@ -45,22 +45,10 @@ export default function AuthForm() {
               <Button
                 variant="outline"
                 type="button"
-                className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
+                className="group flex h-10 w-full items-center justify-center gap-3 border border-border bg-secondary text-sm text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
               >
-                <Facebook className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
+                <Facebook className="h-4 w-4 text-accent transition-transform group-hover:scale-110" />
                 Facebook
-                <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
-              </Button>
-            </SignInButton>
-
-            <SignInButton mode="modal">
-              <Button
-                variant="outline"
-                type="button"
-                className="group flex h-12 w-full items-center justify-center gap-3 border border-border bg-secondary text-foreground transition-colors duration-300 hover:bg-emerald-500/10 hover:text-foreground sm:flex-1"
-              >
-                <Github className="h-5 w-5 text-accent transition-transform group-hover:scale-110" />
-                GitHub
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </Button>
             </SignInButton>
@@ -77,7 +65,7 @@ export default function AuthForm() {
             </div>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-3">
             <div className="space-y-2 text-left">
               <Label htmlFor="login-email">Correo electrónico</Label>
               <Input id="login-email" type="email" placeholder="nombre@empresa.com" autoComplete="email" />
@@ -92,7 +80,7 @@ export default function AuthForm() {
             <SignUpButton mode="modal">
               <Button
                 type="button"
-                className="group flex h-12 w-full items-center justify-center gap-2 bg-accent text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-accent/90"
+                className="group flex h-11 w-full items-center justify-center gap-2 bg-accent text-sm text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-accent/90"
               >
                 Crear cuenta
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
