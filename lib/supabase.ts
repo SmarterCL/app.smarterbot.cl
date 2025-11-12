@@ -1,3 +1,15 @@
+// Añadimos helper para tabla de settings de negocio
+export async function upsertBusinessSettings(supabase: ReturnType<typeof getSupabaseClient>, userId: string, data: { business_name: string; webhook_url: string }) {
+  return supabase
+    .from("business_settings")
+    .upsert({ user_id: userId, business_name: data.business_name, webhook_url: data.webhook_url }, { onConflict: "user_id" })
+    .select()
+    .single()
+}
+
+export async function fetchBusinessSettings(supabase: ReturnType<typeof getSupabaseClient>, userId: string) {
+  return supabase.from("business_settings").select("business_name, webhook_url").eq("user_id", userId).single()
+}
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 
 type SupabaseClientOptions = Parameters<typeof createClient>[2]
