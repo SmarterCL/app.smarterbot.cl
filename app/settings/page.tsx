@@ -131,6 +131,17 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-4 rounded border border-border bg-secondary p-4">
+          <h2 className="text-lg font-medium">Configuración de Cloud</h2>
+          <p className="text-xs text-muted-foreground">Configura tu suscripción de Azure para n8n y workflows.</p>
+          <a
+            href="/settings/azure"
+            className="inline-block w-fit rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Configurar Azure
+          </a>
+        </div>
+
+        <div className="space-y-4 rounded border border-border bg-secondary p-4">
           <h2 className="text-lg font-medium">Estado de servicios</h2>
           <p className="text-xs text-muted-foreground">Verifica conectividad básica (HEAD) para cada subdominio.</p>
           <button
