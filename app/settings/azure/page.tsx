@@ -1,48 +1,72 @@
 "use client"
 
 import { useState } from "react"
-import { Cloud, Database, Box, CheckCircle2, XCircle, Loader2, ExternalLink } from "lucide-react"
+import { Cloud, Database, Box, CheckCircle2, XCircle, Loader2, ExternalLink, AlertCircle } from "lucide-react"
 
 interface AzureConfig {
   subscription_id: string
   resource_group: string
-  n8n_url: string
-  postgres_host: string
-  vault_integration: boolean
+  tenant_id?: string
+  location: "westeurope" | "southcentralus"
+}
+
+type AzureStatus = "not_configured" | "verifying" | "verified" | "error"
+
+interface ValidationError {
+  code: string
+  message: string
+  resolution: string
 }
 
 export default function AzureSettingsPage() {
   const [config, setConfig] = useState<AzureConfig>({
     subscription_id: "",
     resource_group: "smarteros-n8n-prod",
-    n8n_url: "",
-    postgres_host: "",
-    vault_integration: false,
+    tenant_id: "",
+    location: "westeurope",
   })
-  const [isValidating, setIsValidating] = useState(false)
-  const [validationStatus, setValidationStatus] = useState<{
-    n8n: boolean | null
-    postgres: boolean | null
-    vault: boolean | null
-  }>({
-    n8n: null,
-    postgres: null,
-    vault: null,
-  })
+  const [status, setStatus] = useState<AzureStatus>("not_configured")
+  const [verificationData, setVerificationData] = useState<{
+    credit_remaining?: number
+    providers_registered?: string[]
+    n8n_url?: string
+  } | null>(null)
+  const [errors, setErrors] = useState<ValidationError[]>([])
 
-  const validateServices = async () => {
-    setIsValidating(true)
-    setValidationStatus({ n8n: null, postgres: null, vault: null })
+  const handleVerify = async () => {
+    setStatus("verifying")
+    setErrors([])
 
-    // Simular validación (en producción, llamar a /api/azure/validate)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      const response = await fetch("/api/azure/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config),
+      })
 
-    setValidationStatus({
-      n8n: !!config.n8n_url,
-      postgres: !!config.postgres_host,
-      vault: config.vault_integration,
-    })
-    setIsValidating(false)
+      const data = await response.json()
+
+      if (data.status === "verified") {
+        setStatus("verified")
+        setVerificationData({
+          credit_remaining: data.credit_remaining,
+          providers_registered: data.providers_registered,
+          n8n_url: data.n8n_url,
+        })
+      } else {
+        setStatus("error")
+        setErrors(data.errors || [])
+      }
+    } catch (error) {
+      setStatus("error")
+      setErrors([
+        {
+          code: "NETWORK_ERROR",
+          message: "Error de conexión al servidor",
+          resolution: "Verifica tu conexión a internet e intenta nuevamente",
+        },
+      ])
+    }
   }
 
   const StatusIcon = ({ status }: { status: boolean | null }) => {
@@ -92,13 +116,14 @@ export default function AzureSettingsPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-muted-foreground">Subscription ID</label>
+              <label className="block text-sm font-medium text-muted-foreground">Subscription ID *</label>
               <input
                 type="text"
                 value={config.subscription_id}
                 onChange={(e) => setConfig({ ...config, subscription_id: e.target.value })}
                 placeholder="00000000-0000-0000-0000-000000000000"
                 className="mt-1 w-full rounded border border-border bg-secondary px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                disabled={status === "verifying" || status === "verified"}
               />
               <p className="mt-1 text-xs text-muted-foreground">
                 Encuéntralo en{" "}
@@ -114,105 +139,136 @@ export default function AzureSettingsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-muted-foreground">Resource Group</label>
+              <label className="block text-sm font-medium text-muted-foreground">Resource Group *</label>
               <input
                 type="text"
                 value={config.resource_group}
                 onChange={(e) => setConfig({ ...config, resource_group: e.target.value })}
                 placeholder="smarteros-n8n-prod"
                 className="mt-1 w-full rounded border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-              />
-              <p className="mt-1 text-xs text-muted-foreground">Nombre del resource group donde se deployará n8n</p>
-            </div>
-          </div>
-        </div>
-
-        {/* n8n Configuration */}
-        <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
-            <Box className="h-5 w-5" />
-            n8n Workflow Automation
-          </h2>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-muted-foreground">n8n URL</label>
-              <input
-                type="url"
-                value={config.n8n_url}
-                onChange={(e) => setConfig({ ...config, n8n_url: e.target.value })}
-                placeholder="https://n8n.smarterbot.cl"
-                className="mt-1 w-full rounded border border-border bg-secondary px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                disabled={status === "verifying" || status === "verified"}
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                URL de tu instancia n8n desplegada en Azure Container Apps
+                Nombre del resource group donde se deployará n8n (se creará si no existe)
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-muted-foreground">Postgres Host</label>
+              <label className="block text-sm font-medium text-muted-foreground">Tenant ID (opcional)</label>
               <input
                 type="text"
-                value={config.postgres_host}
-                onChange={(e) => setConfig({ ...config, postgres_host: e.target.value })}
-                placeholder="n8n-postgres-abc123.postgres.database.azure.com"
+                value={config.tenant_id}
+                onChange={(e) => setConfig({ ...config, tenant_id: e.target.value })}
+                placeholder="87654321-4321-4321-4321-cba987654321"
                 className="mt-1 w-full rounded border border-border bg-secondary px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                disabled={status === "verifying" || status === "verified"}
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                Hostname de Azure Postgres Flexible Server (tier Production)
+                Solo necesario para integración SSO futura (Azure Active Directory)
               </p>
             </div>
 
-            <div className="flex items-center gap-3 rounded border border-border bg-secondary p-4">
-              <input
-                type="checkbox"
-                id="vault-integration"
-                checked={config.vault_integration}
-                onChange={(e) => setConfig({ ...config, vault_integration: e.target.checked })}
-                className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
-              />
-              <label htmlFor="vault-integration" className="text-sm text-foreground">
-                Habilitar integración con HashiCorp Vault (
-                <code className="rounded bg-muted px-1 text-xs">vault.smarterbot.cl</code>)
-              </label>
+            <div>
+              <label className="block text-sm font-medium text-muted-foreground">Region *</label>
+              <select
+                value={config.location}
+                onChange={(e) => setConfig({ ...config, location: e.target.value as "westeurope" | "southcentralus" })}
+                className="mt-1 w-full rounded border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                disabled={status === "verifying" || status === "verified"}
+              >
+                <option value="westeurope">West Europe (Ámsterdam) - Recomendado</option>
+                <option value="southcentralus">South Central US (Texas)</option>
+              </select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Región donde se deployarán los recursos (menor latencia = mejor rendimiento)
+              </p>
             </div>
+
+            {/* Verify Button */}
+            <button
+              onClick={handleVerify}
+              disabled={!config.subscription_id || !config.resource_group || status === "verifying" || status === "verified"}
+              className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {status === "verifying" ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Verificando suscripción...
+                </>
+              ) : status === "verified" ? (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  Verificado
+                </>
+              ) : (
+                "Verificar suscripción"
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Validation */}
-        <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h2 className="mb-4 text-xl font-semibold text-foreground">Validar Configuración</h2>
-
-          <div className="space-y-3">
-            <div className="flex items-center justify-between rounded border border-border bg-secondary p-3">
-              <span className="text-sm text-foreground">n8n accesible</span>
-              <StatusIcon status={validationStatus.n8n} />
-            </div>
-            <div className="flex items-center justify-between rounded border border-border bg-secondary p-3">
-              <span className="text-sm text-foreground">Postgres conectado</span>
-              <StatusIcon status={validationStatus.postgres} />
-            </div>
-            <div className="flex items-center justify-between rounded border border-border bg-secondary p-3">
-              <span className="text-sm text-foreground">Vault configurado</span>
-              <StatusIcon status={validationStatus.vault} />
+        {/* Status Badge */}
+        {status !== "not_configured" && (
+          <div className={`rounded-lg border p-4 ${
+            status === "verified" 
+              ? "border-green-200 bg-green-50" 
+              : status === "verifying"
+              ? "border-yellow-200 bg-yellow-50"
+              : "border-red-200 bg-red-50"
+          }`}>
+            <div className="flex items-start gap-3">
+              {status === "verified" && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+              {status === "verifying" && <Loader2 className="h-5 w-5 animate-spin text-yellow-600" />}
+              {status === "error" && <AlertCircle className="h-5 w-5 text-red-600" />}
+              
+              <div className="flex-1">
+                {status === "verified" && (
+                  <>
+                    <h3 className="font-semibold text-green-900">✅ Integración completa</h3>
+                    <p className="mt-1 text-sm text-green-700">
+                      Suscripción verificada. Crédito disponible: <strong>${verificationData?.credit_remaining?.toFixed(2)}</strong>
+                    </p>
+                    {verificationData?.n8n_url && (
+                      <p className="mt-2 text-sm text-green-700">
+                        n8n URL: <code className="rounded bg-green-100 px-2 py-1">{verificationData.n8n_url}</code>
+                      </p>
+                    )}
+                    {verificationData?.providers_registered && verificationData.providers_registered.length > 0 && (
+                      <p className="mt-2 text-xs text-green-600">
+                        Providers registrados: {verificationData.providers_registered.join(", ")}
+                      </p>
+                    )}
+                  </>
+                )}
+                
+                {status === "verifying" && (
+                  <>
+                    <h3 className="font-semibold text-yellow-900">⏳ Verificando suscripción...</h3>
+                    <p className="mt-1 text-sm text-yellow-700">
+                      Validando Subscription ID, crédito disponible y providers de Azure
+                    </p>
+                  </>
+                )}
+                
+                {status === "error" && (
+                  <>
+                    <h3 className="font-semibold text-red-900">❌ Error de verificación</h3>
+                    <div className="mt-2 space-y-2">
+                      {errors.map((error, index) => (
+                        <div key={index} className="rounded bg-red-100 p-3">
+                          <p className="text-sm font-medium text-red-800">{error.message}</p>
+                          <p className="mt-1 text-xs text-red-600">
+                            <strong>Solución:</strong> {error.resolution}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-
-          <button
-            onClick={validateServices}
-            disabled={isValidating || !config.subscription_id}
-            className="mt-4 inline-flex items-center gap-2 rounded bg-accent px-6 py-2 text-sm font-medium text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isValidating ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Validando...
-              </>
-            ) : (
-              "Validar servicios"
-            )}
-          </button>
-        </div>
+        )}
 
         {/* Deployment Instructions */}
         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6">
