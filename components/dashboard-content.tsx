@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
+import ChatwootWidget from "@/components/chatwoot-widget"
 
 import {
   Activity,
@@ -41,6 +42,7 @@ const overviewStats = [
 
 const tabItems = [
   { value: "overview", label: "Overview", icon: BarChart3 },
+  { value: "messages", label: "Mensajes", icon: MessageSquare },
   { value: "contacts", label: "Contactos", icon: Users },
   { value: "automation", label: "Automatización", icon: Zap },
   { value: "qr", label: "QR Codes", icon: QrCode },
@@ -299,6 +301,10 @@ export default function DashboardContent() {
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+
+            <TabsContent value="messages" className="space-y-6 sm:space-y-8">
+              <ChatwootWidget />
             </TabsContent>
 
             <TabsContent value="contacts" className="space-y-6 sm:space-y-8">
