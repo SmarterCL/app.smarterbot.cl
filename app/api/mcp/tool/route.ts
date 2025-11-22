@@ -60,10 +60,11 @@ export async function POST(request: Request) {
 
   // Ensure we await auth() so userId/sessionId are resolved.
   const { userId, sessionId } = await auth();
+  const url = new URL(request.url);
+  const debugMode = url.searchParams.get('debug') === '1';
   if (!userId) {
     // Allow a debug inspection if caller passes ?debug=1
-    const url = new URL(request.url);
-    if (url.searchParams.get('debug') === '1') {
+    if (debugMode) {
       return NextResponse.json({
         ok: false,
         error: 'unauthorized',
@@ -104,16 +105,37 @@ export async function POST(request: Request) {
   try {
     const result = await toolFn(args);
     const durationMs = Math.round(performance.now() - started);
-    // Console log trace
-    // eslint-disable-next-line no-console
     console.info('[MCP_INVOCATION]', { userId, tool: name, durationMs });
-    // Optional DB persist
     logMcpInvocation({ user_id: userId, tool: name, args, result, duration_ms: durationMs }).catch(() => {});
+    if (debugMode) {
+      return NextResponse.json({
+        auth: 'ok',
+        hasCookies: !!(request.headers.get('cookie')), 
+        sessionId: sessionId || null,
+        userId,
+        tool: name,
+        ok: true,
+        result,
+        meta: { durationMs }
+      });
+    }
     return NextResponse.json({ ok: true, result, meta: { durationMs } });
   } catch (err: any) {
     const durationMs = Math.round(performance.now() - started);
-    // eslint-disable-next-line no-console
     console.warn('[MCP_INVOCATION_ERROR]', { userId, tool: name, durationMs, error: err?.message });
+    if (debugMode) {
+      return NextResponse.json({
+        auth: 'ok',
+        hasCookies: !!(request.headers.get('cookie')),
+        sessionId: sessionId || null,
+        userId,
+        tool: name,
+        ok: false,
+        error: 'tool_error',
+        message: err?.message || 'Unknown error',
+        meta: { durationMs }
+      }, { status: 500 });
+    }
     return NextResponse.json({ ok: false, error: 'tool_error', message: err?.message || 'Unknown error', meta: { durationMs } }, { status: 500 });
   }
 }
