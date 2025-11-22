@@ -1,20 +1,20 @@
-import { clerkMiddleware } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
+import { authMiddleware } from "@clerk/nextjs"
 
-// Custom Clerk middleware: bypass env diagnostic endpoint so it can report missing vars
-export default clerkMiddleware((auth, req) => {
-  const { pathname } = req.nextUrl
-  if (pathname.startsWith("/api/env/diagnostic")) {
-    return NextResponse.next()
-  }
+export default authMiddleware({
+  publicRoutes: [
+    "/",
+    "/sign-in(.*)",
+    "/sign-up(.*)",
+    "/api/env/diagnostic",
+    "/api/contacts/test",
+    "/favicon.ico",
+    "/_next(.*)",
+    "/images(.*)",
+  ],
 })
 
-// Matcher limits auth to dashboard routes (others public)
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Run for API routes except diagnostic env endpoint
-    "/((?!api/env/diagnostic)(api|trpc).*)",
+    "/((api|trpc))/((?!env/diagnostic).*)",
   ],
 }
