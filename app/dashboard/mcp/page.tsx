@@ -3,8 +3,12 @@ import { redirect } from 'next/navigation'
 import McpConsoleClient from '@/components/mcp-console-client'
 
 export default async function McpConsolePage() {
-  const { userId } = await auth()
-  if (!userId) redirect('/')
+  try {
+    const { userId } = await auth()
+    if (!userId) redirect('/')
+  } catch (error) {
+    redirect('/')
+  }
   
   const mcpEnabled = process.env.MCP_ENABLED === 'true'
   
