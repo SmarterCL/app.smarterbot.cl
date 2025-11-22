@@ -4,11 +4,11 @@ import { z } from "zod"
 import { updateTenantIntegrations } from "@/lib/supabase"
 
 const integrationsUpdateSchema = z.object({
-  chatwoot_inbox_id: z.number().int().positive().optional().nullable(),
-  botpress_workspace_id: z.string().min(1).optional().nullable(),
-  odoo_company_id: z.number().int().positive().optional().nullable(),
-  n8n_project_id: z.string().min(1).optional().nullable(),
-  metabase_dashboard_id: z.string().min(1).optional().nullable(),
+ chatwoot_inbox_id: z.number().int().positive().optional(),
+ botpress_workspace_id: z.string().min(1).optional(),
+ odoo_company_id: z.number().int().positive().optional(),
+ n8n_project_id: z.string().min(1).optional(),
+ metabase_dashboard_id: z.string().min(1).optional(),
 })
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
