@@ -11,6 +11,7 @@ SmarterOS is the operations hub for SmarterBot customers. This repo hosts the pu
 - **Styling:** Tailwind CSS + custom design tokens (SmarterOS theme)
 - **Forms & Validation:** React Hook Form, Zod
 - **Charts & UI:** Shadcn UI components, Lucide icons, Recharts
+ - **Protocol / Extensibility:** (Planned) Model Context Protocol server (`/mcp/server/index.ts`)
 
 ## Getting Started
 
@@ -45,12 +46,14 @@ Required:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `FASTAPI_URL`
+ - `MCP_ENABLED` (set to `true` to activate MCP tools; omit or `false` keeps server dormant)
 
 Optional (use only if referenced):
 - `NEXT_PUBLIC_CLERK_SIGN_IN_URL` (`/sign-in`)
 - `NEXT_PUBLIC_CLERK_SIGN_UP_URL` (`/sign-up`)
 - `NEXT_PUBLIC_DEMO_MODE`
 - `RESEND_API_KEY`
+ - `MCP_LOG_LEVEL` (`debug` | `info` | `warn` | `error`, default `info`)
 
 Remove / do not set (not used by the Next.js app, can cause confusion):
 `anonpublic`, `service_rolesecret`, `SUPABASE_URL`, `SUPABASE_JWT_SECRET`, `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, `POSTGRES_USER`, `POSTGRES_PASSWORD`.
@@ -63,6 +66,106 @@ pnpm ts-node scripts/env-audit.ts
 ```
 
 Production check endpoint: `/api/env/diagnostic`.
+
+### MCP Integration (Phase 1)
+
+The initial MCP scaffold adds:
+
+- `mcp/server/index.ts` – Minimal server using `@modelcontextprotocol/sdk` with an empty tool registry.
+- `app/api/mcp/ping/route.ts` – Health endpoint returning `{ ok: true, service: 'mcp', version }`.
+
+Activation:
+
+1. Set `MCP_ENABLED=true` in Vercel (or `.env.local`).
+2. (Future phases) Tools will respect Clerk auth and rate limits.
+
+If `MCP_ENABLED` is not true:
+ - `/api/mcp/ping` returns `{ ok: false, disabled: true }`.
+ - `/api/mcp/tool` returns 403 with `{ error: 'mcp_disabled' }`.
+
+### MCP Tenants Tools (Phase 2)
+
+Added tools (require authenticated Clerk user):
+
+- `tenants.list` – Lists active tenants for the current user (fields: `id, rut, business_name, active, created_at`).
+- `tenants.get` – Returns full tenant record by `id` (UUID) subject to RLS ownership.
+ - `tenants.create` – Creates a new tenant (`rut`, `businessName`) bound to the authenticated user.
+ - `tenants.updateServices` – Updates `services_enabled` flags for a tenant.
+
+Invocation (when enabled):
+
+```bash
+curl -X POST http://localhost:3000/api/mcp/tool \
+	-H 'Content-Type: application/json' \
+	-H 'Cookie: __session=YOUR_CLERK_SESSION_COOKIE' \
+	-d '{"name":"tenants.list"}'
+
+curl -X POST http://localhost:3000/api/mcp/tool \
+	-H 'Content-Type: application/json' \
+	-H 'Cookie: __session=YOUR_CLERK_SESSION_COOKIE' \
+	-d '{"name":"tenants.get","args":{"id":"<tenant-uuid>"}}'
+
+curl -X POST http://localhost:3000/api/mcp/tool \
+	-H 'Content-Type: application/json' \
+	-H 'Cookie: __session=YOUR_CLERK_SESSION_COOKIE' \
+	-d '{"name":"tenants.create","args":{"rut":"12.345.678-9","businessName":"Empresa Demo"}}'
+
+curl -X POST http://localhost:3000/api/mcp/tool \
+	-H 'Content-Type: application/json' \
+	-H 'Cookie: __session=YOUR_CLERK_SESSION_COOKIE' \
+	-d '{"name":"tenants.updateServices","args":{"id":"<tenant-uuid>","services":{"crm":true,"bot":false}}}'
+```
+
+Error cases:
+- Missing auth: `{ ok: false, error: 'unauthorized' }`
+- Disabled: `{ ok: false, error: 'mcp_disabled' }`
+- Tool not found: `{ ok: false, error: 'tool_not_found' }`
+- Validation (bad UUID): `{ ok: false, error: 'tool_error', message: 'Invalid uuid' }`
+ - Missing required args: `{ ok: false, error: 'tool_error', message: 'rut' }` (or similar validation message)
+
+### MCP Invocation Logging (Phase 2.5)
+
+Each tool invocation logs a structured console entry:
+
+```
+console.info('[MCP_INVOCATION]', { userId, tool, durationMs })
+```
+
+Errors log:
+
+```
+console.warn('[MCP_INVOCATION_ERROR]', { userId, tool, durationMs, error })
+```
+
+Optional DB persistence (set `MCP_LOG_DB=true`): inserts into `mcp_invocations`:
+
+Columns:
+- `user_id` (Clerk user)
+- `tool`
+- `args` (JSON truncated)
+- `result` (JSON truncated)
+- `duration_ms`
+- `created_at` (server default now())
+
+Add table example (SQL):
+
+```sql
+create table if not exists mcp_invocations (
+	id uuid primary key default gen_random_uuid(),
+	user_id text not null,
+	tool text not null,
+	args text,
+	result text,
+	duration_ms integer not null,
+	created_at timestamptz not null default now()
+);
+create index on mcp_invocations (user_id);
+create index on mcp_invocations (tool);
+```
+
+Environment flags:
+- `MCP_ENABLED` – master switch.
+- `MCP_LOG_DB` – enable Supabase persistence.
 
 ### Demo Mode
 

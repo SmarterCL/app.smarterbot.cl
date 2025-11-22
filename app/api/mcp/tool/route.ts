@@ -1,0 +1,80 @@
+import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
+import { tenantTools } from '../../../../mcp/tools/supabase-tenants';
+import { logMcpInvocation } from '../../../../lib/supabase';
+
+export const dynamic = 'force-dynamic';
+
+// Simple in-memory rate limit (per userId/IP) for this runtime instance.
+const WINDOW_MS = 60_000; // 1 minute
+const MAX_REQUESTS = 30;
+type Bucket = { count: number; expires: number };
+const buckets = new Map<string, Bucket>();
+
+function rateLimit(key: string) {
+  const now = Date.now();
+  const bucket = buckets.get(key);
+  if (!bucket || bucket.expires < now) {
+    buckets.set(key, { count: 1, expires: now + WINDOW_MS });
+    return { allowed: true };
+  }
+  if (bucket.count >= MAX_REQUESTS) {
+    return { allowed: false, retryAfter: bucket.expires - now };
+  }
+  bucket.count += 1;
+  return { allowed: true };
+}
+
+type ToolFn = (args: any) => Promise<any>;
+const tools: Record<string, ToolFn> = { ...tenantTools };
+
+export async function POST(request: Request) {
+  const enabled = process.env.MCP_ENABLED === 'true';
+  if (!enabled) {
+    return NextResponse.json({ ok: false, error: 'mcp_disabled', message: 'MCP_ENABLED not true' }, { status: 403 });
+  }
+
+  const { userId } = auth();
+  if (!userId) {
+    return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  }
+
+  let body: { name?: string; args?: any };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: 'invalid_json' }, { status: 400 });
+  }
+  const { name, args } = body || {};
+  if (!name) {
+    return NextResponse.json({ ok: false, error: 'missing_name' }, { status: 400 });
+  }
+
+  // Rate limit per user.
+  const rl = rateLimit(userId);
+  if (!rl.allowed) {
+    return NextResponse.json({ ok: false, error: 'rate_limited', retryAfterMs: rl.retryAfter }, { status: 429 });
+  }
+
+  const toolFn = tools[name];
+  if (!toolFn) {
+    return NextResponse.json({ ok: false, error: 'tool_not_found', name }, { status: 404 });
+  }
+
+  const started = performance.now();
+  try {
+    const result = await toolFn(args);
+    const durationMs = Math.round(performance.now() - started);
+    // Console log trace
+    // eslint-disable-next-line no-console
+    console.info('[MCP_INVOCATION]', { userId, tool: name, durationMs });
+    // Optional DB persist
+    logMcpInvocation({ user_id: userId, tool: name, args, result, duration_ms: durationMs }).catch(() => {});
+    return NextResponse.json({ ok: true, result, meta: { durationMs } });
+  } catch (err: any) {
+    const durationMs = Math.round(performance.now() - started);
+    // eslint-disable-next-line no-console
+    console.warn('[MCP_INVOCATION_ERROR]', { userId, tool: name, durationMs, error: err?.message });
+    return NextResponse.json({ ok: false, error: 'tool_error', message: err?.message || 'Unknown error', meta: { durationMs } }, { status: 500 });
+  }
+}

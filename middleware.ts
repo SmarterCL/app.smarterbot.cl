@@ -9,6 +9,8 @@ export default clerkMiddleware({
     "/sign-up",
     "/sign-up/:path*",
     "/api/env/diagnostic",
+    "/api/mcp/ping",
+    "/api/health",
     "/api/contacts/test",
     "/favicon.ico",
     "/_next/:path*",
