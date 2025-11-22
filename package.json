@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "approve-builds": "pnpm approve-builds",
-    "build": "tsc -b",
+    "build": "next build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
