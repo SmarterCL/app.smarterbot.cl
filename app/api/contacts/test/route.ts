@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
 
-// GET handler to allow browser access without 405
+// GET handler devuelve 405 para forzar uso de POST
 export async function GET() {
   return NextResponse.json(
     {
-      message: "Usa POST para enviar contacto de prueba",
-      example: {
-        method: "POST",
-        endpoint: "/api/contacts/test",
-        curl: "curl -X POST http://localhost:3000/api/contacts/test",
-      },
+      ok: false,
+      message: "Use POST en /api/contacts/test para enviar contacto de prueba",
+      example: "curl -X POST http://localhost:3000/api/contacts/test",
     },
-    { status: 200 }
+    { status: 405 }
   );
 }
 
