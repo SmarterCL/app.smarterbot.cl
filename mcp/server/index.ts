@@ -2,6 +2,7 @@ import { Server } from '@modelcontextprotocol/sdk/server';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio';
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { tenantTools } from '../tools/supabase-tenants';
+import { fastapiTools } from '../tools/fastapi-proxy';
 
 const ENABLED = process.env.MCP_ENABLED === 'true';
 
@@ -54,6 +55,52 @@ async function main() {
           services: { type: 'object', additionalProperties: { type: 'boolean' } },
         },
         required: ['id', 'services'],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: 'fastapi.get',
+      description: 'Call FastAPI backend GET endpoint',
+      inputSchema: {
+        type: 'object',
+        properties: { path: { type: 'string' } },
+        required: ['path'],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: 'fastapi.post',
+      description: 'Call FastAPI backend POST endpoint',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string' },
+          body: { type: 'object' },
+        },
+        required: ['path'],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: 'services.provision',
+      description: 'Provision services for a tenant',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          tenantId: { type: 'string' },
+          services: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['tenantId', 'services'],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: 'services.status',
+      description: 'Get services status for a tenant',
+      inputSchema: {
+        type: 'object',
+        properties: { tenantId: { type: 'string' } },
+        required: ['tenantId'],
         additionalProperties: false,
       },
     },

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { tenantTools } from '../../../../mcp/tools/supabase-tenants';
+import { fastapiTools } from '../../../../mcp/tools/fastapi-proxy';
 import { logMcpInvocation } from '../../../../lib/supabase';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +27,7 @@ function rateLimit(key: string) {
 }
 
 type ToolFn = (args: any) => Promise<any>;
-const tools: Record<string, ToolFn> = { ...tenantTools };
+const tools: Record<string, ToolFn> = { ...tenantTools, ...fastapiTools };
 
 export async function POST(request: Request) {
   const enabled = process.env.MCP_ENABLED === 'true';
