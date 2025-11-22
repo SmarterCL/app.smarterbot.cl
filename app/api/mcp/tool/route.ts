@@ -44,13 +44,22 @@ export async function GET() {
   });
 }
 
+export async function HEAD() {
+  return new Response(null, { status: 200, headers: { 'x-mcp-tools': Object.keys(tools).length.toString() } })
+}
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: { 'Allow': 'GET,POST,HEAD,OPTIONS', 'Access-Control-Allow-Methods': 'GET,POST,HEAD,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' } })
+}
+
 export async function POST(request: Request) {
   const enabled = process.env.MCP_ENABLED === 'true';
   if (!enabled) {
     return NextResponse.json({ ok: false, error: 'mcp_disabled', message: 'MCP_ENABLED not true' }, { status: 403 });
   }
 
-  const { userId } = auth();
+  // Ensure we await auth() so userId/sessionId are resolved.
+  const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
