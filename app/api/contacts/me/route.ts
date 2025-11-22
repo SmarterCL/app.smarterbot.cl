@@ -10,14 +10,16 @@ const ensureValue = (value?: string | null, fallback = "") => {
 }
 
 export async function GET() {
-  const { userId } = auth()
+ const authObj = await auth()
+ const userId = authObj.userId
 
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 })
   }
 
   try {
-    const user = await clerkClient.users.getUser(userId)
+     const clerk = await clerkClient()
+     const user = await clerk.users.getUser(userId)
 
     const email =
       user.primaryEmailAddress?.emailAddress ||
@@ -29,6 +31,7 @@ export async function GET() {
     }
 
     const supabase = getSupabaseClient()
+   if (!supabase) throw new Error('Supabase not initialized')
 
     const { data, error } = await supabase
       .from("contacts")

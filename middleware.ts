@@ -1,60 +1,9 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { clerkMiddleware } from "@clerk/nextjs/server"
 
-// Simple check for demo mode
-function isDemoMode() {
-  return process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-}
+// Minimal Clerk middleware: protect dashboard; rely on Clerk config env vars
+export default clerkMiddleware()
 
-// Check if Clerk is properly configured
-function hasValidClerkConfig() {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  const secretKey = process.env.CLERK_SECRET_KEY
-
-  const hasValidPublishableKey =
-    Boolean(publishableKey) &&
-    publishableKey.startsWith("pk_") &&
-    publishableKey !== "pk_test_your_actual_publishable_key_here"
-  const hasValidSecretKey =
-    Boolean(secretKey) && secretKey.startsWith("sk_") && secretKey !== "sk_test_your_actual_secret_key_here"
-
-  return hasValidPublishableKey && hasValidSecretKey
-}
-
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"])
-
-export default function middleware(request: NextRequest) {
-  // If in demo mode, allow all requests
-  if (isDemoMode()) {
-    return NextResponse.next()
-  }
-
-  // If no valid Clerk config, redirect protected routes to home
-  if (!hasValidClerkConfig()) {
-    if (isProtectedRoute(request)) {
-      const url = request.nextUrl.clone()
-      url.pathname = "/"
-      url.searchParams.set("error", "config")
-      return NextResponse.redirect(url)
-    }
-    return NextResponse.next()
-  }
-
-  // Use Clerk middleware for protected routes with relaxed dev settings
-  return clerkMiddleware(
-    async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        await auth.protect()
-      }
-    },
-    {
-      // Modo desarrollo: acepta cookies de diferentes navegadores/contextos
-      debug: process.env.NODE_ENV === 'development',
-    }
-  )(request)
-}
-
+// Matcher limits auth to dashboard routes (others public)
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files

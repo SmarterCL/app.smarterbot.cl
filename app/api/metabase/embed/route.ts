@@ -17,7 +17,8 @@ export async function POST(req: Request) {
 
   // Clerk auth (reject if not logged-in)
   try {
-    const { userId } = auth()
+     const authObj = await auth()
+     const userId = authObj.userId
     if (!userId) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }

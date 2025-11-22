@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server"
+import { auth, clerkClient } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { createTenant } from "@/lib/supabase"
@@ -24,7 +24,8 @@ const tenantCreateSchema = z.object({
 export async function POST(req: Request) {
   try {
     // Auth check
-    const { userId, user } = await auth()
+    const authObj = await auth()
+    const userId = authObj.userId
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -47,6 +48,10 @@ export async function POST(req: Request) {
 
     // Normalize RUT (uppercase K, remove spaces)
     const normalizedRut = rut.trim().toUpperCase().replace(/\s/g, "")
+
+    // Get user email from Clerk
+    const clerk = await clerkClient()
+    const user = await clerk.users.getUser(userId)
 
     // Create tenant via Supabase helper
     const tenant = await createTenant({

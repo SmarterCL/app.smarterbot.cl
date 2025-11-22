@@ -15,7 +15,7 @@ const getEnv = () => {
   return { url, anonKey }
 }
 
-export function getSupabaseClient(options?: SupabaseClientOptions) {
+export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient {
   if (cachedClient) {
     return cachedClient
   }
@@ -30,7 +30,7 @@ export function getSupabaseClient(options?: SupabaseClientOptions) {
       },
     },
     ...options,
-  })
+  }) as SupabaseClient
 
   return cachedClient
 }
@@ -68,6 +68,7 @@ export type Tenant = {
  */
 export async function listTenantsForUser(clerkUserId: string) {
   const supabase = getSupabaseClient()
+ if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -85,6 +86,7 @@ export async function listTenantsForUser(clerkUserId: string) {
  */
 export async function getTenantById(tenantId: string) {
   const supabase = getSupabaseClient()
+ if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -108,6 +110,7 @@ export async function createTenant(tenant: {
   services_enabled?: Partial<Tenant["services_enabled"]>
 }) {
   const supabase = getSupabaseClient()
+ if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -137,6 +140,7 @@ export async function updateTenantServices(
   services: Partial<Tenant["services_enabled"]>
 ) {
   const supabase = getSupabaseClient()
+ if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -163,6 +167,7 @@ export async function updateTenantIntegrations(
   }
 ) {
   const supabase = getSupabaseClient()
+ if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")

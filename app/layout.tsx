@@ -1,5 +1,6 @@
 import type React from "react"
-import { ClerkProvider, type ClerkProviderProps } from "@clerk/nextjs"
+// ClerkProvider must run client-side; wrapped in ClerkWrapper
+import { ClerkWrapper } from "@/components/clerk-wrapper"
 import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Onest } from "next/font/google"
@@ -47,7 +48,7 @@ export const metadata = {
   generator: "v0.dev",
 }
 
-const localization = {
+const localization: any = {
   ...esES,
   unstable__errors: {
     ...esES.unstable__errors,
@@ -91,9 +92,9 @@ const localization = {
   },
 }
 
-const clerkAppearance: ClerkProviderProps["appearance"] = {
+const clerkAppearance = {
   layout: {
-    socialButtonsVariant: "blockButton",
+    socialButtonsVariant: "blockButton" as const,
   },
 }
 
@@ -190,7 +191,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider localization={localization} appearance={clerkAppearance}>
+    <ClerkWrapper localization={localization} appearance={clerkAppearance}>
       <html {...htmlAttributes}>
         <body className={baseBodyClass}>
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
@@ -199,6 +200,6 @@ export default function RootLayout({
           {children}
         </body>
       </html>
-    </ClerkProvider>
+    </ClerkWrapper>
   )
 }
