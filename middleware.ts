@@ -1,7 +1,7 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { clerkMiddleware } from "@clerk/nextjs/server"
 
-// Next.js 15 safe middleware: only path wildcards, no capturing groups / lookaheads
-export default authMiddleware({
+// Clerk middleware with explicit public routes; avoids invalid regex groups for Next 15
+export default clerkMiddleware({
   publicRoutes: [
     "/",
     "/sign-in",
