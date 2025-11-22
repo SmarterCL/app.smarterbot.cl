@@ -46,6 +46,7 @@ export default function McpConsoleClient({ mcpEnabled }: Props) {
       const res = await fetch('/api/mcp/tool', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ name: toolName, args: parsedArgs }),
       })
       const data = await res.json()
