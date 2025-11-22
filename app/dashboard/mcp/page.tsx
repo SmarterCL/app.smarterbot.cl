@@ -3,13 +3,18 @@ import { redirect } from 'next/navigation'
 import McpConsoleClient from '@/components/mcp-console-client'
 
 export default async function McpConsolePage() {
+  let authError: string | null = null
+  let userId: string | null = null
   try {
-    const { userId } = await auth()
-    if (!userId) redirect('/')
-  } catch (error) {
+    const a = await auth()
+    userId = a.userId
+    if (!a.userId) redirect('/')
+  } catch (error: any) {
+    authError = error?.message || 'unknown auth error'
+    console.error('[MCP_DASHBOARD_AUTH_ERROR]', authError)
     redirect('/')
   }
-  
+
   const mcpEnabled = process.env.MCP_ENABLED === 'true'
   
   return (
@@ -27,6 +32,9 @@ export default async function McpConsolePage() {
           </div>
         </div>
         
+        {authError && (
+          <div className="text-sm text-red-500">Auth error: {authError}</div>
+        )}
         <McpConsoleClient mcpEnabled={mcpEnabled} />
       </div>
     </div>
