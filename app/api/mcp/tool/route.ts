@@ -59,8 +59,22 @@ export async function POST(request: Request) {
   }
 
   // Ensure we await auth() so userId/sessionId are resolved.
-  const { userId } = await auth();
+  const { userId, sessionId } = await auth();
   if (!userId) {
+    // Allow a debug inspection if caller passes ?debug=1
+    const url = new URL(request.url);
+    if (url.searchParams.get('debug') === '1') {
+      return NextResponse.json({
+        ok: false,
+        error: 'unauthorized',
+        debug: {
+          cookies: request.headers.get('cookie') || null,
+          hasAuth: !!userId,
+          sessionId: sessionId || null,
+          note: 'No userId from Clerk auth(); verify cookie domain and Clerk configuration.'
+        }
+      }, { status: 401 });
+    }
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
 
