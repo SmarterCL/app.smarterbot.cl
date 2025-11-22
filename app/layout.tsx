@@ -53,6 +53,41 @@ const localization = {
     ...esES.unstable__errors,
     form_identifier_exists__email_address:
       "El correo electrónico asociado a esta cuenta OAuth ya está vinculado a otro usuario. Inicia sesión con ese perfil o conecta un correo distinto.",
+    form_password_pwned:
+      "Esta contraseña ha sido comprometida en una filtración de datos y no se puede usar. Por favor, elige otra.",
+    form_username_invalid_character:
+      "El nombre de usuario contiene caracteres no válidos.",
+    form_param_format_invalid:
+      "Formato inválido. Por favor, revisa los datos ingresados.",
+    form_identifier_not_found:
+      "No se encontró ninguna cuenta con este correo electrónico.",
+    form_password_incorrect:
+      "Contraseña incorrecta. Por favor, inténtalo de nuevo.",
+    clerk_js_error:
+      "Error de autenticación. Por favor, recarga la página.",
+  },
+  signIn: {
+    ...esES.signIn,
+    start: {
+      title: "Iniciar sesión",
+      subtitle: "para continuar a {{applicationName}}",
+      actionText: "¿No tienes una cuenta?",
+      actionLink: "Regístrate",
+    },
+    password: {
+      title: "Ingresa tu contraseña",
+      subtitle: "para continuar a {{applicationName}}",
+      actionLink: "Usar otro método",
+    },
+  },
+  signUp: {
+    ...esES.signUp,
+    start: {
+      title: "Crear cuenta",
+      subtitle: "para continuar a {{applicationName}}",
+      actionText: "¿Ya tienes una cuenta?",
+      actionLink: "Inicia sesión",
+    },
   },
 }
 
