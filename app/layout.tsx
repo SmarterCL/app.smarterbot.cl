@@ -3,6 +3,7 @@ import type React from "react"
 import { ClerkWrapper } from "@/components/clerk-wrapper"
 import { esES } from "@clerk/localizations"
 import Script from "next/script"
+import { Analytics } from '@vercel/analytics/react'
 import { Onest } from "next/font/google"
 
 import "./globals.css"
@@ -140,6 +141,7 @@ export default function RootLayout({
             {themeInitScript}
           </Script>
           {children}
+          <Analytics />
         </body>
       </html>
     )
@@ -157,6 +159,7 @@ export default function RootLayout({
             {themeInitScript}
           </Script>
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkWrapper>

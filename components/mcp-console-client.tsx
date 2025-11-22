@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { track } from '@vercel/analytics/react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -51,6 +52,14 @@ export default function McpConsoleClient({ mcpEnabled }: Props) {
       })
       const data = await res.json()
       setResult(data)
+      try {
+        track('mcp_tool_invoked', {
+          tool: toolName,
+          ok: !!data?.ok,
+          error: data?.error || null,
+          durationMs: data?.meta?.durationMs || null,
+        })
+      } catch {}
     } catch (err: any) {
       setResult({ ok: false, error: 'client_error', message: err.message })
     } finally {
