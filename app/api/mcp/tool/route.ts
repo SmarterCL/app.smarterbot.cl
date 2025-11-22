@@ -29,6 +29,21 @@ function rateLimit(key: string) {
 type ToolFn = (args: any) => Promise<any>;
 const tools: Record<string, ToolFn> = { ...tenantTools, ...fastapiTools };
 
+export async function GET() {
+  // Provide a simple descriptor so a browser visit (GET) doesn't yield 405.
+  const enabled = process.env.MCP_ENABLED === 'true';
+  const available = Object.keys(tools).sort();
+  return NextResponse.json({
+    ok: true,
+    enabled,
+    usage: {
+      method: 'POST',
+      bodyExample: { name: 'tenants.list', args: {} },
+    },
+    availableTools: available,
+  });
+}
+
 export async function POST(request: Request) {
   const enabled = process.env.MCP_ENABLED === 'true';
   if (!enabled) {
