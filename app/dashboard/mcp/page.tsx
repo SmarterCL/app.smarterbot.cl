@@ -2,21 +2,39 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import McpConsoleClient from '@/components/mcp-console-client'
 
+// Force dynamic rendering; avoid any accidental static optimization
+export const dynamic = 'force-dynamic'
+
 export default async function McpConsolePage() {
   let authError: string | null = null
   let userId: string | null = null
   try {
     const a = await auth()
     userId = a.userId
-    if (!a.userId) redirect('/')
+    if (!a.userId) {
+      console.warn('[MCP_DASHBOARD_AUTH_MISSING_USER] redirecting to /')
+      redirect('/')
+    }
+    console.log('[MCP_DASHBOARD_AUTH_SUCCESS]', { userId })
   } catch (error: any) {
     authError = error?.message || 'unknown auth error'
     console.error('[MCP_DASHBOARD_AUTH_ERROR]', authError)
-    redirect('/')
+    // Instead of redirecting (which hides root cause), render a fallback
+    return (
+      <div className="min-h-screen p-6">
+        <div className="max-w-xl mx-auto space-y-4">
+          <h1 className="text-2xl font-bold">MCP Console</h1>
+          <div className="p-4 rounded border border-red-500/40 bg-red-500/10 text-red-500 text-sm">
+            Authentication failed: {authError}
+          </div>
+          <p className="text-sm text-muted-foreground">If this persists, verify Clerk keys (`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`) and that the domain is added to Clerk dashboard.</p>
+        </div>
+      </div>
+    )
   }
 
   const mcpEnabled = process.env.MCP_ENABLED === 'true'
-  
+
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -31,10 +49,7 @@ export default async function McpConsolePage() {
             </div>
           </div>
         </div>
-        
-        {authError && (
-          <div className="text-sm text-red-500">Auth error: {authError}</div>
-        )}
+
         <McpConsoleClient mcpEnabled={mcpEnabled} />
       </div>
     </div>
