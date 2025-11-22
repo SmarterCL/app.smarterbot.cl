@@ -1,7 +1,13 @@
 import { clerkMiddleware } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
 
-// Minimal Clerk middleware: protect dashboard; rely on Clerk config env vars
-export default clerkMiddleware()
+// Custom Clerk middleware: bypass env diagnostic endpoint so it can report missing vars
+export default clerkMiddleware((auth, req) => {
+  const { pathname } = req.nextUrl
+  if (pathname.startsWith("/api/env/diagnostic")) {
+    return NextResponse.next()
+  }
+})
 
 // Matcher limits auth to dashboard routes (others public)
 export const config = {
