@@ -1,5 +1,20 @@
 import { NextResponse } from "next/server";
 
+// GET handler to allow browser access without 405
+export async function GET() {
+  return NextResponse.json(
+    {
+      message: "Usa POST para enviar contacto de prueba",
+      example: {
+        method: "POST",
+        endpoint: "/api/contacts/test",
+        curl: "curl -X POST http://localhost:3000/api/contacts/test",
+      },
+    },
+    { status: 200 }
+  );
+}
+
 // Test contact flow: proxies to FastAPI (assumes ENV has FASTAPI_URL)
 export async function POST() {
   const api = process.env.FASTAPI_URL || "http://127.0.0.1:8000";
@@ -9,7 +24,6 @@ export async function POST() {
       email: `test+${Date.now()}@example.com`,
       source: "dashboard-test",
     };
-    // Assuming FastAPI endpoint /contacts accepts POST JSON
     const res = await fetch(`${api}/contacts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
