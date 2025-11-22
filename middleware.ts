@@ -41,12 +41,18 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Use Clerk middleware for protected routes
-  return clerkMiddleware(async (auth, req) => {
-    if (isProtectedRoute(req)) {
-      await auth.protect()
+  // Use Clerk middleware for protected routes with relaxed dev settings
+  return clerkMiddleware(
+    async (auth, req) => {
+      if (isProtectedRoute(req)) {
+        await auth.protect()
+      }
+    },
+    {
+      // Modo desarrollo: acepta cookies de diferentes navegadores/contextos
+      debug: process.env.NODE_ENV === 'development',
     }
-  })(request)
+  )(request)
 }
 
 export const config = {
