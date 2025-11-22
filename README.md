@@ -35,6 +35,35 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 Set `NEXT_PUBLIC_ENABLE_AUTH_DEBUG=true` only while debugging user sessions; production deployments keep it `false`.
 
+### Production Environment Variables
+
+Set ONLY the following in Vercel for a stable deployment:
+
+Required:
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `CLERK_SECRET_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `FASTAPI_URL`
+
+Optional (use only if referenced):
+- `NEXT_PUBLIC_CLERK_SIGN_IN_URL` (`/sign-in`)
+- `NEXT_PUBLIC_CLERK_SIGN_UP_URL` (`/sign-up`)
+- `NEXT_PUBLIC_DEMO_MODE`
+- `RESEND_API_KEY`
+
+Remove / do not set (not used by the Next.js app, can cause confusion):
+`anonpublic`, `service_rolesecret`, `SUPABASE_URL`, `SUPABASE_JWT_SECRET`, `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, `POSTGRES_USER`, `POSTGRES_PASSWORD`.
+
+Verification scripts:
+
+```bash
+pnpm ts-node scripts/env-audit.ts
+./scripts/env-verify.sh
+```
+
+Production check endpoint: `/api/env/diagnostic`.
+
 ### Demo Mode
 
 Setting `NEXT_PUBLIC_DEMO_MODE=true` switches the landing page and `/dashboard` to demo flows that skip Clerk authentication and redirect to the in-memory demo dashboard (`/demo-dashboard`).
