@@ -4,19 +4,5 @@
   "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
   "framework": "nextjs",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_DEMO_MODE": {
-      "type": "plain",
-      "value": "true"
-    },
-    "NEXT_PUBLIC_APP_URL": {
-      "type": "plain",
-      "value": "https://app.smarterbot.cl"
-    },
-    "NODE_ENV": {
-      "type": "plain",
-      "value": "production"
-    }
-  }
+  "outputDirectory": ".next"
 }
