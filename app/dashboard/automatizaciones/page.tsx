@@ -41,38 +41,29 @@ export default function AutomatizacionesPage() {
   async function loadWorkflows() {
     setLoading(true);
     try {
-      // Primero intentamos cargar desde la API real
-      const response = await fetch('https://api.smarterbot.cl/n8n/templates');
+      // Cargar desde la API local de Next.js
+      const response = await fetch(`/api/workflows?page=${currentPage}&limit=${ITEMS_PER_PAGE}`);
 
       if (response.ok) {
         const data = await response.json();
-        const templates = data.workflows || [];
-        
-        // Transformar templates a formato de workflow con data demo
-        const transformedWorkflows = templates.slice(
-          (currentPage - 1) * ITEMS_PER_PAGE,
-          currentPage * ITEMS_PER_PAGE
-        ).map((t: any, idx: number) => ({
-          id: t.id,
-          name: t.name,
-          description: t.description,
-          category: data.categories?.[t.category]?.name || t.category,
-          executions_today: Math.floor(Math.random() * 50),
-          last_execution: ['2 min', '5 min', '10 min', '1 hora', '2 horas'][idx % 5],
-          status: t.active ? 'active' : 'inactive',
-          n8n_id: Math.floor(Math.random() * 1000)
-        }));
-        
-        setWorkflows(transformedWorkflows);
-        setTotalPages(Math.ceil(templates.length / ITEMS_PER_PAGE));
+        setWorkflows(data.workflows || []);
+        setTotalPages(data.totalPages || 1);
       } else {
-        setWorkflows(getDemoWorkflows());
-        setTotalPages(1);
+        // Fallback a workflows demo
+        const demoWorkflows = getDemoWorkflows();
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        setWorkflows(demoWorkflows.slice(start, end));
+        setTotalPages(Math.ceil(demoWorkflows.length / ITEMS_PER_PAGE));
       }
     } catch (error) {
       console.error('Error loading workflows:', error);
-      setWorkflows(getDemoWorkflows());
-      setTotalPages(1);
+      // Fallback a workflows demo
+      const demoWorkflows = getDemoWorkflows();
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      setWorkflows(demoWorkflows.slice(start, end));
+      setTotalPages(Math.ceil(demoWorkflows.length / ITEMS_PER_PAGE));
     } finally {
       setLoading(false);
     }
