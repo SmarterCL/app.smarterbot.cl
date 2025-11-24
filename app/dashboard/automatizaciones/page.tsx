@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -12,7 +10,9 @@ import {
   Activity,
   Calendar,
   Clock,
-  TrendingUp 
+  TrendingUp,
+  Power,
+  PowerOff
 } from 'lucide-react';
 
 interface Workflow {
@@ -41,7 +41,6 @@ export default function AutomatizacionesPage() {
   async function loadWorkflows() {
     setLoading(true);
     try {
-      // Use internal API that reads from GitHub
       const response = await fetch(
         `/api/workflows?page=${currentPage}&limit=${ITEMS_PER_PAGE}`
       );
@@ -202,130 +201,141 @@ export default function AutomatizacionesPage() {
 
   function getCategoryColor(category: string) {
     const colors: Record<string, string> = {
-      'Comunicación': 'bg-blue-500/10 text-blue-500',
-      'Calendario': 'bg-green-500/10 text-green-500',
-      'Reportes': 'bg-purple-500/10 text-purple-500',
-      'E-commerce': 'bg-orange-500/10 text-orange-500',
-      'Marketing': 'bg-pink-500/10 text-pink-500',
-      'Automatización': 'bg-cyan-500/10 text-cyan-500',
-      'IA': 'bg-violet-500/10 text-violet-500',
-      'Mantenimiento': 'bg-gray-500/10 text-gray-500',
+      'Comunicación': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+      'Calendario': 'bg-green-500/10 text-green-500 border-green-500/20',
+      'Reportes': 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+      'E-commerce': 'bg-orange-500/10 text-orange-500 border-orange-500/20',
+      'Marketing': 'bg-pink-500/10 text-pink-500 border-pink-500/20',
+      'Automatización': 'bg-cyan-500/10 text-cyan-500 border-cyan-500/20',
+      'IA': 'bg-violet-500/10 text-violet-500 border-violet-500/20',
+      'Mantenimiento': 'bg-gray-500/10 text-gray-500 border-gray-500/20',
     };
-    return colors[category] || 'bg-gray-500/10 text-gray-500';
+    return colors[category] || 'bg-gray-500/10 text-gray-500 border-gray-500/20';
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Automatizaciones en SmarterOS</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl font-bold">Automatizaciones en SmarterOS</h1>
+        <p className="text-sm text-muted-foreground">
           Controla tus flujos de N8N desde el dashboard
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Workflows Activos
-                </p>
-                <p className="text-2xl font-bold">
-                  {workflows.filter(w => w.status === 'active').length}
-                </p>
-              </div>
-              <Activity className="h-8 w-8 text-green-500" />
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Workflows Activos
+              </p>
+              <p className="text-2xl font-bold">
+                {workflows.filter(w => w.status === 'active').length}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <Activity className="h-8 w-8 text-green-500" />
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Ejecuciones Hoy
-                </p>
-                <p className="text-2xl font-bold">
-                  {workflows.reduce((sum, w) => sum + w.executions_today, 0)}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-blue-500" />
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Ejecuciones Hoy
+              </p>
+              <p className="text-2xl font-bold">
+                {workflows.reduce((sum, w) => sum + w.executions_today, 0)}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <TrendingUp className="h-8 w-8 text-blue-500" />
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Total Workflows
-                </p>
-                <p className="text-2xl font-bold">{workflows.length}</p>
-              </div>
-              <Calendar className="h-8 w-8 text-purple-500" />
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Total Workflows
+              </p>
+              <p className="text-2xl font-bold">{workflows.length}</p>
             </div>
-          </CardContent>
-        </Card>
+            <Calendar className="h-8 w-8 text-purple-500" />
+          </div>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {workflows.map((workflow) => (
-          <Card key={workflow.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="space-y-2 flex-1">
-                  <div className="flex items-center gap-3">
-                    <CardTitle className="text-xl">{workflow.name}</CardTitle>
-                    <Badge className={getCategoryColor(workflow.category)} variant="secondary">
+          <div 
+            key={workflow.id}
+            className="rounded-lg border bg-card hover:bg-accent/5 transition-colors"
+          >
+            <div className="p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-semibold">{workflow.name}</h3>
+                    <Badge 
+                      variant="outline" 
+                      className={getCategoryColor(workflow.category)}
+                    >
                       {workflow.category}
                     </Badge>
-                    <Badge variant={workflow.status === 'active' ? 'default' : 'outline'}>
+                    <Badge variant="secondary" className="text-xs">
                       N8N #{workflow.n8n_id}
                     </Badge>
                   </div>
-                  <CardDescription>{workflow.description}</CardDescription>
                   
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
+                    {workflow.description}
+                  </p>
+                  
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <Activity className="h-4 w-4" />
+                      <Activity className="h-3 w-3" />
                       <span>{workflow.executions_today} ejecuciones hoy</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>Último disparo hace {workflow.last_execution}</span>
+                      <Clock className="h-3 w-3" />
+                      <span>hace {workflow.last_execution}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
-                    size="icon"
+                    size="sm"
                     onClick={() => triggerWorkflow(workflow.id)}
                     title="Ejecutar ahora"
                   >
                     <Play className="h-4 w-4" />
                   </Button>
                   
-                  <Switch
-                    checked={workflow.status === 'active'}
-                    onCheckedChange={() => toggleWorkflow(workflow.id, workflow.status)}
-                  />
+                  <Button
+                    variant={workflow.status === 'active' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleWorkflow(workflow.id, workflow.status)}
+                    title={workflow.status === 'active' ? 'Desactivar' : 'Activar'}
+                  >
+                    {workflow.status === 'active' ? (
+                      <Power className="h-4 w-4" />
+                    ) : (
+                      <PowerOff className="h-4 w-4" />
+                    )}
+                  </Button>
                 </div>
               </div>
-            </CardHeader>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
 
@@ -333,7 +343,7 @@ export default function AutomatizacionesPage() {
         <div className="flex items-center justify-center gap-2">
           <Button
             variant="outline"
-            size="icon"
+            size="sm"
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
           >
@@ -345,7 +355,7 @@ export default function AutomatizacionesPage() {
               <Button
                 key={page}
                 variant={currentPage === page ? 'default' : 'outline'}
-                size="icon"
+                size="sm"
                 onClick={() => setCurrentPage(page)}
               >
                 {page}
@@ -355,7 +365,7 @@ export default function AutomatizacionesPage() {
 
           <Button
             variant="outline"
-            size="icon"
+            size="sm"
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
           >
@@ -364,23 +374,21 @@ export default function AutomatizacionesPage() {
         </div>
       )}
 
-      <Card className="bg-primary/5 border-primary/20">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold">Ver dashboard completo en N8N</h3>
-              <p className="text-sm text-muted-foreground">
-                Accede a n8n.smarterbot.cl para configuración avanzada
-              </p>
-            </div>
-            <Button asChild>
-              <a href="https://n8n.smarterbot.cl" target="_blank" rel="noopener noreferrer">
-                Ver dashboard
-              </a>
-            </Button>
+      <div className="rounded-lg border bg-primary/5 border-primary/20 p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-sm">Ver dashboard completo en N8N</h3>
+            <p className="text-xs text-muted-foreground">
+              Accede a n8n.smarterbot.cl para configuración avanzada
+            </p>
           </div>
-        </CardContent>
-      </Card>
+          <Button size="sm" asChild>
+            <a href="https://n8n.smarterbot.cl" target="_blank" rel="noopener noreferrer">
+              Ir a N8N
+            </a>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
