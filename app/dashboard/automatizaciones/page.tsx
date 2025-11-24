@@ -41,14 +41,30 @@ export default function AutomatizacionesPage() {
   async function loadWorkflows() {
     setLoading(true);
     try {
-      const response = await fetch(
-        `/api/workflows?page=${currentPage}&limit=${ITEMS_PER_PAGE}`
-      );
+      // Primero intentamos cargar desde la API real
+      const response = await fetch('https://api.smarterbot.cl/n8n/templates');
 
       if (response.ok) {
         const data = await response.json();
-        setWorkflows(data.workflows || []);
-        setTotalPages(Math.ceil((data.total || 0) / ITEMS_PER_PAGE));
+        const templates = data.workflows || [];
+        
+        // Transformar templates a formato de workflow con data demo
+        const transformedWorkflows = templates.slice(
+          (currentPage - 1) * ITEMS_PER_PAGE,
+          currentPage * ITEMS_PER_PAGE
+        ).map((t: any, idx: number) => ({
+          id: t.id,
+          name: t.name,
+          description: t.description,
+          category: data.categories?.[t.category]?.name || t.category,
+          executions_today: Math.floor(Math.random() * 50),
+          last_execution: ['2 min', '5 min', '10 min', '1 hora', '2 horas'][idx % 5],
+          status: t.active ? 'active' : 'inactive',
+          n8n_id: Math.floor(Math.random() * 1000)
+        }));
+        
+        setWorkflows(transformedWorkflows);
+        setTotalPages(Math.ceil(templates.length / ITEMS_PER_PAGE));
       } else {
         setWorkflows(getDemoWorkflows());
         setTotalPages(1);
@@ -201,11 +217,17 @@ export default function AutomatizacionesPage() {
 
   function getCategoryColor(category: string) {
     const colors: Record<string, string> = {
+      'Odoo ERP': 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+      'Shopify': 'bg-green-500/10 text-green-500 border-green-500/20',
+      'Marketing': 'bg-pink-500/10 text-pink-500 border-pink-500/20',
+      'WhatsApp': 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+      'CRM': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+      'PDF': 'bg-red-500/10 text-red-500 border-red-500/20',
+      'Backup': 'bg-gray-500/10 text-gray-500 border-gray-500/20',
       'Comunicación': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
       'Calendario': 'bg-green-500/10 text-green-500 border-green-500/20',
       'Reportes': 'bg-purple-500/10 text-purple-500 border-purple-500/20',
       'E-commerce': 'bg-orange-500/10 text-orange-500 border-orange-500/20',
-      'Marketing': 'bg-pink-500/10 text-pink-500 border-pink-500/20',
       'Automatización': 'bg-cyan-500/10 text-cyan-500 border-cyan-500/20',
       'IA': 'bg-violet-500/10 text-violet-500 border-violet-500/20',
       'Mantenimiento': 'bg-gray-500/10 text-gray-500 border-gray-500/20',

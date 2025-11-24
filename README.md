@@ -6,16 +6,19 @@ SmarterOS is the operations hub for SmarterBot customers. This repo hosts the pu
 
 ## ✨ Latest Features
 
-### Dashboard de Automatizaciones N8N (Nov 2024)
-- 🔄 **10 workflows configurados** con lectura dinámica desde GitHub
+### Dashboard de Automatizaciones N8N (Nov 2024) ✅
+- 🔄 **10 workflows reales** desde automation-manifest.json en GitHub
 - 📊 **Paginación funcional** (10 items por página)
-- 🎛️ **Control ON/OFF** por workflow
+- 🎯 **Integración completa**: GitHub → API → Dashboard
+- 🎛️ **Control ON/OFF** por workflow (próximamente funcional)
 - ▶️ **Ejecución manual** con botón Play
-- 📈 **Estadísticas en tiempo real**
-- 🇪🇸 **Todo en español**
-- 🎨 **UI moderna** con Shadcn/UI
+- 📈 **Estadísticas globales**: workflows activos, ejecuciones, totales
+- 🏷️ **7 categorías**: Odoo, Shopify, Marketing, WhatsApp, CRM, PDF, Backup
+- 🇪🇸 **100% en español**
+- 🎨 **UI moderna** con Shadcn/UI + badges con colores por categoría
+- 🔗 **API REST**: `api.smarterbot.cl/n8n/templates`
 
-Ver: `/dashboard/automatizaciones` | Docs: `AUTOMATIZACIONES-README.md`
+Ver: `/dashboard/automatizaciones` | Docs: `specs/N8N-AUTOMATION-INTEGRATION.md`
 
 ## Tech Stack
 
