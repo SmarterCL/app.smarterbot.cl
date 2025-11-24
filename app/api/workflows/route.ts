@@ -21,11 +21,11 @@ async function fetchTemplates(): Promise<WorkflowTemplate[]> {
   }
 
   try {
+    // Fetch automation-manifest.json directly from GitHub
     const response = await fetch(
-      'https://api.github.com/repos/SmarterCL/n8n-workflows/contents/templates',
+      'https://raw.githubusercontent.com/SmarterCL/n8n-workflows/main/automation-manifest.json',
       {
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
           'User-Agent': 'SmarterOS-Dashboard'
         },
         next: { revalidate: 600 }
@@ -36,38 +36,14 @@ async function fetchTemplates(): Promise<WorkflowTemplate[]> {
       throw new Error(`GitHub API error: ${response.status}`);
     }
 
-    const contents = await response.json();
-    const templates: WorkflowTemplate[] = [];
-    let id = 1;
-
-    for (const item of contents) {
-      if (item.type === 'dir') {
-        const category = formatCategory(item.name);
-        
-        const categoryResponse = await fetch(item.url, {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'SmarterOS-Dashboard'
-          }
-        });
-
-        if (categoryResponse.ok) {
-          const files = await categoryResponse.json();
-          
-          for (const file of files) {
-            if (file.name.endsWith('.json')) {
-              templates.push({
-                id: String(id++),
-                name: formatWorkflowName(file.name),
-                description: await getWorkflowDescription(file.download_url),
-                category,
-                file_path: file.path
-              });
-            }
-          }
-        }
-      }
-    }
+    const manifest = await response.json();
+    const templates: WorkflowTemplate[] = manifest.workflows.map((workflow: any) => ({
+      id: workflow.id,
+      name: workflow.name,
+      description: workflow.description,
+      category: manifest.categories[workflow.category]?.name || workflow.category,
+      file_path: workflow.path
+    }));
 
     templatesCache = {
       data: templates,
