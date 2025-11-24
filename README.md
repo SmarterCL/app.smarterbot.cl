@@ -4,6 +4,19 @@ SmarterOS is the operations hub for SmarterBot customers. This repo hosts the pu
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/smarterbotcl/app-smarterbot-cl)
 
+## ✨ Latest Features
+
+### Dashboard de Automatizaciones N8N (Nov 2024)
+- 🔄 **10 workflows configurados** con lectura dinámica desde GitHub
+- 📊 **Paginación funcional** (10 items por página)
+- 🎛️ **Control ON/OFF** por workflow
+- ▶️ **Ejecución manual** con botón Play
+- 📈 **Estadísticas en tiempo real**
+- 🇪🇸 **Todo en español**
+- 🎨 **UI moderna** con Shadcn/UI
+
+Ver: `/dashboard/automatizaciones` | Docs: `AUTOMATIZACIONES-README.md`
+
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router, React 19)
@@ -11,7 +24,8 @@ SmarterOS is the operations hub for SmarterBot customers. This repo hosts the pu
 - **Styling:** Tailwind CSS + custom design tokens (SmarterOS theme)
 - **Forms & Validation:** React Hook Form, Zod
 - **Charts & UI:** Shadcn UI components, Lucide icons, Recharts
- - **Protocol / Extensibility:** (Planned) Model Context Protocol server (`/mcp/server/index.ts`)
+- **Automation:** N8N Integration (workflows dashboard)
+- **Protocol / Extensibility:** (Planned) Model Context Protocol server (`/mcp/server/index.ts`)
 
 ## Getting Started
 
@@ -198,3 +212,44 @@ The main branch is deployed on Vercel to `app.smarterbot.cl`. Pushing to `main` 
 3. Provide screenshots or Loom videos when altering UI layouts.
 
 For support or design requests, reach the SmarterBot team on Slack or at `soporte@smarterbot.cl`.
+
+## 📂 Project Structure
+
+```
+app-smarterbot-cl/
+├── app/
+│   ├── dashboard/
+│   │   ├── automatizaciones/    # ✨ N8N Workflows Dashboard
+│   │   ├── mcp/                 # MCP Tools
+│   │   └── tenant/              # Tenant Management
+│   ├── api/
+│   │   └── workflows/           # ✨ Workflows API
+│   └── page.tsx                 # Landing page
+├── components/
+│   └── ui/                      # Shadcn UI components
+├── lib/                         # Utilities
+├── mcp/                         # MCP Server
+├── specs/                       # ✨ Technical specifications
+└── styles/                      # Global styles
+```
+
+## 🚀 New Features
+
+### Dashboard de Automatizaciones
+Control workflows de N8N desde la interfaz web:
+- **URL**: `/dashboard/automatizaciones`
+- **API**: `/api/workflows`
+- **Specs**: `specs/dashboard-automatizaciones.md`
+
+#### 10 Workflows Implementados:
+1. WhatsApp Leads → CRM
+2. Agenda Confirmaciones
+3. Reporte Diario a Sheets
+4. Slack Notificaciones Ventas
+5. Email Marketing Automatizado
+6. Sync Shopify → Odoo
+7. Procesar Facturas PDF
+8. Bot AI WhatsApp
+9. Backup Automático Diario
+10. Monitor Redes Sociales
+
