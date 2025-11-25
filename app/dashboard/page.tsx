@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import DashboardContent from "@/components/dashboard-content"
 import AuthDebug from "@/components/auth-debug"
@@ -64,17 +64,9 @@ export default async function Dashboard() {
     if (!userId) {
       redirect("/auth/sign-in")
     }
-
-    // Check if user has RUT metadata; if not, redirect to onboarding
-    const user = await currentUser()
-    const hasRut = user?.publicMetadata?.rut
-
-    if (!hasRut) {
-      redirect("/auth/onboarding")
-    }
   } catch (error) {
-    // If auth fails, redirect to home
-    redirect("/")
+    // If auth fails, redirect to sign-in
+    redirect("/auth/sign-in")
   }
 
   return (
