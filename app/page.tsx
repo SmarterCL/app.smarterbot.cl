@@ -1,9 +1,7 @@
-import { Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import DemoModeToggle from "@/components/demo-mode-toggle"
-import AuthChecker from "@/components/auth-checker"
 import { Badge } from "@/components/ui/badge"
+import AuthCard from "./auth/components/AuthCard"
 
 export const dynamic = "force-dynamic"
 
@@ -39,15 +37,7 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
 function LoginSection({ className = "" }: { className?: string }) {
   return (
     <div className={`space-y-3 ${className}`}>
-      <Suspense
-        fallback={
-          <div className="flex justify-center py-4">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-transparent" />
-          </div>
-        }
-      >
-        <AuthChecker />
-      </Suspense>
+      <AuthCard />
       <div className="hidden sm:block">
         <LoginSupportPanel />
       </div>
@@ -92,28 +82,6 @@ function HeroIllustration({ className = "" }: { className?: string }) {
 }
 
 export default function Home() {
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-
-  if (isDemoMode) {
-    return (
-      <div className="min-h-screen bg-background text-foreground">
-        <main className="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-16">
-          <section className="space-y-8 text-center">
-            <div className="space-y-4">
-              <HeaderBadge label="Acceso libre" />
-              <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-                Explora SmarterOS sin configuración
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                Prueba la experiencia completa antes de conectar tus credenciales reales.
-              </p>
-            </div>
-            <DemoModeToggle />
-          </section>
-        </main>
-      </div>
-    )
-  }
 
   return (
     <div className="relative z-0 flex min-h-screen flex-col bg-white text-foreground">

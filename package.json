@@ -79,6 +79,9 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "pnpm": {
     "allowedBuilds": {
       "@clerk/shared": true,

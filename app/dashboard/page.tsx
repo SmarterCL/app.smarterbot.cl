@@ -56,20 +56,14 @@ function TenantDashboardClient() {
 
 export default async function Dashboard() {
   // Check if we're in demo mode
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-  const shouldRenderAuthDebug =
-    process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
-
-  if (isDemoMode) {
-    // In demo mode, redirect to demo dashboard
-    redirect("/demo-dashboard")
-  }
+   const shouldRenderAuthDebug =
+     process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
 
   try {
     const { userId } = await auth()
 
     if (!userId) {
-      redirect("/")
+       redirect("/auth/sign-in")
     }
   } catch (error) {
     // If auth fails, redirect to home
