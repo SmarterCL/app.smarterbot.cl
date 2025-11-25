@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server"
+import { auth, currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import DashboardContent from "@/components/dashboard-content"
 import AuthDebug from "@/components/auth-debug"
@@ -55,15 +55,22 @@ function TenantDashboardClient() {
 }
 
 export default async function Dashboard() {
-  // Check if we're in demo mode
-   const shouldRenderAuthDebug =
-     process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
+  const shouldRenderAuthDebug =
+    process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
 
   try {
     const { userId } = await auth()
 
     if (!userId) {
-       redirect("/auth/sign-in")
+      redirect("/auth/sign-in")
+    }
+
+    // Check if user has RUT metadata; if not, redirect to onboarding
+    const user = await currentUser()
+    const hasRut = user?.publicMetadata?.rut
+
+    if (!hasRut) {
+      redirect("/auth/onboarding")
     }
   } catch (error) {
     // If auth fails, redirect to home
