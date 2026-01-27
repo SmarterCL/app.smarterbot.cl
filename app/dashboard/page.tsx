@@ -1,7 +1,6 @@
-import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase"
 import DashboardContent from "@/components/dashboard-content"
-import AuthDebug from "@/components/auth-debug"
 import TenantSelector from "@/components/tenant-selector"
 import ServiceCard from "@/components/service-card"
 import React from "react"
@@ -55,29 +54,18 @@ function TenantDashboardClient() {
 }
 
 export default async function Dashboard() {
-  const shouldRenderAuthDebug =
-    process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_ENABLE_AUTH_DEBUG === "true"
+  const supabase = createClient();
 
-  try {
-    const { userId } = await auth()
+  const { data: { session } } = await supabase.auth.getSession();
 
-    if (!userId) {
-      redirect("/auth/sign-in")
-    }
-  } catch (error) {
-    // If auth fails, redirect to sign-in
-    redirect("/auth/sign-in")
+  if (!session) {
+    redirect("/auth/sign-in");
   }
 
   return (
     <div className="space-y-8">
       <TenantDashboardClient />
       <DashboardContent />
-      {shouldRenderAuthDebug ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AuthDebug />
-        </div>
-      ) : null}
     </div>
   )
 }

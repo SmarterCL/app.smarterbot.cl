@@ -1,7 +1,7 @@
-import { auth, clerkClient } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
 import { z } from "zod"
-import { createTenant } from "@/lib/supabase"
+import { createClient, createTenant } from "@/lib/supabase"
 
 // Validación RUT chileno (formato: 12345678-9 o 12345678-K)
 const rutRegex = /^\d{7,8}-[\dkK]$/
@@ -23,10 +23,19 @@ const tenantCreateSchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    // Auth check
-    const authObj = await auth()
-    const userId = authObj.userId
-    if (!userId) {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('sb-access-token')?.value
+
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const supabase = createClient({
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    })
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -49,17 +58,13 @@ export async function POST(req: Request) {
     // Normalize RUT (uppercase K, remove spaces)
     const normalizedRut = rut.trim().toUpperCase().replace(/\s/g, "")
 
-    // Get user email from Clerk
-    const clerk = await clerkClient()
-    const user = await clerk.users.getUser(userId)
-
     // Create tenant via Supabase helper
     const tenant = await createTenant({
       rut: normalizedRut,
       business_name: business_name.trim(),
       contact_email: contact_email.trim().toLowerCase(),
-      clerk_user_id: userId,
-      owner_email: user?.primaryEmailAddress?.emailAddress || contact_email,
+      user_id: user.id,
+      owner_email: user.email || contact_email,
       services_enabled: services || {
         crm: true, // Default: activate CRM
         bot: false,

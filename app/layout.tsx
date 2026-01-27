@@ -1,10 +1,8 @@
 import type React from "react"
-// ClerkProvider must run client-side; wrapped in ClerkWrapper
-import { ClerkWrapper } from "@/components/clerk-wrapper"
-import { esES } from "@clerk/localizations"
 import Script from "next/script"
 import { Analytics } from '@vercel/analytics/react'
 import { Onest } from "next/font/google"
+import { SupabaseProvider } from '@/components/supabase-provider'
 
 import "./globals.css"
 
@@ -49,32 +47,20 @@ export const metadata = {
   generator: "v0.dev",
 }
 
-// Use base esES localization only to avoid oversized runtime object issues
-const localization: any = esES
-
-const clerkAppearance = {
-  layout: {
-    socialButtonsVariant: "blockButton" as const,
-  },
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   let isDemoMode = false
-  let hasValidClerkConfig = false
+  let hasValidSupabaseConfig = false
 
   try {
     isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-    const secretKey = process.env.CLERK_SECRET_KEY
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    const hasPublishableKey = Boolean(publishableKey && publishableKey.startsWith("pk_") && publishableKey.length > 10)
-    const hasSecretKey = Boolean(secretKey && secretKey.startsWith("sk_") && secretKey.length > 10)
-
-    hasValidClerkConfig = hasPublishableKey && hasSecretKey
+    hasValidSupabaseConfig = Boolean(supabaseUrl && supabaseAnonKey)
   } catch (error) {
     console.warn("Environment variable check failed", error)
     isDemoMode = true
@@ -111,8 +97,6 @@ export default function RootLayout({
                 <div className="rounded-xl border border-border bg-secondary p-4">
                   <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Variables necesarias</h2>
                   <ul className="space-y-1">
-                    <li>• NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</li>
-                    <li>• CLERK_SECRET_KEY</li>
                     <li>• NEXT_PUBLIC_SUPABASE_URL</li>
                     <li>• NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
                   </ul>
@@ -121,7 +105,7 @@ export default function RootLayout({
                   <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Opciones rápidas</h2>
                   <ol className="space-y-1 list-decimal pl-4">
                     <li>Activa el modo demo con <code className="font-mono text-xs">NEXT_PUBLIC_DEMO_MODE=true</code>.</li>
-                    <li>Configura tus claves reales de Clerk.</li>
+                    <li>Configura tus claves de Supabase.</li>
                     <li>Reinicia el servidor de desarrollo.</li>
                   </ol>
                 </div>
@@ -147,21 +131,19 @@ export default function RootLayout({
     )
   }
 
-  if (!hasValidClerkConfig) {
+  if (!hasValidSupabaseConfig) {
     return errorScreen
   }
 
   return (
-    <ClerkWrapper localization={localization} appearance={clerkAppearance}>
-      <html {...htmlAttributes}>
-        <body className={baseBodyClass}>
-          <Script id="smarteros-theme-init" strategy="beforeInteractive">
-            {themeInitScript}
-          </Script>
-          {children}
-          <Analytics />
-        </body>
-      </html>
-    </ClerkWrapper>
+    <html {...htmlAttributes}>
+      <body className={baseBodyClass}>
+        <Script id="smarteros-theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
+        <SupabaseProvider>{children}</SupabaseProvider>
+        <Analytics />
+      </body>
+    </html>
   )
 }

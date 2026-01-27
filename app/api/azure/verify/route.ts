@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase'
 
 /**
  * POST /api/azure/verify
@@ -33,13 +34,24 @@ interface VerifyResponse {
 export async function POST(request: Request) {
   try {
     // Autenticación
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json(
-        { status: 'error', errors: [{ code: 'UNAUTHORIZED', message: 'Usuario no autenticado', resolution: 'Inicia sesión nuevamente' }] },
-        { status: 401 }
-      )
+    const cookieStore = await cookies()
+    const token = cookieStore.get('sb-access-token')?.value
+
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const supabase = createClient({
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    })
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const userId = user.id
 
     // Parse request body
     const body: VerifyRequest = await request.json()

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server"
+import { createClient } from "@/lib/supabase"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { updateTenantIntegrations } from "@/lib/supabase"
@@ -14,7 +14,7 @@ const integrationsUpdateSchema = z.object({
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Auth check
-    const { userId } = await auth()
+    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }

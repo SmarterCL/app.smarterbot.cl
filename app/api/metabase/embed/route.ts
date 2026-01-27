@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { createClient } from "@/lib/supabase"
 import { SignJWT } from "jose"
 
 // Expected env: process.env.MB_EMBEDDING_SECRET_KEY
@@ -15,10 +15,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Metabase secret no configurado" }, { status: 500 })
   }
 
-  // Clerk auth (reject if not logged-in)
+  // Supabase auth (reject if not logged-in)
   try {
-     const authObj = await auth()
-     const userId = authObj.userId
+    const supabase = createClient();
+    const { data: { session }, error: authError } = await supabase.auth.getSession();
+    if (authError || !session) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    };
+    const userId = session.user.id
     if (!userId) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }

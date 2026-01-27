@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
-import { auth, clerkClient } from "@clerk/nextjs/server"
-
-import { getSupabaseClient } from "@/lib/supabase"
+import { cookies } from "next/headers"
+import { createClient } from "@/lib/supabase"
 
 const ensureValue = (value?: string | null, fallback = "") => {
   if (!value) return fallback
@@ -10,40 +9,43 @@ const ensureValue = (value?: string | null, fallback = "") => {
 }
 
 export async function GET() {
- const authObj = await auth()
- const userId = authObj.userId
-
-  if (!userId) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 })
-  }
-
   try {
-     const clerk = await clerkClient()
-     const user = await clerk.users.getUser(userId)
+    const cookieStore = await cookies()
+    const token = cookieStore.get('sb-access-token')?.value
 
-    const email =
-      user.primaryEmailAddress?.emailAddress ||
-      user.emailAddresses[0]?.emailAddress ||
-      undefined
+    if (!token) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+    }
+
+    const supabase = createClient({
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    })
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+    }
+
+    const email = user.email
 
     if (!email) {
       return NextResponse.json({ error: "El usuario no tiene un email asociado" }, { status: 400 })
     }
 
-    const supabase = getSupabaseClient()
-   if (!supabase) throw new Error('Supabase not initialized')
+    const name =
+      ensureValue(user.user_metadata?.full_name) ||
+      ensureValue(user.user_metadata?.name) ||
+      ensureValue(email.split("@")[0]) ||
+      "Contacto SmarterOS"
 
     const { data, error } = await supabase
       .from("contacts")
       .upsert(
         {
           email: ensureValue(email, "sin-correo@smarteros.cl"),
-          name:
-            ensureValue(user.fullName) ||
-            ensureValue(user.username) ||
-            ensureValue(email.split("@")[0]) ||
-            "Contacto SmarterOS",
-          source: "clerk",
+          name,
+          source: "supabase",
           status: "active",
           was_notified: true,
         },

@@ -1,8 +1,9 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js"
+import { createClient as createSupabaseClient, type SupabaseClient } from "@supabase/supabase-js"
 
-type SupabaseClientOptions = Parameters<typeof createClient>[2]
+type SupabaseClientOptions = Parameters<typeof createSupabaseClient>[2]
 
 let cachedClient: SupabaseClient | null = null
+let cachedAuthClient: SupabaseClient | null = null
 
 const getEnv = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -15,23 +16,33 @@ const getEnv = () => {
   return { url, anonKey }
 }
 
-export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient {
-  if (cachedClient) {
-    return cachedClient
-  }
-
+export function createClient(options?: SupabaseClientOptions): SupabaseClient {
   const { url, anonKey } = getEnv()
 
-  cachedClient = createClient(url, anonKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
+  return createSupabaseClient(url, anonKey, {
+    db: {
+      schema: 'public'
+    },
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    },
     global: {
       headers: {
         "x-application-name": "smarteros-hub",
       },
     },
     ...options,
-  }) as SupabaseClient
+  })
+}
 
+export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient {
+  if (cachedClient) {
+    return cachedClient
+  }
+
+  cachedClient = createClient(options)
   return cachedClient
 }
 
@@ -44,7 +55,7 @@ export type Tenant = {
   rut: string
   business_name: string
   contact_email: string | null
-  clerk_user_id: string
+  user_id: string  // Cambiado de clerk_user_id a user_id
   owner_email: string | null
   services_enabled: {
     crm: boolean
@@ -64,16 +75,16 @@ export type Tenant = {
 }
 
 /**
- * List all tenants for a given Clerk user
+ * List all tenants for the current user
  */
-export async function listTenantsForUser(clerkUserId: string) {
+export async function listTenantsForUser(userId: string) {
   const supabase = getSupabaseClient()
- if (!supabase) throw new Error('Supabase not initialized')
+  if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
     .select("*")
-    .eq("clerk_user_id", clerkUserId)
+    .eq("user_id", userId)
     .eq("active", true)
     .order("created_at", { ascending: false })
 
@@ -86,7 +97,7 @@ export async function listTenantsForUser(clerkUserId: string) {
  */
 export async function getTenantById(tenantId: string) {
   const supabase = getSupabaseClient()
- if (!supabase) throw new Error('Supabase not initialized')
+  if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -105,12 +116,12 @@ export async function createTenant(tenant: {
   rut: string
   business_name: string
   contact_email: string
-  clerk_user_id: string
+  user_id: string  // Cambiado de clerk_user_id a user_id
   owner_email?: string
   services_enabled?: Partial<Tenant["services_enabled"]>
 }) {
   const supabase = getSupabaseClient()
- if (!supabase) throw new Error('Supabase not initialized')
+  if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -140,7 +151,7 @@ export async function updateTenantServices(
   services: Partial<Tenant["services_enabled"]>
 ) {
   const supabase = getSupabaseClient()
- if (!supabase) throw new Error('Supabase not initialized')
+  if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -167,7 +178,7 @@ export async function updateTenantIntegrations(
   }
 ) {
   const supabase = getSupabaseClient()
- if (!supabase) throw new Error('Supabase not initialized')
+  if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
@@ -206,29 +217,3 @@ export async function fetchBusinessSettings(
   return supabase.from("business_settings").select("business_name, webhook_url").eq("user_id", userId).single()
 }
 
-// =========================================================
-// MCP Invocation Logging (optional persist)
-// =========================================================
-
-export async function logMcpInvocation(entry: {
-  user_id: string
-  tool: string
-  args: any
-  result: any
-  duration_ms: number
-}) {
-  if (process.env.MCP_LOG_DB !== 'true') return
-  const supabase = getSupabaseClient()
-  const payload = {
-    user_id: entry.user_id,
-    tool: entry.tool,
-    args: JSON.stringify(entry.args).slice(0, 4000),
-    result: JSON.stringify(entry.result).slice(0, 4000),
-    duration_ms: entry.duration_ms,
-  }
-  const { error } = await supabase.from('mcp_invocations').insert(payload)
-  if (error) {
-    // eslint-disable-next-line no-console
-    console.warn('[MCP] log insert failed', error.message)
-  }
-}

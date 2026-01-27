@@ -4,9 +4,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const ts = Date.now()
-  const mcpEnabled = process.env.MCP_ENABLED === 'true'
   const supabaseOk = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL)
-  const fastapiPresent = Boolean(process.env.FASTAPI_URL)
 
   const validatorBase = 'https://api.smarterbot.cl'
   const healthUrl = `${validatorBase}/health`
@@ -42,7 +40,6 @@ export async function GET() {
     ok: overallOk,
     timestamp: ts,
     frontend: { ok: true },
-    mcp: { enabled: mcpEnabled },
     supabase: { ok: supabaseOk },
     backend: {
       validator: {

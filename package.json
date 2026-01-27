@@ -12,10 +12,8 @@
     "clean": "rm -rf dist .tsbuildinfo"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.27.0",
-    "@clerk/nextjs": "latest",
+    "@clerk/nextjs": "^6.36.10",
     "@hookform/resolvers": "^3.9.1",
-    "@modelcontextprotocol/sdk": "^1.22.0",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
     "@radix-ui/react-aspect-ratio": "latest",
@@ -84,7 +82,6 @@
   },
   "pnpm": {
     "allowedBuilds": {
-      "@clerk/shared": true,
       "sharp": true
     }
   }

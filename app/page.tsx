@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
-import AuthCard from "./auth/components/AuthCard"
 
 export const dynamic = "force-dynamic"
 
@@ -37,7 +36,20 @@ function LoginSupportPanel({ className = "", linkClassName = "" }: { className?:
 function LoginSection({ className = "" }: { className?: string }) {
   return (
     <div className={`space-y-3 ${className}`}>
-      <AuthCard />
+      <div className="space-y-3">
+        <Link
+          href="/auth/sign-in"
+          className="block w-full rounded-xl border border-border bg-white px-4 py-3 text-center text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent hover:text-accent-foreground"
+        >
+          Iniciar sesión
+        </Link>
+        <Link
+          href="/auth/sign-up"
+          className="block w-full rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+        >
+          Crear cuenta
+        </Link>
+      </div>
       <div className="hidden sm:block">
         <LoginSupportPanel />
       </div>

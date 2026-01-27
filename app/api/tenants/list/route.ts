@@ -1,14 +1,19 @@
-import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
+import { createClient } from "@/lib/supabase"
 import { listTenantsForUser } from "@/lib/supabase"
 
 export async function GET() {
   try {
-    // Auth check
-    const { userId } = await auth()
-    if (!userId) {
+    const supabase = createClient()
+
+    // Auth check using Supabase
+    const { data: { session }, error: authError } = await supabase.auth.getSession()
+
+    if (authError || !session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const userId = session.user.id
 
     // Fetch tenants with RLS (only user's own tenants)
     const tenants = await listTenantsForUser(userId)

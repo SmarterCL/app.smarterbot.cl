@@ -27,5 +27,4 @@ Protege únicamente `/dashboard/**`. Rutas `/auth/*` son públicas.
 
 ## Notas
 - `NEXT_PUBLIC_DEMO_MODE` eliminado del flujo.
-- MCP sigue disponible pero está detrás de `MCP_ENABLED`.
 - Cualquier error de auth redirige a `/auth/sign-in`.

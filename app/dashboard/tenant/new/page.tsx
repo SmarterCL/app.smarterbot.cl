@@ -1,10 +1,10 @@
-import { auth } from "@clerk/nextjs/server";
+import { createClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 import TenantWizard from "@/components/tenant-wizard";
 
 export default async function NewTenantPage() {
   try {
-    const { userId } = await auth();
+    const supabase = createClient(); const { data: { session } } = await supabase.auth.getSession(); const userId = session?.user.id;
     if (!userId) redirect("/");
   } catch (error) {
     redirect("/");

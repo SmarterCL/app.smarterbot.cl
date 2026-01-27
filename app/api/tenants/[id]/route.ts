@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs/server"
+import { createClient } from "@/lib/supabase"
 import { NextResponse } from "next/server"
 import { getTenantById } from "@/lib/supabase"
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Auth check
-    const { userId } = await auth()
+    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
