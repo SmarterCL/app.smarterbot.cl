@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { UserButton, useUser } from "@clerk/nextjs"
+import { createBrowserClient } from "@supabase/ssr"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -98,13 +98,34 @@ type SyncedContact = {
 
 export default function DashboardContent() {
   const [activeTab, setActiveTab] = useState("overview")
-  const { user, isLoaded } = useUser()
+  const [user, setUser] = useState<any>(null) // Store Supabase user info
+  const [isLoadingUser, setIsLoadingUser] = useState(true)
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
 
+  // Initialize Supabase client
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   useEffect(() => {
-    if (!isLoaded || !user) {
+    // Get current session/user
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (session) {
+        setUser(session.user)
+      }
+      setIsLoadingUser(false)
+    }
+
+    getUser()
+  }, [])
+
+  useEffect(() => {
+    if (isLoadingUser || !user) {
       return
     }
 
@@ -141,18 +162,18 @@ export default function DashboardContent() {
     return () => {
       isMounted = false
     }
-  }, [isLoaded, user])
+  }, [isLoadingUser, user])
 
   const contactProfile = user
     ? {
         id: user.id,
-        name: user.fullName?.trim() || user.username || user.primaryEmailAddress?.emailAddress || "Usuario sin nombre",
-        email: user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress || "Sin correo registrado",
-        phone: user.phoneNumbers?.[0]?.phoneNumber || "Sin teléfono",
-        lastAccess: formatDateTime(user.lastSignInAt),
-        createdAt: formatDateTime(user.createdAt),
-        imageUrl: user.imageUrl,
-        emailStatus: user.primaryEmailAddress?.verification?.status ?? "pending",
+        name: user.user_metadata?.full_name || user.email.split('@')[0] || "Usuario sin nombre",
+        email: user.email || "Sin correo registrado",
+        phone: user.phone || "Sin teléfono",
+        lastAccess: formatDateTime(user.last_sign_in_at),
+        createdAt: formatDateTime(user.created_at),
+        imageUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+        emailStatus: user.email_confirmed_at ? "verified" : "pending",
       }
     : null
 
@@ -160,7 +181,7 @@ export default function DashboardContent() {
     ? [
         { label: "Último acceso", value: contactProfile.lastAccess },
         { label: "Creado el", value: contactProfile.createdAt },
-        { label: "ID Clerk", value: contactProfile.id },
+        { label: "ID Usuario", value: contactProfile.id },
         { label: "Teléfono", value: contactProfile.phone },
       ]
     : []
@@ -194,15 +215,24 @@ export default function DashboardContent() {
             <Badge className="flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               <Activity className="h-3 w-3" /> Online
             </Badge>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "h-10 w-10",
-                  userButtonPopoverCard: "bg-card border-border",
-                  userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
-                },
-              }}
-            />
+            {user ? (
+              <div className="relative">
+                <button className="flex items-center gap-2 rounded-full border border-border bg-secondary p-1 text-sm font-medium transition hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring">
+                  <Avatar className="h-8 w-8 border border-border">
+                    {contactProfile?.imageUrl && (
+                      <AvatarImage src={contactProfile.imageUrl} alt={contactProfile.name} />
+                    )}
+                    <AvatarFallback className="text-xs font-semibold text-foreground">
+                      {getInitials(contactProfile?.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </div>
+            ) : (
+              <div className="h-10 w-10 rounded-full border border-border bg-secondary flex items-center justify-center">
+                <div className="h-6 w-6 rounded-full bg-muted animate-pulse"></div>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -338,7 +368,7 @@ export default function DashboardContent() {
                       <Filter className="h-4 w-4" /> Filtros
                     </Button>
                   </div>
-                  {!isLoaded ? (
+                  {!isLoadingUser ? (
                     <div className="rounded-xl border border-border bg-secondary/70 p-6">
                       <div className="space-y-4">
                         <Skeleton className="h-8 w-1/3 bg-muted" />
@@ -366,7 +396,7 @@ export default function DashboardContent() {
                         </div>
                         <div className="flex flex-wrap gap-2">
                           <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent">
-                            Fuente: Clerk
+                            Fuente: Supabase
                           </Badge>
                           <Badge
                             variant="outline"
@@ -419,7 +449,7 @@ export default function DashboardContent() {
                       <p className="text-sm text-muted-foreground">
                         No pudimos recuperar los datos del usuario autenticado
                       </p>
-                      <p className="mb-4 text-xs text-muted-foreground">Verifica tu sesión de Clerk para continuar</p>
+                      <p className="mb-4 text-xs text-muted-foreground">Verifica tu sesión de Supabase para continuar</p>
                       <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Actualizar sesión</Button>
                     </div>
                   )}
@@ -522,32 +552,35 @@ export default function DashboardContent() {
                   <CardTitle className="text-foreground">Configuración general</CardTitle>
                   <CardDescription className="text-muted-foreground">Personaliza tu experiencia</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="business-name" className="text-xs font-medium text-muted-foreground">
-                      Nombre del negocio
-                    </Label>
-                    <Input
-                      id="business-name"
-                      placeholder="Mi Empresa"
-                      className="border-border bg-secondary text-foreground placeholder:text-muted-foreground"
-                    />
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="business-name">Nombre del negocio</Label>
+                      <Input id="business-name" placeholder="Tu empresa SA" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="webhook-url">URL de Webhook</Label>
+                      <Input id="webhook-url" placeholder="https://miempresa.com/webhook" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="timezone">Zona horaria</Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona tu zona horaria" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gmt-4">GMT-4 (America/Santiago)</SelectItem>
+                          <SelectItem value="gmt-3">GMT-3 (America/Buenos Aires)</SelectItem>
+                          <SelectItem value="gmt-5">GMT-5 (America/Lima)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Guardar cambios</Button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="webhook-url" className="text-xs font-medium text-muted-foreground">
-                      Webhook URL
-                    </Label>
-                    <Input
-                      id="webhook-url"
-                      placeholder="https://mi-webhook.com/endpoint"
-                      className="border-border bg-secondary text-foreground placeholder:text-muted-foreground"
-                    />
-                  </div>
-                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Guardar cambios</Button>
                 </CardContent>
               </Card>
             </TabsContent>
-          </Tabs>
+          </TabsContent>
         </section>
       </main>
     </div>

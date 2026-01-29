@@ -6,7 +6,7 @@ import { createChatwootClient } from "@/lib/chatwoot-client"
  * Chatwoot API Proxy
  * 
  * Este endpoint actúa como proxy autenticado hacia Chatwoot API.
- * Require autenticación via Clerk.
+ * Require autenticación via Supabase.
  * 
  * Rutas soportadas:
  * - GET /api/chatwoot/inboxes

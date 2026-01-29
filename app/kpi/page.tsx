@@ -41,7 +41,7 @@ export default function KPIPage() {
       <div className="mx-auto max-w-5xl space-y-6">
         <h1 className="text-2xl font-semibold">KPI (Metabase)</h1>
         <p className="text-sm text-muted-foreground">
-          Esta página genera un token de Metabase (JWT) usando tu sesión de Clerk y embebe el dashboard solicitado.
+          Esta página genera un token de Metabase (JWT) usando tu sesión de Supabase y embebe el dashboard solicitado.
         </p>
 
         <div className="flex items-center gap-3">
@@ -49,38 +49,39 @@ export default function KPIPage() {
           <input
             id="dashboardId"
             type="number"
-            className="rounded border px-3 py-2 bg-background"
             value={dashboardId}
-            onChange={(e) => setDashboardId(e.target.value === "" ? "" : Number(e.target.value))}
-            placeholder="1"
-            min={1}
+            onChange={(e) => setDashboardId(Number(e.target.value))}
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm"
           />
           <button
             onClick={generate}
             disabled={loading}
-            className="rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 disabled:opacity-50"
+            className="rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground disabled:opacity-50"
           >
-            {loading ? "Generando..." : "Ver dashboard"}
+            {loading ? "Generando..." : "Generar embed"}
           </button>
         </div>
 
-        {error ? (
-          <div className="rounded border border-red-400 bg-red-50 p-3 text-sm text-red-700">{error}</div>
-        ) : null}
-
-        {iframeUrl ? (
-          <div className="mt-4 overflow-hidden rounded border">
-            <iframe
-              title="Metabase Dashboard"
-              src={iframeUrl}
-              frameBorder="0"
-              width="100%"
-              height="900"
-              allowTransparency
-            />
+        {error && (
+          <div className="rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-500">
+            {error}
           </div>
-        ) : (
-          <p className="text-xs text-muted-foreground">Ingresa el ID del dashboard de Metabase y presiona “Ver dashboard”.</p>
+        )}
+
+        {iframeUrl && (
+          <div className="space-y-3">
+            <div className="rounded-lg border border-border bg-secondary p-4">
+              <p className="text-sm font-medium">URL del iframe:</p>
+              <p className="break-all text-xs text-muted-foreground">{iframeUrl}</p>
+            </div>
+            <iframe
+              src={iframeUrl}
+              width="100%"
+              height="800"
+              frameBorder="0"
+              className="rounded-lg border border-border"
+            ></iframe>
+          </div>
         )}
       </div>
     </div>

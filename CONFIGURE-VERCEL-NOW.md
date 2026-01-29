@@ -1,93 +1,45 @@
-# 🚀 CONFIGURAR VERCEL AHORA - PASO A PASO
+# Configuración de Vercel para app.smarterbot.cl
 
-## 📍 Ve a: 
-https://vercel.com/smartercl/app-smarterbot/settings/environment-variables
-
----
-
-## ✅ OPCIÓN 1: CONFIGURACIÓN COMPLETA (Recomendado)
-
-Agrega estas 6 variables una por una:
+## Variables de Entorno Requeridas
 
 ### 1. NEXT_PUBLIC_SUPABASE_URL
-```
+
 Key: NEXT_PUBLIC_SUPABASE_URL
-Value: https://rjfcmmzjlguiititkmyh.supabase.co
-Environment: Production ✅
-```
+Value: https://your-project.supabase.co
 
 ### 2. NEXT_PUBLIC_SUPABASE_ANON_KEY
-```
+
 Key: NEXT_PUBLIC_SUPABASE_ANON_KEY
-Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZmNtbXpqbGd1aWl0aXRrbXloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3OTk3MzUsImV4cCI6MjA3NzM3NTczNX0.IRj4EXZErrxcHetZNu5onhDTR3iEe5lMA--ireaR19A
-Environment: Production ✅
-```
+Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxxxxxxxxxxxxx
 
-### 3. NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-```
-Key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-Value: pk_test_c2V0dGxpbmctaG9nLTk3LmNsZXJrLmFjY291bnRzLmRldiQ
-Environment: Production ✅
-```
+### 3. FASTAPI_URL
 
-### 4. CLERK_SECRET_KEY
-```
-Key: CLERK_SECRET_KEY
-Value: sk_test_74O53iKBUH9ZZLkbZQuCAba3XJIxxBvwxTNY0lifPz
-Environment: Production ✅
-```
+Key: FASTAPI_URL
+Value: https://api.smarterbot.cl
 
-### 5. NEXT_PUBLIC_APP_URL
-```
-Key: NEXT_PUBLIC_APP_URL
-Value: https://app.smarterbot.cl
-Environment: Production ✅
-```
+## Variables de Entorno Opcionales
 
-### 6. NODE_ENV
-```
-Key: NODE_ENV
-Value: production
-Environment: Production ✅
-```
+### 4. NEXT_PUBLIC_DEMO_MODE
 
----
-
-## ⚡ OPCIÓN 2: MODO DEMO (Más rápido)
-
-Si las keys de Clerk no funcionan, agrega solo esta:
-
-```
 Key: NEXT_PUBLIC_DEMO_MODE
-Value: true
-Environment: Production ✅
-```
+Value: true (para activar modo demo)
 
----
+### 5. RESEND_API_KEY
 
-## 📋 Después de agregar:
+Key: RESEND_API_KEY
+Value: re_1234567890 (clave API para envío de emails)
 
-1. ✅ Click "Save" después de cada variable
-2. ✅ Vercel rebuildeará automáticamente
-3. ✅ Espera 2-3 minutos
-4. ✅ Visita: https://app.smarterbot.cl
-5. ✅ NO debe mostrar error de configuración
+## Pasos para Despliegue
 
----
+1. Conecta tu repositorio a Vercel
+2. Agrega las variables de entorno mencionadas arriba
+3. Asegúrate de que el framework preset esté configurado como "Next.js"
+4. El comando de build predeterminado debería ser suficiente: `pnpm build`
+5. El directorio de salida predeterminado debería ser: `.next`
 
-## 🆘 Si algo falla:
+## Verificación Post-Despliegue
 
-1. Verifica que todas las variables estén en "Production"
-2. Trigger manual redeploy: Deployments → tres puntos → Redeploy
-3. Revisa logs de build en Vercel
-
----
-
-## ✅ Checklist Final:
-
-- [ ] Variables agregadas en Vercel
-- [ ] Redeploy completado
-- [ ] https://app.smarterbot.cl funciona
-- [ ] Login de Clerk funciona
-- [ ] Dashboard se muestra correctamente
-
+- [ ] La aplicación carga correctamente
+- [ ] El dashboard requiere autenticación
+- [ ] Las funciones de la API responden adecuadamente
+- [ ] La conexión a Supabase funciona correctamente

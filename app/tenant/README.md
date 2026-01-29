@@ -8,7 +8,7 @@ Módulo que implementa el flujo multi-tenant usando RUT chileno como identificad
 app/
   tenant/
     validate-rut.ts      → Validación y formato RUT
-    save-metadata.ts     → Guarda RUT en Clerk metadata
+    save-metadata.ts     → Guarda RUT en Supabase metadata
     get-tenant.ts        → Busca tenant en Supabase por RUT
     actions.ts           → Orquesta: valida + guarda + busca
   auth/
@@ -19,8 +19,8 @@ app/
 
 ## Flujo completo
 
-1. Usuario se loguea con Clerk → `/auth/sign-in`
-2. Dashboard verifica `user.publicMetadata.rut`:
+1. Usuario se loguea con Supabase → `/auth/sign-in`
+2. Dashboard verifica `user.user_metadata.rut`:
    - Si no existe → redirige a `/auth/onboarding`
    - Si existe → carga tenant y servicios
 3. Usuario ingresa RUT → API `/api/tenant/link-rut` valida y guarda
@@ -53,11 +53,11 @@ create table tenants (
 create index on tenants(rut);
 ```
 
-## Clerk Metadata
+## Supabase User Metadata
 
 ```ts
 {
-  publicMetadata: {
+  user_metadata: {
     rut: "12.345.678-9"
   }
 }
@@ -80,9 +80,9 @@ if (tenant) {
 # Validar RUT
 pnpm ts-node -e "const {validateRUT} = require('./app/tenant/validate-rut'); console.log(validateRUT('12.345.678-5'))"
 
-# Link RUT (con sesión Clerk activa)
+# Link RUT (con sesión Supabase activa)
 curl -X POST http://localhost:3000/api/tenant/link-rut \
   -H 'Content-Type: application/json' \
-  -H 'Cookie: __session=YOUR_SESSION' \
+  -H 'Cookie: sb-access-token=YOUR_ACCESS_TOKEN' \
   -d '{"rut":"12.345.678-5"}'
 ```

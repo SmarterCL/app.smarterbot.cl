@@ -12,7 +12,6 @@
     "clean": "rm -rf dist .tsbuildinfo"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.10",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
@@ -41,6 +40,7 @@
     "@radix-ui/react-toggle": "latest",
     "@radix-ui/react-toggle-group": "latest",
     "@radix-ui/react-tooltip": "latest",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.50.0",
     "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.20",

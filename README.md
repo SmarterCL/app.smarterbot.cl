@@ -23,132 +23,38 @@ Ver: `/dashboard/automatizaciones` | Docs: `specs/N8N-AUTOMATION-INTEGRATION.md`
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router, React 19)
-- **Auth:** Clerk (Google OAuth, email)
+- **Auth:** Supabase (Email/password, OAuth)
 - **Styling:** Tailwind CSS + custom design tokens (SmarterOS theme)
 - **Forms & Validation:** React Hook Form, Zod
 - **Charts & UI:** Shadcn UI components, Lucide icons, Recharts
 - **Automation:** N8N Integration (workflows dashboard)
 
-## Getting Started
+## Quick Start
 
-```bash
-pnpm install
-pnpm dev
-```
+1. Clone the repository
+2. Install dependencies: `pnpm install`
+3. Copy `.env.example` to `.env.local` and add your environment variables
+4. Run the development server: `pnpm dev`
 
-The app runs on `http://localhost:3000`.
-
-### Required Environment Variables
-
-Create `.env.local` with:
-
-```bash
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
-CLERK_SECRET_KEY=sk_test_xxx
-NEXT_PUBLIC_ENABLE_AUTH_DEBUG=false
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-```
-
-Set `NEXT_PUBLIC_ENABLE_AUTH_DEBUG=true` only while debugging user sessions; production deployments keep it `false`.
-
-### Production Environment Variables
-
-Set ONLY the following in Vercel for a stable deployment:
+## Environment Variables
 
 Required:
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- `CLERK_SECRET_KEY`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `FASTAPI_URL`
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
+- `FASTAPI_URL` - Your FastAPI backend URL
 
-Optional (use only if referenced):
-- `NEXT_PUBLIC_CLERK_SIGN_IN_URL` (`/sign-in`)
-- `NEXT_PUBLIC_CLERK_SIGN_UP_URL` (`/sign-up`)
-- `NEXT_PUBLIC_DEMO_MODE`
-- `RESEND_API_KEY`
-
-Remove / do not set (not used by the Next.js app, can cause confusion):
-`anonpublic`, `service_rolesecret`, `SUPABASE_URL`, `SUPABASE_JWT_SECRET`, `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, `POSTGRES_USER`, `POSTGRES_PASSWORD`.
-
-Verification scripts:
-
-```bash
-pnpm ts-node scripts/env-audit.ts
-./scripts/env-verify.sh
-```
-
-Production check endpoint: `/api/env/diagnostic`.
-
-
-### Demo Mode
-
-Setting `NEXT_PUBLIC_DEMO_MODE=true` switches the landing page and `/dashboard` to demo flows that skip Clerk authentication and redirect to the in-memory demo dashboard (`/demo-dashboard`).
-
-## Project Structure Highlights
-
-- `app/page.tsx` – Public marketing/landing page with SmarterOS branding.
-- `app/dashboard/page.tsx` – Authenticated dashboard shell; uses Clerk server-side `auth()`.
-- `components/background-pattern.tsx` – Shared grid background rendered on both landing and dashboard pages.
-- `components/demo-dashboard-content.tsx` – In-memory CRUD simulator used in demo mode.
-- `middleware.ts` – Protects `/dashboard` routes while still allowing demo mode or unconfigured environments to fail gracefully.
-
-## Linting & Formatting
-
-```bash
-pnpm lint
-```
-
-The repo uses the flat ESLint config (`eslint.config.mjs`) with `eslint-config-next`. Prettier is not configured; code follows the conventions enforced by Next.js and the component library.
+Optional:
+- `NEXT_PUBLIC_DEMO_MODE` - Set to `true` to enable demo mode
+- `RESEND_API_KEY` - API key for email sending
 
 ## Deployment
 
-The main branch is deployed on Vercel to `app.smarterbot.cl`. Pushing to `main` triggers an automatic deployment. Use preview deployments for QA before merging large UI updates.
+This project is configured for deployment on Vercel. Simply connect your repository to Vercel and it will automatically build and deploy.
 
-## Contributing
+## Architecture
 
-1. Create a feature branch.
-2. Run `pnpm lint` before opening a PR.
-3. Provide screenshots or Loom videos when altering UI layouts.
-
-For support or design requests, reach the SmarterBot team on Slack or at `soporte@smarterbot.cl`.
-
-## 📂 Project Structure
-
-```
-app-smarterbot-cl/
-├── app/
-│   ├── dashboard/
-│   │   ├── automatizaciones/    # ✨ N8N Workflows Dashboard
-│   │   └── tenant/              # Tenant Management
-│   ├── api/
-│   │   └── workflows/           # ✨ Workflows API
-│   └── page.tsx                 # Landing page
-├── components/
-│   └── ui/                      # Shadcn UI components
-├── lib/                         # Utilities
-├── specs/                       # ✨ Technical specifications
-└── styles/                      # Global styles
-```
-
-## 🚀 New Features
-
-### Dashboard de Automatizaciones
-Control workflows de N8N desde la interfaz web:
-- **URL**: `/dashboard/automatizaciones`
-- **API**: `/api/workflows`
-- **Specs**: `specs/dashboard-automatizaciones.md`
-
-#### 10 Workflows Implementados:
-1. WhatsApp Leads → CRM
-2. Agenda Confirmaciones
-3. Reporte Diario a Sheets
-4. Slack Notificaciones Ventas
-5. Email Marketing Automatizado
-6. Sync Shopify → Odoo
-7. Procesar Facturas PDF
-8. Bot AI WhatsApp
-9. Backup Automático Diario
-10. Monitor Redes Sociales
-
+- `/app` - Next.js 15 App Router pages
+- `/components` - Reusable UI components
+- `/lib` - Shared utilities and Supabase client
+- `/public` - Static assets
+- `/styles` - Global styles
