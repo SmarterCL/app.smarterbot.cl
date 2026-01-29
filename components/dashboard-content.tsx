@@ -114,7 +114,7 @@ export default function DashboardContent() {
     // Get current session/user
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession()
-      
+
       if (session) {
         setUser(session.user)
       }
@@ -166,36 +166,37 @@ export default function DashboardContent() {
 
   const contactProfile = user
     ? {
-        id: user.id,
-        name: user.user_metadata?.full_name || user.email.split('@')[0] || "Usuario sin nombre",
-        email: user.email || "Sin correo registrado",
-        phone: user.phone || "Sin teléfono",
-        lastAccess: formatDateTime(user.last_sign_in_at),
-        createdAt: formatDateTime(user.created_at),
-        imageUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
-        emailStatus: user.email_confirmed_at ? "verified" : "pending",
-      }
-    : null
+      id: user.id,
+      name: user.user_metadata?.full_name || user.email.split('@')[0] || "Usuario sin nombre",
+      email: user.email || "Sin correo registrado",
+      phone: user.phone || "Sin teléfono",
+      lastAccess: formatDateTime(user.last_sign_in_at),
+      createdAt: formatDateTime(user.created_at),
+      imageUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+      emailStatus: user.email_confirmed_at ? "verified" : "pending",
+    }
+    : null;
 
   const contactDetails = contactProfile
     ? [
-        { label: "Último acceso", value: contactProfile.lastAccess },
-        { label: "Creado el", value: contactProfile.createdAt },
-        { label: "ID Usuario", value: contactProfile.id },
-        { label: "Teléfono", value: contactProfile.phone },
-      ]
-    : []
+      { label: "Último acceso", value: contactProfile.lastAccess },
+      { label: "Creado el", value: contactProfile.createdAt },
+      { label: "ID Usuario", value: contactProfile.id },
+      { label: "Teléfono", value: contactProfile.phone },
+    ]
+    : [];
 
+  // Temporary simplified assignment to debug build
   const supabaseDetails = supabaseContact
     ? [
-        { label: "Estado CRM", value: supabaseContact.status || "Sin estado" },
-        { label: "Fuente", value: supabaseContact.source || "Desconocida" },
-        { label: "Notificaciones", value: supabaseContact.was_notified ? "Enviadas" : "Pendiente" },
-        {
-          label: "Actualizado en Supabase",
-          value: formatDateTime(supabaseContact.updated_at ? new Date(supabaseContact.updated_at) : null),
-        },
-      ]
+      { label: "Estado CRM", value: supabaseContact.status || "Sin estado" },
+      { label: "Fuente", value: supabaseContact.source || "Desconocida" },
+      { label: "Notificaciones", value: supabaseContact.was_notified ? "Enviadas" : "Pendiente" },
+      {
+        label: "Actualizado en Supabase",
+        value: formatDateTime(supabaseContact.updated_at ? new Date(supabaseContact.updated_at) : null),
+      },
+    ]
     : []
 
   return (
@@ -255,37 +256,35 @@ export default function DashboardContent() {
 
         <section className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col gap-3">
-              <div className="sm:hidden">
-                <Select value={activeTab} onValueChange={setActiveTab}>
-                  <SelectTrigger className="w-full rounded-2xl border border-border bg-secondary text-left text-sm font-semibold">
-                    <SelectValue placeholder="Selecciona una sección" />
-                  </SelectTrigger>
-                  <SelectContent align="start" className="min-w-[220px] rounded-xl border border-border bg-card shadow-lg">
-                    {tabItems.map(({ value, label, icon: Icon }) => (
-                      <SelectItem key={value} value={value} className="text-sm">
-                        <span className="flex items-center gap-2">
-                          <Icon className="h-4 w-4 text-muted-foreground" />
-                          {label}
-                        </span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-2xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
-                {tabItems.map(({ value, label, icon: Icon }) => (
-                  <TabsTrigger
-                    key={value}
-                    value={value}
-                    className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-transparent text-sm font-semibold text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
-                  >
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+            <div className="sm:hidden">
+              <Select value={activeTab} onValueChange={setActiveTab}>
+                <SelectTrigger className="w-full rounded-2xl border border-border bg-secondary text-left text-sm font-semibold">
+                  <SelectValue placeholder="Selecciona una sección" />
+                </SelectTrigger>
+                <SelectContent align="start" className="min-w-[220px] rounded-xl border border-border bg-card shadow-lg">
+                  {tabItems.map(({ value, label, icon: Icon }) => (
+                    <SelectItem key={value} value={value} className="text-sm">
+                      <span className="flex items-center gap-2">
+                        <Icon className="h-4 w-4 text-muted-foreground" />
+                        {label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-2xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
+              {tabItems.map(({ value, label, icon: Icon }) => (
+                <TabsTrigger
+                  key={value}
+                  value={value}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-transparent text-sm font-semibold text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
             <TabsContent value="overview" className="space-y-6 sm:space-y-8">
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -580,9 +579,9 @@ export default function DashboardContent() {
                 </CardContent>
               </Card>
             </TabsContent>
-          </TabsContent>
+          </Tabs>
         </section>
       </main>
-    </div>
+    </div >
   )
 }
