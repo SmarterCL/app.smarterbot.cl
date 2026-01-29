@@ -186,7 +186,7 @@ export default function DashboardContent() {
     ]
     : [];
 
-  // Temporary simplified assignment to debug build
+  // Restore logic
   const supabaseDetails = supabaseContact
     ? [
       { label: "Estado CRM", value: supabaseContact.status || "Sin estado" },

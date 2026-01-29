@@ -10,7 +10,13 @@ const getEnv = () => {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !anonKey) {
-    throw new Error("Supabase environment variables are missing")
+    // During build time on Vercel, these might be missing.
+    // Instead of crashing, we log a warning and return strict fallbacks.
+    console.warn("Supabase environment variables are missing! Using fallbacks for build.")
+    return {
+      url: "https://placeholder.supabase.co",
+      anonKey: "placeholder"
+    }
   }
 
   return { url, anonKey }

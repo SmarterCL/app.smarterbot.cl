@@ -56,9 +56,11 @@ function TenantDashboardClient() {
 export default async function Dashboard() {
   const supabase = createClient();
 
-  const { data: { session } } = await supabase.auth.getSession();
 
-  if (!session) {
+  const { data, error } = await supabase.auth.getSession();
+  const session = data?.session;
+
+  if (error || !session) {
     redirect("/auth/sign-in");
   }
 
