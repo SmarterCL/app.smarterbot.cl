@@ -1,4 +1,4 @@
-import { createClient as createSupabaseClient, type SupabaseClient } from "@supabase/supabase-js"
+import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 
 type SupabaseClientOptions = Parameters<typeof createSupabaseClient>[2]
 
@@ -119,15 +119,16 @@ export async function createTenant(tenant: {
   rut: string
   business_name: string
   contact_email: string
-  user_id: string  // Cambiado de clerk_user_id a user_id
+  user_id: string
   owner_email?: string
   services_enabled?: Partial<Tenant["services_enabled"]>
 }) {
   const supabase = getSupabaseClient()
   if (!supabase) throw new Error('Supabase not initialized')
 
+  // Solución temporal para errores TypeScript
   const { data, error } = await supabase
-    .from("tenants")
+    .from("tenants" as any)
     .insert({
       ...tenant,
       services_enabled: {
@@ -143,7 +144,7 @@ export async function createTenant(tenant: {
     .single()
 
   if (error) throw error
-  return data as Tenant
+  return data as any
 }
 
 /**
