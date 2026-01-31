@@ -27,7 +27,7 @@ export function createClient(options?: SupabaseClientOptions): SupabaseClient {
 
   return createSupabaseClient(url, anonKey, {
     db: {
-      schema: 'public'
+      schema: 'public' as const
     },
     auth: {
       persistSession: true,
