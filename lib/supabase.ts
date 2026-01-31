@@ -26,9 +26,6 @@ export function createClient(options?: SupabaseClientOptions): SupabaseClient {
   const { url, anonKey } = getEnv()
 
   return createSupabaseClient(url, anonKey, {
-    db: {
-      schema: 'public' as const
-    },
     auth: {
       persistSession: true,
       autoRefreshToken: true,
