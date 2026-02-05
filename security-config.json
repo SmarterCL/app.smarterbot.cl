@@ -1,0 +1,25 @@
+{
+    "security": {
+        "tokens": {
+            "smartermcp_access_token": "3707d94abbf895f8a3b210f98e0d6e156959e3ef3d1eb7a93eec9cae19f72245",
+            "jwt_secret": "clave_secreta_segura_para_jwt"
+        },
+        "domains": [
+            "rut.smarterbot.store",
+            "app.smarterbot.cl",
+            "crm.smarterbot.cl"
+        ],
+        "protocols": {
+            "force_https": true,
+            "cors_origins": [
+                "https://rut.smarterbot.store",
+                "https://app.smarterbot.cl",
+                "https://crm.smarterbot.cl"
+            ]
+        },
+        "validation": {
+            "token_expiry_days": 90,
+            "rotation_enabled": true
+        }
+    }
+}

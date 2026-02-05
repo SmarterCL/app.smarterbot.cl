@@ -1,0 +1,11 @@
+version: "1.0"
+project:
+  name: "smarterbot-integration"
+  description: "Integración entre rut.smarterbot.store, app.smarterbot.cl y crm.smarterbot.cl"
+specifications:
+  - integration-spec.md
+tasks:
+  - setup-security
+  - configure-domains
+  - implement-communication
+  - validate-integration
