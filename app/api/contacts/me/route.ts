@@ -44,10 +44,9 @@ export async function GET() {
       .upsert(
         {
           email: ensureValue(email, "sin-correo@smarteros.cl"),
-          name,
+          full_name: name,
           source: "supabase",
-          status: "active",
-          was_notified: true,
+          tenant_id: "00000000-0000-0000-0000-000000000000",
         },
         { onConflict: "email" }
       )

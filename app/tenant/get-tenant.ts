@@ -7,14 +7,8 @@ export interface Tenant {
   id: string
   rut: string
   business_name: string
-  active: boolean
-  services_enabled: Record<string, boolean>
-  created_at: string
-  chatwoot_inbox_id?: string | null
-  botpress_workspace_id?: string | null
-  odoo_company_id?: string | null
-  n8n_project_id?: string | null
-  metabase_dashboard_id?: string | null
+  metabase_card_id?: number | null
+  status?: string
 }
 
 /**
@@ -39,7 +33,7 @@ export async function getTenantByRut(rut: string): Promise<Tenant | null> {
       .from("tenants")
       .select("*")
       .eq("rut", rut)
-      .eq("active", true)
+      .eq("status", "active")
       .single()
 
     if (error || !data) return null
@@ -77,8 +71,8 @@ export async function getCurrentTenant(): Promise<Tenant | null> {
     const { data, error } = await supabase
       .from("tenants")
       .select("*")
-      .eq("user_id", user.id)
-      .eq("active", true)
+      .eq("clerk_user_id", user.id)
+      .eq("status", "active")
       .limit(1)
       .single()
 

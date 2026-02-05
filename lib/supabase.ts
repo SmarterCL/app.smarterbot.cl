@@ -1,9 +1,10 @@
 import { createClient as createSupabaseClient, SupabaseClient } from "@supabase/supabase-js"
+import { Database } from "@/types/supabase"
 
 type SupabaseClientOptions = Parameters<typeof createSupabaseClient>[2]
 
-let cachedClient: SupabaseClient<any, any> | null = null
-let cachedAuthClient: SupabaseClient<any, any> | null = null
+let cachedClient: SupabaseClient<Database> | null = null
+let cachedAuthClient: SupabaseClient<Database> | null = null
 
 const getEnv = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -22,7 +23,7 @@ const getEnv = () => {
   return { url, anonKey }
 }
 
-export function createClient(options?: SupabaseClientOptions): SupabaseClient<any, any> {
+export function createClient(options?: SupabaseClientOptions): SupabaseClient<Database> {
   const { url, anonKey } = getEnv()
 
   return createSupabaseClient(url, anonKey, {
@@ -40,7 +41,7 @@ export function createClient(options?: SupabaseClientOptions): SupabaseClient<an
   })
 }
 
-export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient<any, any> {
+export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient<Database> {
   if (cachedClient) {
     return cachedClient
   }
@@ -53,28 +54,14 @@ export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClie
 // Tenant Helpers (Phase 3 - Multi-tenant support)
 // =========================================================
 
-export type Tenant = {
-  id: string
-  rut: string
-  business_name: string
-  contact_email: string | null
-  user_id: string  // Cambiado de clerk_user_id a user_id
-  owner_email: string | null
+export type Tenant = Database["public"]["Tables"]["tenants"]["Row"] & {
   services_enabled: {
     crm: boolean
     bot: boolean
     erp: boolean
     workflows: boolean
     kpi: boolean
-  }
-  chatwoot_inbox_id: number | null
-  botpress_workspace_id: string | null
-  odoo_company_id: number | null
-  n8n_project_id: string | null
-  metabase_dashboard_id: string | null
-  active: boolean
-  created_at: string
-  updated_at: string
+  } | null
 }
 
 /**
@@ -87,7 +74,7 @@ export async function listTenantsForUser(userId: string) {
   const { data, error } = await supabase
     .from("tenants")
     .select("*")
-    .eq("user_id", userId)
+    .eq("clerk_user_id", userId)
     .eq("active", true)
     .order("created_at", { ascending: false })
 
@@ -126,25 +113,29 @@ export async function createTenant(tenant: {
   const supabase = getSupabaseClient()
   if (!supabase) throw new Error('Supabase not initialized')
 
-  // Solución temporal para errores TypeScript
+  // Con los tipos reales, ya podemos usar "tenants" directamente
   const { data, error } = await supabase
-    .from("tenants" as any)
+    .from("tenants")
     .insert({
-      ...tenant,
+      rut: tenant.rut,
+      business_name: tenant.business_name,
+      contact_email: tenant.contact_email,
+      clerk_user_id: tenant.user_id,
+      owner_email: tenant.owner_email,
       services_enabled: {
         crm: false,
         bot: false,
         erp: false,
         workflows: false,
         kpi: false,
-        ...tenant.services_enabled,
-      },
+        ...(tenant.services_enabled || {}),
+      } as any,
     })
     .select()
     .single()
 
   if (error) throw error
-  return data as any
+  return data as Tenant
 }
 
 /**
@@ -152,14 +143,14 @@ export async function createTenant(tenant: {
  */
 export async function updateTenantServices(
   tenantId: string,
-  services: Partial<Tenant["services_enabled"]>
+  services: any
 ) {
   const supabase = getSupabaseClient()
   if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
     .from("tenants")
-    .update({ services_enabled: services })
+    .update({ services_enabled: services as any })
     .eq("id", tenantId)
     .select()
     .single()
@@ -193,31 +184,5 @@ export async function updateTenantIntegrations(
 
   if (error) throw error
   return data as Tenant
-}
-
-// =========================================================
-// Legacy helpers (business_settings - deprecated)
-// =========================================================
-
-export async function upsertBusinessSettings(
-  supabase: ReturnType<typeof getSupabaseClient>,
-  userId: string,
-  data: { business_name: string; webhook_url: string }
-) {
-  return supabase
-    .from("business_settings")
-    .upsert(
-      { user_id: userId, business_name: data.business_name, webhook_url: data.webhook_url },
-      { onConflict: "user_id" }
-    )
-    .select()
-    .single()
-}
-
-export async function fetchBusinessSettings(
-  supabase: ReturnType<typeof getSupabaseClient>,
-  userId: string
-) {
-  return supabase.from("business_settings").select("business_name, webhook_url").eq("user_id", userId).single()
 }
 

@@ -4,11 +4,11 @@ import { z } from "zod"
 import { updateTenantIntegrations } from "@/lib/supabase"
 
 const integrationsUpdateSchema = z.object({
- chatwoot_inbox_id: z.number().int().positive().optional(),
- botpress_workspace_id: z.string().min(1).optional(),
- odoo_company_id: z.number().int().positive().optional(),
- n8n_project_id: z.string().min(1).optional(),
- metabase_dashboard_id: z.string().min(1).optional(),
+  chatwoot_inbox_id: z.number().int().positive().optional(),
+  botpress_workspace_id: z.string().min(1).optional(),
+  odoo_company_id: z.number().int().positive().optional(),
+  n8n_project_id: z.string().min(1).optional(),
+  metabase_dashboard_id: z.string().min(1).optional(),
 })
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -56,7 +56,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         botpress_workspace_id: tenant.botpress_workspace_id,
         odoo_company_id: tenant.odoo_company_id,
         n8n_project_id: tenant.n8n_project_id,
-        metabase_dashboard_id: tenant.metabase_dashboard_id,
+        metabase_card_id: tenant.metabase_card_id,
         updated_at: tenant.updated_at,
       },
       message: "IDs de integración actualizados correctamente",
