@@ -1,6 +1,6 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { auth } from "@clerk/nextjs/server"
 import { createClient } from "@/lib/supabase"
 
 export interface Tenant {
@@ -17,17 +17,10 @@ export interface Tenant {
  */
 export async function getTenantByRut(rut: string): Promise<Tenant | null> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('sb-access-token')?.value
-    if (!token) return null
+    const { userId } = await auth()
+    if (!userId) return null
 
-    const supabase = createClient({
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    })
-
-    // Auth check implicitly handled by RLS if configured, but good to check user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return null
+    const supabase = createClient()
 
     const { data, error } = await supabase
       .from("tenants")
@@ -45,33 +38,20 @@ export async function getTenantByRut(rut: string): Promise<Tenant | null> {
 }
 
 /**
- * Obtiene el tenant del usuario actual leyendo su metadata.rut.
+ * Obtiene el tenant del usuario actual leyendo su clerk_user_id.
  */
 export async function getCurrentTenant(): Promise<Tenant | null> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('sb-access-token')?.value
-    if (!token) return null
+    const { userId } = await auth()
+    if (!userId) return null
 
-    const supabase = createClient({
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    })
+    const supabase = createClient()
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return null
-
-    // Attempt to get RUT from metadata
-    const rut = user.user_metadata?.rut as string
-    if (rut) {
-      const tenant = await getTenantByRut(rut)
-      if (tenant) return tenant
-    }
-
-    // Fallback: list tenants and pick first
+    // Intentamos buscar por clerk_user_id
     const { data, error } = await supabase
       .from("tenants")
       .select("*")
-      .eq("clerk_user_id", user.id)
+      .eq("clerk_user_id", userId)
       .eq("status", "active")
       .limit(1)
       .single()

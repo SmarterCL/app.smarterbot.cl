@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { createBrowserClient } from "@supabase/ssr"
+import { UserButton, useUser } from "@clerk/nextjs"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -97,9 +98,8 @@ type SyncedContact = {
 }
 
 export default function DashboardContent() {
+  const { user, isLoaded } = useUser()
   const [activeTab, setActiveTab] = useState("overview")
-  const [user, setUser] = useState<any>(null) // Store Supabase user info
-  const [isLoadingUser, setIsLoadingUser] = useState(true)
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
@@ -111,21 +111,7 @@ export default function DashboardContent() {
   )
 
   useEffect(() => {
-    // Get current session/user
-    const getUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-
-      if (session) {
-        setUser(session.user)
-      }
-      setIsLoadingUser(false)
-    }
-
-    getUser()
-  }, [])
-
-  useEffect(() => {
-    if (isLoadingUser || !user) {
+    if (!isLoaded || !user) {
       return
     }
 
@@ -162,18 +148,18 @@ export default function DashboardContent() {
     return () => {
       isMounted = false
     }
-  }, [isLoadingUser, user])
+  }, [isLoaded, user])
 
   const contactProfile = user
     ? {
       id: user.id,
-      name: user.user_metadata?.full_name || user.email.split('@')[0] || "Usuario sin nombre",
-      email: user.email || "Sin correo registrado",
-      phone: user.phone || "Sin teléfono",
-      lastAccess: formatDateTime(user.last_sign_in_at),
-      createdAt: formatDateTime(user.created_at),
-      imageUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
-      emailStatus: user.email_confirmed_at ? "verified" : "pending",
+      name: user.fullName || user.username || user.primaryEmailAddress?.emailAddress || "Usuario sin nombre",
+      email: user.primaryEmailAddress?.emailAddress || "Sin correo registrado",
+      phone: user.primaryPhoneNumber?.phoneNumber || "Sin teléfono",
+      lastAccess: formatDateTime(user.lastSignInAt),
+      createdAt: formatDateTime(user.createdAt),
+      imageUrl: user.imageUrl,
+      emailStatus: user.primaryEmailAddress?.verification?.status === "verified" ? "verified" : "pending",
     }
     : null;
 
@@ -216,24 +202,13 @@ export default function DashboardContent() {
             <Badge className="flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               <Activity className="h-3 w-3" /> Online
             </Badge>
-            {user ? (
-              <div className="relative">
-                <button className="flex items-center gap-2 rounded-full border border-border bg-secondary p-1 text-sm font-medium transition hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring">
-                  <Avatar className="h-8 w-8 border border-border">
-                    {contactProfile?.imageUrl && (
-                      <AvatarImage src={contactProfile.imageUrl} alt={contactProfile.name} />
-                    )}
-                    <AvatarFallback className="text-xs font-semibold text-foreground">
-                      {getInitials(contactProfile?.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                </button>
-              </div>
-            ) : (
-              <div className="h-10 w-10 rounded-full border border-border bg-secondary flex items-center justify-center">
-                <div className="h-6 w-6 rounded-full bg-muted animate-pulse"></div>
-              </div>
-            )}
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9 border border-border",
+                }
+              }}
+            />
           </div>
         </div>
       </header>
@@ -367,7 +342,7 @@ export default function DashboardContent() {
                       <Filter className="h-4 w-4" /> Filtros
                     </Button>
                   </div>
-                  {!isLoadingUser ? (
+                  {!isLoaded ? (
                     <div className="rounded-xl border border-border bg-secondary/70 p-6">
                       <div className="space-y-4">
                         <Skeleton className="h-8 w-1/3 bg-muted" />

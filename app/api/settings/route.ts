@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server"
-import { createClient } from "../../../lib/supabase"
+import { auth } from "@clerk/nextjs/server"
 import { getSupabaseClient } from "@/lib/supabase"
 
 export async function GET() {
   try {
-    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
 
     const supabaseClient = getSupabaseClient()
@@ -31,7 +31,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
 
     const payload = await req.json().catch(() => ({}))

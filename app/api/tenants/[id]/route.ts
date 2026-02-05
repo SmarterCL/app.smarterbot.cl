@@ -1,11 +1,10 @@
-import { createClient } from "@/lib/supabase"
 import { NextResponse } from "next/server"
+import { auth } from "@clerk/nextjs/server"
 import { getTenantById } from "@/lib/supabase"
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // Auth check
-    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -42,7 +41,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   } catch (error: any) {
     console.error("Tenant get error:", error)
 
-    // Check if tenant not found or access denied (RLS)
     if (error?.code === "PGRST116" || error?.message?.includes("no rows")) {
       return NextResponse.json(
         {

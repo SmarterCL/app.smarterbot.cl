@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase"
+import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { updateTenantServices } from "@/lib/supabase"
@@ -13,8 +13,7 @@ const servicesUpdateSchema = z.object({
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // Auth check
-    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -28,7 +27,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     // Parse and validate body
-    const body = await req.json()
+    const body = await req.json().catch(() => ({}))
     const validation = servicesUpdateSchema.safeParse(body)
 
     if (!validation.success) {
@@ -46,17 +45,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     // Update services (RLS ensures ownership)
     const tenant = await updateTenantServices(id, services)
 
-    // TODO: Trigger service activation/deactivation workflows
-    // For each service toggled ON, call bootstrap endpoint
-    // For each service toggled OFF, call cleanup endpoint
-    // Example:
-    // if (services.crm === true && !tenant.chatwoot_inbox_id) {
-    //   await fetch('https://api.smarterbot.cl/tenants/${id}/bootstrap/crm', {
-    //     method: 'POST',
-    //     headers: { 'Authorization': `Bearer ${process.env.FASTAPI_API_KEY}` },
-    //   })
-    // }
-
     return NextResponse.json({
       success: true,
       tenant: {
@@ -71,7 +59,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   } catch (error: any) {
     console.error("Services update error:", error)
 
-    // Check if tenant not found or access denied (RLS)
     if (error?.code === "PGRST116" || error?.message?.includes("no rows")) {
       return NextResponse.json(
         {

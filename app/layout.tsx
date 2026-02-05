@@ -3,6 +3,8 @@ import Script from "next/script"
 import { Analytics } from '@vercel/analytics/react'
 import { Onest } from "next/font/google"
 import { SupabaseProvider } from '@/components/supabase-provider'
+import { ClerkProvider } from "@clerk/nextjs"
+import { esES } from "@clerk/localizations"
 
 import "./globals.css"
 
@@ -136,14 +138,16 @@ export default function RootLayout({
   }
 
   return (
-    <html {...htmlAttributes}>
-      <body className={baseBodyClass}>
-        <Script id="smarteros-theme-init" strategy="beforeInteractive">
-          {themeInitScript}
-        </Script>
-        <SupabaseProvider>{children}</SupabaseProvider>
-        <Analytics />
-      </body>
-    </html>
+    <ClerkProvider localization={esES}>
+      <html {...htmlAttributes}>
+        <body className={baseBodyClass}>
+          <Script id="smarteros-theme-init" strategy="beforeInteractive">
+            {themeInitScript}
+          </Script>
+          <SupabaseProvider>{children}</SupabaseProvider>
+          <Analytics />
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

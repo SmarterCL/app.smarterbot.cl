@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase"
+import { auth } from "@clerk/nextjs/server"
 import DashboardContent from "@/components/dashboard-content"
 import TenantSelector from "@/components/tenant-selector"
 import ServiceCard from "@/components/service-card"
@@ -54,14 +54,10 @@ function TenantDashboardClient() {
 }
 
 export default async function Dashboard() {
-  const supabase = createClient();
+  const { userId } = await auth()
 
-
-  const { data, error } = await supabase.auth.getSession();
-  const session = data?.session;
-
-  if (error || !session) {
-    redirect("/auth/sign-in");
+  if (!userId) {
+    redirect("/auth/sign-in")
   }
 
   return (

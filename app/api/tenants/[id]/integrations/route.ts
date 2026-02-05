@@ -1,20 +1,19 @@
-import { createClient } from "@/lib/supabase"
+import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { updateTenantIntegrations } from "@/lib/supabase"
 
 const integrationsUpdateSchema = z.object({
-  chatwoot_inbox_id: z.number().int().positive().optional(),
-  botpress_workspace_id: z.string().min(1).optional(),
-  odoo_company_id: z.number().int().positive().optional(),
-  n8n_project_id: z.string().min(1).optional(),
-  metabase_dashboard_id: z.string().min(1).optional(),
+  chatwoot_inbox_id: z.number().optional(),
+  botpress_workspace_id: z.string().optional(),
+  odoo_company_id: z.number().optional(),
+  n8n_project_id: z.string().optional(),
+  metabase_card_id: z.number().optional(),
 })
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // Auth check
-    const supabase = createClient(); const { data: { session }, error: authError } = await supabase.auth.getSession(); if (authError || !session) { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }; const userId = session.user.id
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -28,7 +27,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     // Parse and validate body
-    const body = await req.json()
+    const body = await req.json().catch(() => ({}))
     const validation = integrationsUpdateSchema.safeParse(body)
 
     if (!validation.success) {
@@ -64,7 +63,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   } catch (error: any) {
     console.error("Integrations update error:", error)
 
-    // Check if tenant not found or access denied (RLS)
     if (error?.code === "PGRST116" || error?.message?.includes("no rows")) {
       return NextResponse.json(
         {

@@ -41,7 +41,7 @@ export default function KPIPage() {
       <div className="mx-auto max-w-5xl space-y-6">
         <h1 className="text-2xl font-semibold">KPI (Metabase)</h1>
         <p className="text-sm text-muted-foreground">
-          Esta página genera un token de Metabase (JWT) usando tu sesión de Supabase y embebe el dashboard solicitado.
+          Esta página genera un token de Metabase (JWT) usando tu sesión de Clerk y embebe el dashboard solicitado.
         </p>
 
         <div className="flex items-center gap-3">
