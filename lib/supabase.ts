@@ -1,9 +1,9 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js"
+import { createClient as createSupabaseClient, SupabaseClient } from "@supabase/supabase-js"
 
 type SupabaseClientOptions = Parameters<typeof createSupabaseClient>[2]
 
-let cachedClient: SupabaseClient | null = null
-let cachedAuthClient: SupabaseClient | null = null
+let cachedClient: SupabaseClient<any, any> | null = null
+let cachedAuthClient: SupabaseClient<any, any> | null = null
 
 const getEnv = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -22,7 +22,7 @@ const getEnv = () => {
   return { url, anonKey }
 }
 
-export function createClient(options?: SupabaseClientOptions): SupabaseClient {
+export function createClient(options?: SupabaseClientOptions): SupabaseClient<any, any> {
   const { url, anonKey } = getEnv()
 
   return createSupabaseClient(url, anonKey, {
@@ -40,7 +40,7 @@ export function createClient(options?: SupabaseClientOptions): SupabaseClient {
   })
 }
 
-export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient {
+export function getSupabaseClient(options?: SupabaseClientOptions): SupabaseClient<any, any> {
   if (cachedClient) {
     return cachedClient
   }
