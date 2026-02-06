@@ -58,13 +58,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Login form - iOS style glassmorphism */}
-          <div className="w-full max-w-[360px] mx-auto lg:mx-0 lg:w-[380px] lg:flex-shrink-0">
-            <div className="relative rounded-3xl bg-white/15 backdrop-blur-xl border border-white/40 p-6 lg:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] transition-shadow duration-300">
-              {/* Subtle inner glow */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-
-              <div className="relative z-10">
+          {/* Login form - Clean white border frame */}
+          <div className="w-full max-w-[340px] mx-auto lg:mx-0 lg:w-[360px] lg:flex-shrink-0">
+            <div className="rounded-[28px] border-2 border-white/50 p-1 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+              <div className="rounded-3xl bg-white/95 backdrop-blur-xl p-5 sm:p-6">
                 <SignIn
                   routing="path"
                   path="/"
@@ -76,29 +73,29 @@ export default function Home() {
                       card: "bg-transparent shadow-none p-0 border-0 w-full",
                       main: "w-full",
                       form: "w-full",
-                      headerTitle: "text-lg lg:text-xl font-bold text-gray-900 text-center w-full",
-                      headerSubtitle: "text-xs lg:text-sm text-gray-700 text-center w-full",
-                      socialButtonsBlockButton: "w-full bg-white/50 backdrop-blur-sm border border-white/60 hover:bg-white/70 transition-all duration-200 py-3 rounded-2xl shadow-sm",
-                      socialButtonsBlockButtonText: "text-gray-900 font-semibold text-sm",
+                      headerTitle: "text-lg font-bold text-gray-900 text-center w-full",
+                      headerSubtitle: "text-xs text-gray-500 text-center w-full",
+                      socialButtonsBlockButton: "w-full bg-gray-100 border-0 hover:bg-gray-200 transition-all duration-200 py-2.5 rounded-xl",
+                      socialButtonsBlockButtonText: "text-gray-900 font-medium text-sm",
                       socialButtonsProviderIcon: "h-5 w-5",
-                      formButtonPrimary: "w-full bg-gray-900 hover:bg-gray-800 text-white font-bold shadow-lg transition-all duration-200 hover:shadow-xl py-3 rounded-2xl",
-                      footerActionLink: "text-gray-900 hover:text-gray-700 font-semibold text-sm underline",
-                      formFieldInput: "w-full bg-white/50 backdrop-blur-sm border-white/60 text-gray-900 placeholder:text-gray-500 focus:border-gray-900 focus:ring-gray-900 py-3 text-sm rounded-2xl",
-                      formFieldLabel: "text-gray-800 text-xs font-semibold",
-                      dividerLine: "bg-gray-900/20",
-                      dividerText: "text-gray-600 text-xs",
+                      formButtonPrimary: "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-md transition-all duration-200 hover:shadow-lg py-2.5 rounded-xl",
+                      footerActionLink: "text-amber-600 hover:text-amber-700 font-semibold text-sm",
+                      formFieldInput: "w-full bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-amber-500 focus:ring-amber-500 py-2.5 text-sm rounded-xl",
+                      formFieldLabel: "text-gray-700 text-xs font-medium",
+                      dividerLine: "bg-gray-200",
+                      dividerText: "text-gray-400 text-xs",
                       logoImage: "hidden",
                       logoBox: "hidden",
                       identityPreviewText: "text-gray-900 text-sm",
-                      identityPreviewEditButton: "text-gray-900 text-sm underline",
-                      formFieldInputShowPasswordButton: "text-gray-600 hover:text-gray-900",
-                      otpCodeFieldInput: "bg-white/50 border-white/60 text-gray-900",
-                      formResendCodeLink: "text-gray-900 underline text-sm",
+                      identityPreviewEditButton: "text-amber-600 text-sm",
+                      formFieldInputShowPasswordButton: "text-gray-400 hover:text-gray-600",
+                      otpCodeFieldInput: "bg-gray-50 border-gray-200 text-gray-900",
+                      formResendCodeLink: "text-amber-600 text-sm",
                       footer: "hidden",
-                      socialButtons: "w-full flex flex-col gap-3",
+                      socialButtons: "w-full flex flex-col gap-2",
                       socialButtonsBlockButtonArrow: "hidden",
-                      formFieldRow: "mb-4",
-                      alternativeMethods: "mt-4",
+                      formFieldRow: "mb-3",
+                      alternativeMethods: "mt-3",
                     },
                     layout: {
                       logoPlacement: "none",
@@ -109,10 +106,10 @@ export default function Home() {
                 />
 
                 {/* Footer inside the card */}
-                <div className="mt-5 text-center border-t border-gray-900/10 pt-4">
-                  <p className="text-xs lg:text-sm text-gray-700">
+                <div className="mt-4 text-center border-t border-gray-100 pt-3">
+                  <p className="text-xs text-gray-500">
                     ¿No tienes cuenta?{" "}
-                    <a href="/auth/sign-up" className="font-bold text-gray-900 hover:underline">
+                    <a href="/auth/sign-up" className="font-bold text-amber-600 hover:text-amber-700">
                       Crear cuenta
                     </a>
                   </p>
