@@ -1,57 +1,66 @@
 "use client"
 
 import { SignIn } from "@clerk/nextjs"
+import Image from "next/image"
 
 export default function Home() {
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500 overflow-hidden">
-      <div className="flex h-full items-center justify-center p-3 sm:p-6 lg:p-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 lg:flex-row lg:items-center lg:gap-16">
+      <div className="flex h-full items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
 
           {/* Left side - Hero content (hidden on mobile, visible on desktop) */}
-          <div className="hidden lg:flex flex-1 flex-col space-y-6 lg:pr-8">
-            <div className="flex items-center gap-3">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black/20 backdrop-blur-sm">
-                <svg className="h-8 w-8 text-black" viewBox="0 0 24 24" fill="currentColor">
+          <div className="hidden lg:flex flex-1 flex-col items-start space-y-6">
+            {/* Logo */}
+            <div className="flex items-center gap-4">
+              <div className="relative flex h-20 w-20 items-center justify-center">
+                <div className="absolute inset-0 rounded-2xl bg-yellow-300 shadow-lg"></div>
+                <svg className="relative h-12 w-12 text-gray-900 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <span className="text-3xl font-bold text-black">SmarterOS</span>
+              <div>
+                <h2 className="text-4xl font-black text-gray-900 drop-shadow-sm" style={{ textShadow: '2px 2px 0 rgba(0,0,0,0.1)' }}>
+                  Smarter<span className="text-gray-800">OS</span>
+                </h2>
+              </div>
             </div>
 
-            <h1 className="text-4xl font-bold leading-tight text-black sm:text-5xl lg:text-6xl">
-              Únete a la revolución de la automatización inteligente
+            <h1 className="text-4xl font-bold leading-tight text-gray-900 lg:text-5xl" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+              Únete a la revolución de la automatización
             </h1>
 
-            <p className="text-xl text-black/80">
+            <p className="text-xl text-gray-800/90" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.05)' }}>
               Conecta WhatsApp, IA y automatizaciones en una sola plataforma.
-              Impulsa tus ventas y operaciones desde cualquier lugar.
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-full bg-black/20 px-4 py-2 text-sm font-medium text-black">Chatwoot</span>
-              <span className="rounded-full bg-black/20 px-4 py-2 text-sm font-medium text-black">N8N</span>
-              <span className="rounded-full bg-black/20 px-4 py-2 text-sm font-medium text-black">Odoo</span>
-              <span className="rounded-full bg-black/20 px-4 py-2 text-sm font-medium text-black">Botpress</span>
+            <div className="flex flex-wrap gap-3">
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Chatwoot</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">N8N</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Odoo</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Botpress</span>
             </div>
           </div>
 
           {/* Mobile header */}
-          <div className="lg:hidden text-center space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/20 backdrop-blur-sm">
-                <svg className="h-5 w-5 text-black" viewBox="0 0 24 24" fill="currentColor">
+          <div className="lg:hidden flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div className="relative flex h-12 w-12 items-center justify-center">
+                <div className="absolute inset-0 rounded-xl bg-yellow-300 shadow-md"></div>
+                <svg className="relative h-7 w-7 text-gray-900" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold text-black">SmarterOS</span>
+              <h2 className="text-2xl font-black text-gray-900" style={{ textShadow: '1px 1px 0 rgba(0,0,0,0.1)' }}>
+                SmarterOS
+              </h2>
             </div>
-            <p className="text-sm text-black/70">Automatización inteligente</p>
+            <p className="text-sm text-gray-800/80">Automatización inteligente</p>
           </div>
 
-          {/* Login form */}
-          <div className="w-full lg:w-[420px] lg:flex-shrink-0">
-            <div className="rounded-2xl lg:rounded-3xl bg-slate-900 p-4 sm:p-6 lg:p-8 shadow-2xl">
+          {/* Login form - centered container */}
+          <div className="w-full max-w-[400px] lg:w-[400px] lg:flex-shrink-0">
+            <div className="rounded-2xl lg:rounded-3xl bg-slate-900/95 backdrop-blur-sm p-5 sm:p-6 lg:p-8 shadow-2xl shadow-black/30">
               <SignIn
                 routing="path"
                 path="/"
@@ -59,19 +68,19 @@ export default function Home() {
                 forceRedirectUrl="/dashboard"
                 appearance={{
                   elements: {
-                    rootBox: "w-full mx-auto",
+                    rootBox: "w-full",
                     card: "bg-transparent shadow-none p-0 border-0 w-full",
-                    main: "w-full gap-3",
-                    form: "w-full gap-3",
-                    headerTitle: "text-lg lg:text-xl font-semibold text-white text-center",
-                    headerSubtitle: "text-xs lg:text-sm text-gray-400 text-center",
-                    socialButtonsBlockButton: "w-full bg-white/10 border-0 hover:bg-white/20 transition-colors py-2.5",
+                    main: "w-full",
+                    form: "w-full",
+                    headerTitle: "text-lg lg:text-xl font-bold text-white text-center w-full",
+                    headerSubtitle: "text-xs lg:text-sm text-gray-400 text-center w-full",
+                    socialButtonsBlockButton: "w-full bg-white/10 border-0 hover:bg-white/20 transition-all duration-200 py-3 rounded-xl",
                     socialButtonsBlockButtonText: "text-white font-medium text-sm",
-                    socialButtonsProviderIcon: "brightness-0 invert h-4 w-4",
-                    formButtonPrimary: "w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold shadow-lg transition-all hover:shadow-xl py-2.5",
+                    socialButtonsProviderIcon: "brightness-0 invert h-5 w-5",
+                    formButtonPrimary: "w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold shadow-lg transition-all duration-200 hover:shadow-xl py-3 rounded-xl",
                     footerActionLink: "text-yellow-400 hover:text-yellow-300 font-medium text-sm",
-                    formFieldInput: "w-full bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-500 focus:ring-yellow-500 py-2.5 text-sm",
-                    formFieldLabel: "text-gray-300 text-xs",
+                    formFieldInput: "w-full bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-500 focus:ring-yellow-500 py-3 text-sm rounded-xl",
+                    formFieldLabel: "text-gray-300 text-xs font-medium",
                     dividerLine: "bg-white/20",
                     dividerText: "text-gray-500 text-xs",
                     logoImage: "hidden",
@@ -82,10 +91,10 @@ export default function Home() {
                     otpCodeFieldInput: "bg-white/10 border-white/20 text-white",
                     formResendCodeLink: "text-yellow-400 text-sm",
                     footer: "hidden",
-                    socialButtons: "w-full gap-2",
+                    socialButtons: "w-full flex flex-col gap-2",
                     socialButtonsBlockButtonArrow: "hidden",
-                    formFieldRow: "mb-2",
-                    alternativeMethods: "mt-2",
+                    formFieldRow: "mb-3",
+                    alternativeMethods: "mt-3",
                   },
                   layout: {
                     logoPlacement: "none",
@@ -96,10 +105,10 @@ export default function Home() {
               />
 
               {/* Footer inside the card */}
-              <div className="mt-4 text-center">
+              <div className="mt-5 text-center border-t border-white/10 pt-4">
                 <p className="text-xs lg:text-sm text-gray-400">
                   ¿No tienes cuenta?{" "}
-                  <a href="/auth/sign-up" className="font-medium text-yellow-400 hover:text-yellow-300">
+                  <a href="/auth/sign-up" className="font-semibold text-yellow-400 hover:text-yellow-300 transition-colors">
                     Crear cuenta
                   </a>
                 </p>
@@ -108,17 +117,17 @@ export default function Home() {
           </div>
 
           {/* Mobile footer tags */}
-          <div className="lg:hidden flex flex-wrap justify-center gap-1.5">
-            <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium text-black">Chatwoot</span>
-            <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium text-black">N8N</span>
-            <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium text-black">Odoo</span>
-            <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium text-black">Botpress</span>
+          <div className="lg:hidden flex flex-wrap justify-center gap-2 mt-2">
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Chatwoot</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">N8N</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Odoo</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Botpress</span>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="absolute bottom-2 lg:bottom-4 left-0 right-0 text-center text-xs text-black/50">
+      <div className="absolute bottom-3 lg:bottom-4 left-0 right-0 text-center text-xs text-gray-900/50">
         © 2026 SmarterOS
       </div>
     </div>
