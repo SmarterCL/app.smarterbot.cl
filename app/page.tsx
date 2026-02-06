@@ -37,8 +37,10 @@ export default function Home() {
             <div className="flex flex-wrap gap-3">
               <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Chatwoot</span>
               <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">N8N</span>
-              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Odoo</span>
-              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Botpress</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Supabase</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Odoo v19</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">Grafana</span>
+              <span className="rounded-full bg-gray-900/10 px-4 py-2 text-sm font-semibold text-gray-900 backdrop-blur-sm shadow-sm">SmarterMCP</span>
             </div>
           </div>
 
@@ -120,8 +122,10 @@ export default function Home() {
           <div className="lg:hidden flex flex-wrap justify-center gap-2 mt-2">
             <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Chatwoot</span>
             <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">N8N</span>
-            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Odoo</span>
-            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Botpress</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Supabase</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Odoo v19</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">Grafana</span>
+            <span className="rounded-full bg-gray-900/10 px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm">SmarterMCP</span>
           </div>
         </div>
       </div>
