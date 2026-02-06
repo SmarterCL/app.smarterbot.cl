@@ -38,7 +38,7 @@ export default function Home() {
 
           {/* Right side - Login form */}
           <div className="w-full lg:w-[420px] lg:flex-shrink-0">
-            <div className="rounded-3xl bg-slate-900 p-6 shadow-2xl">
+            <div className="rounded-3xl bg-slate-900 p-8 shadow-2xl">
               <SignIn
                 routing="path"
                 path="/"
@@ -46,20 +46,22 @@ export default function Home() {
                 forceRedirectUrl="/dashboard"
                 appearance={{
                   elements: {
-                    rootBox: "w-full",
-                    card: "bg-transparent shadow-none p-0 border-0",
-                    headerTitle: "text-xl font-semibold text-white",
-                    headerSubtitle: "text-sm text-gray-400",
-                    socialButtonsBlockButton: "bg-white/10 border-0 hover:bg-white/20 transition-colors",
+                    rootBox: "w-full mx-auto",
+                    card: "bg-transparent shadow-none p-0 border-0 w-full",
+                    main: "w-full",
+                    form: "w-full",
+                    headerTitle: "text-xl font-semibold text-white text-center",
+                    headerSubtitle: "text-sm text-gray-400 text-center",
+                    socialButtonsBlockButton: "w-full bg-white/10 border-0 hover:bg-white/20 transition-colors",
                     socialButtonsBlockButtonText: "text-white font-medium",
                     socialButtonsProviderIcon: "brightness-0 invert",
-                    formButtonPrimary: "bg-yellow-500 hover:bg-yellow-400 text-black font-bold shadow-lg transition-all hover:shadow-xl",
+                    formButtonPrimary: "w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold shadow-lg transition-all hover:shadow-xl",
                     footerActionLink: "text-yellow-400 hover:text-yellow-300 font-medium",
-                    formFieldInput: "bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-500 focus:ring-yellow-500",
+                    formFieldInput: "w-full bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-500 focus:ring-yellow-500",
                     formFieldLabel: "text-gray-300",
                     dividerLine: "bg-white/20",
                     dividerText: "text-gray-500",
-                    logoImage: "h-10 w-auto brightness-0 invert",
+                    logoImage: "h-10 w-auto brightness-0 invert mx-auto",
                     logoBox: "justify-center mb-4",
                     identityPreviewText: "text-white",
                     identityPreviewEditButton: "text-yellow-400",
@@ -67,6 +69,8 @@ export default function Home() {
                     otpCodeFieldInput: "bg-white/10 border-white/20 text-white",
                     formResendCodeLink: "text-yellow-400",
                     footer: "hidden",
+                    socialButtons: "w-full",
+                    socialButtonsBlockButtonArrow: "hidden",
                   },
                   layout: {
                     logoPlacement: "inside",
@@ -77,7 +81,7 @@ export default function Home() {
               />
 
               {/* Footer inside the card */}
-              <div className="mt-4 text-center">
+              <div className="mt-6 text-center">
                 <p className="text-sm text-gray-400">
                   ¿No tienes cuenta?{" "}
                   <a href="/auth/sign-up" className="font-medium text-yellow-400 hover:text-yellow-300">
