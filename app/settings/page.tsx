@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import ApiKeysManager from "@/components/api-keys-manager"
+import UserSecretsManager from "@/components/user-secrets-manager"
 
 interface Settings {
   business_name: string
@@ -133,6 +134,9 @@ export default function SettingsPage() {
 
         {/* API Keys Section */}
         <ApiKeysManager />
+
+        {/* User Secrets (WhatsApp, OpenAI) */}
+        <UserSecretsManager />
 
         <div className="space-y-4 rounded border border-border bg-secondary p-4">
           <h2 className="text-lg font-medium">Configuración de Cloud</h2>
