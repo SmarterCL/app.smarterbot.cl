@@ -61,8 +61,8 @@ export default function Home() {
           </div>
 
           {/* Login form - centered container */}
-          <div className="w-full max-w-[400px] lg:w-[400px] lg:flex-shrink-0">
-            <div className="rounded-2xl lg:rounded-3xl bg-slate-900/95 backdrop-blur-sm p-5 sm:p-6 lg:p-8 shadow-2xl shadow-black/30">
+          <div className="w-full max-w-[380px] mx-auto lg:mx-0 lg:w-[400px] lg:flex-shrink-0">
+            <div className="rounded-2xl lg:rounded-3xl bg-slate-900 backdrop-blur-sm p-5 sm:p-6 lg:p-8 shadow-2xl shadow-black/40">
               <SignIn
                 routing="path"
                 path="/"
