@@ -186,26 +186,26 @@ export default function DashboardContent() {
     : []
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border bg-background/80 backdrop-blur">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50/50 via-orange-50/30 to-yellow-50/40 text-foreground">
+      <header className="border-b border-amber-200/50 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
-              <Bot className="h-6 w-6 text-primary" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-md">
+              <Bot className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-foreground">SmarterOS Dashboard</h1>
-              <p className="text-xs text-muted-foreground">Automatización WhatsApp + IA</p>
+              <h1 className="text-lg font-semibold text-gray-900">SmarterOS Dashboard</h1>
+              <p className="text-xs text-amber-700/70">Automatización WhatsApp + IA</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Badge className="flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            <Badge className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
               <Activity className="h-3 w-3" /> Online
             </Badge>
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "h-9 w-9 border border-border",
+                  avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",
                 }
               }}
             />
@@ -214,16 +214,18 @@ export default function DashboardContent() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {overviewStats.map(({ title, value, delta, icon: Icon }) => (
-            <Card key={title} className="border border-border bg-card shadow-sm">
+            <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-                <Icon className="h-4 w-4 text-accent" />
+                <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-100 to-orange-100">
+                  <Icon className="h-4 w-4 text-amber-600" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-semibold text-foreground">{value}</div>
-                <p className="text-xs text-muted-foreground">{delta}</p>
+                <div className="text-2xl font-bold text-gray-900">{value}</div>
+                <p className="text-xs text-amber-600/80">{delta}</p>
               </CardContent>
             </Card>
           ))}
