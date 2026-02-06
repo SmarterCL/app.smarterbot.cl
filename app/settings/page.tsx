@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import ApiKeysManager from "@/components/api-keys-manager"
 
 interface Settings {
   business_name: string
@@ -130,6 +131,9 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        {/* API Keys Section */}
+        <ApiKeysManager />
+
         <div className="space-y-4 rounded border border-border bg-secondary p-4">
           <h2 className="text-lg font-medium">Configuración de Cloud</h2>
           <p className="text-xs text-muted-foreground">Configura tu suscripción de Azure para n8n y workflows.</p>
@@ -155,7 +159,7 @@ export default function SettingsPage() {
             {serviceChecks.map((r) => (
               <div key={r.url} className="rounded border bg-background p-3 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium truncate" title={r.url}>{r.url.replace(/^https?:\/\//,'')}</span>
+                  <span className="font-medium truncate" title={r.url}>{r.url.replace(/^https?:\/\//, '')}</span>
                   <span className={r.ok ? "text-emerald-600" : "text-red-600"}>{r.ok ? "OK" : "FALLA"}</span>
                 </div>
                 <p className="text-[11px] text-muted-foreground">Status: {r.status}{r.error ? ` (${r.error})` : ""}</p>
