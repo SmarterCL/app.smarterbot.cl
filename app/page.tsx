@@ -36,6 +36,7 @@ export default function Home() {
               <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">Chatwoot</span>
               <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">N8N</span>
               <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">Supabase</span>
+              <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">Clerk</span>
               <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">Odoo v19</span>
               <span className="rounded-full bg-white/25 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-900 border border-white/30">Grafana</span>
             </div>
@@ -136,6 +137,7 @@ export default function Home() {
             <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-gray-900 border border-white/30">Chatwoot</span>
             <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-gray-900 border border-white/30">N8N</span>
             <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-gray-900 border border-white/30">Supabase</span>
+            <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-gray-900 border border-white/30">Clerk</span>
             <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-gray-900 border border-white/30">Grafana</span>
           </div>
         </div>
