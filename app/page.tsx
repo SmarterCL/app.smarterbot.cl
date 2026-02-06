@@ -53,9 +53,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Login form - Fixed width, white border frame */}
+          {/* Login form - Fixed width, thin border with shadow */}
           <div className="w-full max-w-sm flex-shrink-0">
-            <div className="rounded-3xl border-2 border-white/60 bg-white shadow-2xl shadow-black/20 overflow-hidden">
+            <div className="rounded-3xl border border-white/70 bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] overflow-hidden">
               <SignIn
                 routing="path"
                 path="/"
