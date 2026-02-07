@@ -1,6 +1,6 @@
 "use client"
 
-import { SignIn, useSignIn } from "@clerk/nextjs"
+import { SignIn } from "@clerk/nextjs"
 import Image from "next/image"
 
 export default function SignInPage() {
@@ -19,27 +19,24 @@ export default function SignInPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+      <div className="relative z-10 flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8 pt-12 lg:pt-16">
 
         {/* Hero Section - Web Header */}
-        <div className="mb-8 hidden lg:block text-center">
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-2">HERO SmarterOS</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
+        <div className="mb-8 hidden lg:block text-center w-full max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-3">HERO SmarterOS</h1>
+          <p className="text-lg text-white/90 max-w-2xl mx-auto">
             El sistema operativo para automatizar tu negocio con inteligencia artificial.
           </p>
         </div>
 
         {/* Mobile Header */}
-        <div className="mb-8 lg:hidden text-center">
-          <div className="flex items-center justify-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
-              <img 
-                src="/placeholder-logo.png" 
-                alt="SmarterOS Logo" 
-                className="h-7 w-7 object-contain"
-              />
+        <div className="mb-8 lg:hidden text-center w-full">
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-yellow-400/90 backdrop-blur-md border border-yellow-300 shadow-2xl shadow-yellow-500/30">
+              <svg className="h-9 w-9 text-black" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">SmarterOS</h1>
           </div>
         </div>
 
@@ -105,7 +102,6 @@ export default function SignInPage() {
                   }}
                   signInUrl="/auth/sign-in"
                   signInFallbackRedirectUrl="/dashboard"
-                  socialProviders={['google']} // Only show Google provider
                 />
               </div>
 
