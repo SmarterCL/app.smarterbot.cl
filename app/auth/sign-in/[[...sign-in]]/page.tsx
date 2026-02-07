@@ -96,7 +96,7 @@ export default function SignInPage() {
               />
 
               {/* WhatsApp Support Button */}
-              <div className="px-6 pb-2">
+              <div className="px-6 pb-2 space-y-3">
                 <a
                   href="https://flow.smarterbot.cl/"
                   target="_blank"
@@ -109,6 +109,22 @@ export default function SignInPage() {
                     </svg>
                   </div>
                   <span className="text-gray-600 group-hover:text-green-700 font-semibold text-xs sm:text-sm tracking-wide">¿Necesitas ayuda para ingresar?</span>
+                </a>
+
+                <a
+                  href="https://enterprise.smarterbot.cl/web/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-white/50 hover:bg-blue-50/80 border border-blue-200/50 hover:border-blue-300 transition-all duration-300 py-3 rounded-xl flex items-center justify-center gap-2 group shadow-sm hover:shadow-md"
+                >
+                  <div className="bg-blue-100 p-1 rounded-full group-hover:scale-110 transition-transform duration-300">
+                    <svg className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                      <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                  </div>
+                  <span className="text-gray-600 group-hover:text-blue-700 font-semibold text-xs sm:text-sm tracking-wide">Acceso Enterprise (Manual)</span>
                 </a>
               </div>
 
