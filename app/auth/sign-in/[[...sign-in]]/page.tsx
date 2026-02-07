@@ -55,7 +55,7 @@ export default function SignInPage() {
           </div>
 
           {/* Login form - Centered with frame effect */}
-          <div className="w-full max-w-[380px] lg:max-w-[400px]">
+          <div className="w-full max-w-[400px] lg:max-w-[450px]">
             {/* Outer frame with shadow for depth */}
             <div className="relative">
               {/* Shadow layer */}
@@ -82,14 +82,14 @@ export default function SignInPage() {
                     appearance={{
                       elements: {
                         rootBox: "w-full",
-                        card: "bg-transparent shadow-none px-5 py-4 border-0 w-full",
+                        card: "bg-transparent shadow-none px-6 py-5 border-0 w-full",
                         main: "w-full",
                         form: "w-full gap-3",
                         header: "hidden",
                         headerTitle: "hidden",
                         headerSubtitle: "hidden",
-                        socialButtonsBlockButton: "w-full bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-all duration-200 py-3 rounded-xl relative",
-                        socialButtonsBlockButtonText: "text-gray-900 font-medium text-sm",
+                        socialButtonsBlockButton: "w-full bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-all duration-200 py-2.5 rounded-xl relative flex items-center justify-center",
+                        socialButtonsBlockButtonText: "text-gray-900 font-medium text-xs sm:text-sm",
                         socialButtonsProviderIcon: "h-5 w-5",
                         formButtonPrimary: "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-lg transition-all duration-200 py-3 rounded-xl",
                         footerActionLink: "text-amber-600 hover:text-amber-700 font-semibold text-sm",
@@ -105,7 +105,7 @@ export default function SignInPage() {
                         otpCodeFieldInput: "bg-gray-50 border-gray-200 text-gray-900",
                         formResendCodeLink: "text-amber-600 text-sm",
                         footer: "hidden",
-                        socialButtons: "w-full flex flex-col gap-2",
+                        socialButtons: "w-full grid grid-cols-2 gap-3",
                         socialButtonsBlockButtonArrow: "hidden",
                         formFieldRow: "mb-3",
                         alternativeMethods: "mt-2",
