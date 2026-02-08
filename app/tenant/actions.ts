@@ -37,8 +37,8 @@ export async function linkRutToUser(rutInput: string): Promise<LinkRutResult> {
 
   if (!tenant) {
     return {
-      ok: false,
-      error: "RUT guardado pero no hay una empresa asociada a este RUT. Contacta soporte para activar tu cuenta o verifica el RUT ingresado."
+      ok: true,
+      error: "RUT guardado pero no hay tenant asociado. Contacta soporte para activar tu cuenta."
     }
   }
 

@@ -14,7 +14,6 @@
   "dependencies": {
     "@clerk/localizations": "^3.35.3",
     "@clerk/nextjs": "^6.37.3",
-    "@modelcontextprotocol/sdk": "^1.0.3",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
@@ -47,13 +46,11 @@
     "@supabase/supabase-js": "^2.50.0",
     "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.20",
-    "chilean-rutify": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "latest",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "latest",
-    "flowcl-node-api-client": "^1.1.6",
     "input-otp": "latest",
     "jose": "^6.1.1",
     "lucide-react": "^0.454.0",
@@ -64,7 +61,6 @@
     "react-dom": "^19",
     "react-hook-form": "latest",
     "react-resizable-panels": "2.1.7",
-    "react-spinners": "^0.17.0",
     "recharts": "latest",
     "resend": "^4.0.0",
     "sharp": "^0.34.5",
@@ -85,13 +81,11 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x || 22.x || 24.x"
   },
   "pnpm": {
     "allowedBuilds": {
-      "sharp": true,
-      "@clerk/shared": true,
-      "unrs-resolver": true
+      "sharp": true
     }
   }
 }
