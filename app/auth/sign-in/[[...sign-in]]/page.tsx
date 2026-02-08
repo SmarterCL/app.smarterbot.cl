@@ -35,46 +35,39 @@ export default function SignInPage() {
               Tu negocio con inteligencia artificial.
             </h2>
           </div>
-
-          {/* Ecosystem Tags for the left side */}
-          <div className="mt-12 flex flex-wrap justify-center lg:justify-start gap-3">
-            {['Chatwoot', 'N8N', 'Supabase', 'Clerk', 'Odoo'].map((tag) => (
-              <span key={tag} className="px-4 py-2 rounded-xl bg-black/5 border border-black/10 text-xs font-black text-black/60 uppercase tracking-widest">
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* Right Column: Login Form Only */}
-      <div className="flex-1 lg:flex-[0.8] xl:flex-[0.7] flex flex-col items-center justify-center bg-slate-50 px-6 py-12 relative">
+      {/* Right Column: Clean Login Form */}
+      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 px-6 relative">
 
-        {/* Mobile Logo (Visible only on mobile) */}
-        <div className="lg:hidden flex flex-col items-center mb-10 animate-in fade-in slide-in-from-top-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FFCE00] shadow-xl mb-4">
+        {/* Mobile Logo Visibility */}
+        <div className="lg:hidden mb-12 flex flex-col items-center">
+          <div className="h-16 w-16 bg-[#FFCE00] rounded-2xl flex items-center justify-center shadow-xl mb-4">
             <svg className="h-10 w-10 text-black" viewBox="0 0 24 24" fill="currentColor">
               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tighter">SmarterOS</h1>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">SmarterOS</h1>
         </div>
 
-        {/* Minimal Login Card - Pure focus on entry */}
-        <div className="w-full max-w-[420px] mx-auto animate-in fade-in zoom-in duration-700">
-          <div className="bg-white rounded-[40px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] border border-slate-100 overflow-hidden">
+        {/* Reformulated Central Card */}
+        <div className="w-full max-w-[420px] animate-in fade-in zoom-in duration-700">
+          <div className="bg-white rounded-[44px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden">
 
-            {/* Header section inside the card */}
-            <div className="px-10 pt-12 pb-4 text-center">
-              <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-slate-100 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4">
-                Acceso Sistema Operativo
+            {/* Brand Focal Point */}
+            <div className="flex flex-col items-center pt-12 pb-6">
+              <div className="h-24 w-24 bg-[#FFCE00] rounded-[32px] flex items-center justify-center shadow-2xl mb-6 transform hover:scale-105 transition-transform duration-500">
+                <svg className="h-14 w-14 text-black" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <h3 className="text-3xl font-black text-slate-900 tracking-tight">Bienvenido</h3>
-              <div className="mt-2 h-1.5 w-12 bg-[#FFCE00] mx-auto rounded-full" />
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Acceso Seguro</h3>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mt-2">Continuar con tu cuenta</p>
             </div>
 
-            {/* Clerk Sign-In */}
-            <div className="p-10 pt-6">
+            <div className="px-10 pb-12">
+              {/* Clerk Sign-In with prominence */}
               <SignIn
                 routing="path"
                 path="/auth/sign-in"
@@ -87,21 +80,22 @@ export default function SignInPage() {
                     main: "w-full",
                     form: "w-full space-y-6",
                     header: "hidden",
-                    socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 hover:border-amber-400 transition-all duration-300 rounded-[22px] flex items-center justify-center active:scale-[0.98]",
-                    socialButtonsBlockButtonText: "text-slate-900 font-extrabold text-sm",
-                    socialButtonsProviderIcon: "h-6 w-6 mr-3",
-                    formButtonPrimary: "w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[22px] transform active:scale-[0.98] shadow-lg shadow-slate-200",
-                    formFieldInput: "w-full h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-sm rounded-[22px] transition-all border-2",
-                    formFieldLabel: "text-slate-500 text-[10px] font-black uppercase tracking-widest ml-4 mb-2",
+                    socialButtonsBlockButton: "w-full h-16 bg-white hover:bg-slate-50 border-[3px] border-slate-50 hover:border-amber-400 transition-all duration-300 rounded-[24px] flex items-center justify-center shadow-sm active:scale-95 group",
+                    socialButtonsBlockButtonText: "text-slate-900 font-black text-sm uppercase tracking-wide",
+                    socialButtonsProviderIcon: "h-7 w-7 mr-4",
+                    formButtonPrimary: "w-full h-16 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[24px] transform active:scale-95 shadow-xl shadow-slate-200",
+                    formFieldInput: "w-full h-16 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-sm rounded-[24px] transition-all border-2",
+                    formFieldLabel: "text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] ml-5 mb-2",
                     footerActionLink: "hidden",
                     dividerLine: "bg-slate-100",
-                    dividerText: "text-slate-300 text-[10px] font-black uppercase tracking-widest",
+                    dividerText: "text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]",
                     identityPreviewText: "text-slate-900 font-bold",
-                    identityPreviewEditButton: "text-amber-600 hover:text-amber-700 font-bold",
+                    identityPreviewEditButton: "text-amber-600 hover:text-amber-700 font-black",
                     footer: "hidden",
                     socialButtons: "w-full",
-                    socialButtonsList: "flex flex-col gap-3",
+                    socialButtonsList: "flex flex-col gap-4",
                     socialButtonsItem: "w-full",
+                    socialButtonsBlockButtonArrow: "hidden",
                   },
                   layout: {
                     logoPlacement: "none",
@@ -110,6 +104,23 @@ export default function SignInPage() {
                   }
                 }}
               />
+
+              {/* Double Option: Enterprise/Brand Custom Button */}
+              <div className="mt-4">
+                <a
+                  href="https://enterprise.smarterbot.cl/web/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-16 bg-[#FFCE00] hover:bg-[#E6BA00] text-black font-black rounded-[24px] flex items-center justify-center gap-3 transition-all duration-300 active:scale-95 shadow-lg shadow-amber-500/10"
+                >
+                  <div className="bg-black p-1.5 rounded-lg shadow-sm">
+                    <svg className="h-5 w-5 text-[#FFCE00]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <span className="uppercase text-sm tracking-wide">Acceso Enterprise</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
