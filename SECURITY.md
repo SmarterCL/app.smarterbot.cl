@@ -6,7 +6,7 @@ Use the following versions to ensure security updates and stability:
 
 | Component | Version |
 | :--- | :--- |
-| Node.js | v24.x |
+| Node.js | v20.x, v22.x, v24.x |
 | Next.js | v16.x |
 | React | v19.x |
 
@@ -17,7 +17,7 @@ Use the following versions to ensure security updates and stability:
     *   `NEXT_PUBLIC_` prefix exposes variables to the browser. Only use this for non-sensitive public keys (e.g., Clerk Publishable Key, Supabase Anon Key).
     *   Secret keys (e.g., Clerk Secret Key, Supabase Service Role) must NOT have this prefix and must only be used on the server.
 3.  **Dependency Management**: Run `pnpm audit` regularly to check for vulnerable dependencies.
-4.  **Proxy Protection**: Ensure `proxy.ts` correctly protects private routes using Clerk or your auth provider.
+4.  **Middleware Protection**: Ensure `middleware.ts` correctly protects private routes using Clerk or your auth provider.
 
 ## Reporting a Vulnerability
 
