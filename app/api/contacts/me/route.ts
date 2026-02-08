@@ -10,10 +10,15 @@ const ensureValue = (value?: string | null, fallback = "") => {
 
 export async function GET() {
   try {
-    const { userId } = await auth()
+    const authData = await auth()
+    const userId = authData.userId
     const user = await currentUser()
 
+    console.log("[contacts:GET] UserId:", userId)
+    console.log("[contacts:GET] User:", user ? "Defined" : "Undefined")
+
     if (!userId || !user) {
+      console.warn("[contacts:GET] Unauthorized access attempt or missing session")
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
