@@ -5,7 +5,7 @@ import Image from "next/image"
 
 export default function SignInPage() {
   return (
-    <div className="fixed inset-0 flex flex-col lg:flex-row h-[100dvh] w-full overflow-hidden bg-white">
+    <div className="fixed inset-0 flex flex-col lg:flex-row h-[100dvh] w-full overflow-hidden bg-[#FFCE00]">
 
       {/* Left Column: Brand & Hero (Visible on Desktop) */}
       <div className="relative hidden lg:flex flex-1 flex-col items-center justify-center bg-[#FFCE00] p-12 overflow-hidden">
@@ -52,41 +52,36 @@ export default function SignInPage() {
         </div>
       </div>
 
-      {/* Right Column: Clean Login Form - Strictly No Scroll */}
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 px-6 sm:px-12 py-6 relative h-full">
+      {/* Right Column: Clean Login Form - Yellow on Mobile, Slate on Desktop */}
+      <div className="flex-1 flex flex-col items-center justify-center bg-[#FFCE00] lg:bg-slate-50 px-6 sm:px-12 py-10 relative h-full">
 
-        {/* Mobile Logo Visibility */}
-        <div className="lg:hidden mb-8 flex flex-col items-center animate-in fade-in slide-in-from-top-4">
-          <div className="h-14 w-14 bg-[#FFCE00] rounded-2xl flex items-center justify-center shadow-xl mb-3">
-            <svg className="h-8 w-8 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">SmarterOS</h1>
+        {/* Mobile-only Lightning background overlay */}
+        <div className="absolute inset-0 lg:hidden opacity-5 pointer-events-none">
+          <svg className="w-full h-full text-black" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
         </div>
 
-        {/* Central Card - Optimized Height to Prevent Scroll */}
-        <div className="w-full max-w-[460px] mx-auto animate-in fade-in zoom-in duration-700">
+        {/* Central Card - Optimized to fit mobile perfectly */}
+        <div className="w-full max-w-[440px] mx-auto animate-in fade-in zoom-in duration-700 relative z-10">
           <div className="relative group">
-            {/* Ambient Shadow */}
-            <div className="absolute -inset-2 rounded-[52px] bg-slate-200 opacity-40 blur-2xl"></div>
+            {/* Ambient Shadow - Softer on mobile */}
+            <div className="absolute -inset-1.5 rounded-[52px] bg-black/10 lg:bg-slate-200 opacity-40 blur-2xl"></div>
 
-            <div className="relative bg-white rounded-[48px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden">
+            <div className="relative bg-white rounded-[44px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white/20 lg:border-slate-100 overflow-hidden">
 
-              {/* Card Header */}
-              <div className="flex flex-col items-center px-8 pt-10 pb-2">
+              {/* Card Header - More compact for mobile */}
+              <div className="flex flex-col items-center px-6 pt-10 pb-2 md:px-10">
                 <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4">
                   Acceso Sistema Operativo
                 </div>
 
-                <div className="flex items-center justify-center gap-4">
-                  <h3 className="text-3xl font-[1000] text-slate-900 tracking-tight">Bienvenido</h3>
-                </div>
-                <div className="h-1.5 w-14 bg-[#FFCE00] rounded-full mt-3" />
+                <h3 className="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight">Bienvenido</h3>
+                <div className="h-1.5 w-12 bg-[#FFCE00] rounded-full mt-3" />
               </div>
 
               {/* Clerk Sign-In */}
-              <div className="px-8 pb-10 pt-6">
+              <div className="px-6 pb-12 pt-6 md:px-10">
                 <SignIn
                   routing="path"
                   path="/auth/sign-in"
@@ -99,16 +94,16 @@ export default function SignInPage() {
                       main: "w-full",
                       form: "w-full space-y-5",
                       header: "hidden",
-                      socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-[3px] border-slate-50 hover:border-amber-400 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98]",
+                      socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-[3px] border-slate-50 hover:border-amber-400 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[95]",
                       socialButtonsBlockButtonText: "text-slate-900 font-[900] text-sm uppercase tracking-wide",
                       socialButtonsProviderIcon: "h-6 w-6 mr-4",
-                      formButtonPrimary: "w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[22px] transform active:scale-[0.98] shadow-xl shadow-slate-200",
+                      formButtonPrimary: "w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[22px] transform active:scale-[95] shadow-xl",
                       formFieldInput: "w-full h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-sm rounded-[22px] transition-all border-2",
                       formFieldLabel: "text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] ml-6 mb-2",
                       footerActionLink: "hidden",
                       dividerLine: "bg-slate-100",
                       dividerText: "text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]",
-                      identityPreviewText: "text-slate-900 font-bold",
+                      identityPreviewText: "text-slate-900 font-bold text-xs",
                       identityPreviewEditButton: "text-amber-600 hover:text-amber-700 font-black px-2",
                       footer: "hidden",
                       socialButtons: "w-full",
@@ -128,9 +123,9 @@ export default function SignInPage() {
           </div>
         </div>
 
-        {/* Brand visual reinforcement for the right side - subtle */}
-        <div className="mt-8 opacity-20 hidden lg:block">
-          <p className="text-[10px] font-black text-slate-400 tracking-[0.6em] uppercase">SmarterOS Hub</p>
+        {/* Branding Subtitle - Replaces floating tags on mobile for space */}
+        <div className="mt-8 opacity-40 text-center">
+          <p className="text-[10px] font-black text-black lg:text-slate-400 tracking-[0.6em] uppercase">SmarterOS Hub</p>
         </div>
       </div>
     </div>
