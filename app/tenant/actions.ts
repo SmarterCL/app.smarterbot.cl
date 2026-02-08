@@ -10,35 +10,38 @@ export interface LinkRutResult {
   tenant?: {
     id: string
     rut: string
-    business_name: string
+    name: string
   }
 }
 
 /**
- * Vincula un RUT al usuario autenticado:
- * 1. Valida formato y DV
- * 2. Guarda en Supabase metadata
- * 3. Busca tenant en Supabase
- * 4. Retorna info del tenant si existe
+ * Vincula el RUT de Persona y el RUT de Empresa al usuario autenticado.
  */
-export async function linkRutToUser(rutInput: string): Promise<LinkRutResult> {
-  const rut = formatRUT(rutInput)
+export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: string): Promise<LinkRutResult> {
+  const rutPersona = formatRUT(rutPersonaInput)
+  const rutEmpresa = formatRUT(rutEmpresaInput)
 
-  if (!validateRUT(rut)) {
-    return { ok: false, error: "RUT inválido" }
+  if (!validateRUT(rutPersona)) {
+    return { ok: false, error: "RUT Persona inválido" }
   }
 
-  const saveResult = await saveRutMetadata(rut)
+  if (!validateRUT(rutEmpresa)) {
+    return { ok: false, error: "RUT Empresa inválido" }
+  }
+
+  // Guardamos ambos en perfiles
+  const saveResult = await saveRutMetadata(rutPersona, rutEmpresa)
   if (!saveResult.ok) {
     return { ok: false, error: saveResult.error }
   }
 
-  const tenant = await getTenantByRut(rut)
+  // Buscamos si existe un tenant para el RUT de Empresa
+  const tenant = await getTenantByRut(rutEmpresa)
 
   if (!tenant) {
     return {
       ok: true,
-      error: "RUT guardado pero no hay tenant asociado. Contacta soporte para activar tu cuenta."
+      error: "RUTs guardados. No se encontró un tenant activo para esta empresa. Contacta soporte."
     }
   }
 
@@ -47,7 +50,7 @@ export async function linkRutToUser(rutInput: string): Promise<LinkRutResult> {
     tenant: {
       id: tenant.id,
       rut: tenant.rut,
-      business_name: tenant.business_name,
+      name: tenant.business_name || (tenant as any).name, // handle possible field name variants
     },
   }
 }

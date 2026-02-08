@@ -92,7 +92,8 @@ type SyncedContact = {
   name: string
   source?: string | null
   status?: string | null
-  was_notified?: boolean | null
+  rut_persona?: string | null
+  rut_empresa?: string | null
   created_at?: string | null
   updated_at?: string | null
 }
@@ -175,6 +176,8 @@ export default function DashboardContent() {
   // Restore logic
   const supabaseDetails = supabaseContact
     ? [
+      { label: "RUT Persona", value: supabaseContact.rut_persona || "No registrado" },
+      { label: "RUT Empresa", value: supabaseContact.rut_empresa || "No registrado" },
       { label: "Estado CRM", value: supabaseContact.status || "Sin estado" },
       { label: "Fuente", value: supabaseContact.source || "Desconocida" },
       { label: "Notificaciones", value: supabaseContact.was_notified ? "Enviadas" : "Pendiente" },
@@ -203,6 +206,7 @@ export default function DashboardContent() {
               <Activity className="h-3 w-3" /> Online
             </Badge>
             <UserButton
+              afterSignOutUrl="/"
               appearance={{
                 elements: {
                   avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",

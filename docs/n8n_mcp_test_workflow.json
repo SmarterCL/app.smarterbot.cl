@@ -1,0 +1,65 @@
+{
+    "name": "SmarterOS - Test Access MCP",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "test-mcp",
+                "options": {}
+            },
+            "id": "e3a89e8b-8772-4d4b-9c6a-6bc9f168b8e3",
+            "name": "Webhook Trigger",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=http://api-backend:8000/webhook/n8n-mcp/{{ $json.client_id }}/get_client_data",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "client_id",
+                            "value": "={{ $json.client_id }}"
+                        },
+                        {
+                            "name": "flow_name",
+                            "value": "get_client_data"
+                        },
+                        {
+                            "name": "payload",
+                            "value": "={ \"query\": \"Consulta de prueba\" }"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "f5b89e8b-8772-4d4b-9c6a-6bc9f168b8e4",
+            "name": "FastAPI Orchestrator",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                480,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "FastAPI Orchestrator",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

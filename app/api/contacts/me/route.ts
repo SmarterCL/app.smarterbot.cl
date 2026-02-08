@@ -35,7 +35,9 @@ export async function GET() {
       "Contacto SmarterOS"
 
     const supabase = createClient()
-    const { data, error } = await supabase
+
+    // First, sync basic contact info
+    const { data: contactData, error: contactError } = await supabase
       .from("contacts")
       .upsert(
         {
@@ -49,13 +51,24 @@ export async function GET() {
       .select()
       .single()
 
-    if (error) {
-      console.error("[contacts:sync] Supabase error", error)
+    if (contactError) {
+      console.error("[contacts:sync] Supabase contacts error", contactError)
       return NextResponse.json({ error: "No se pudo sincronizar el contacto" }, { status: 502 })
     }
 
+    // Then, fetch extended profile info (RUTs)
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("rut_persona, rut_empresa")
+      .eq("id", userId)
+      .single()
+
     return NextResponse.json({
-      contact: data,
+      contact: {
+        ...contactData,
+        rut_persona: profileData?.rut_persona || "No registrado",
+        rut_empresa: profileData?.rut_empresa || "No registrado"
+      },
     })
   } catch (error) {
     console.error("[contacts:sync] Unexpected error", error)

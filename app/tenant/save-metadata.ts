@@ -1,38 +1,36 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { auth } from "@clerk/nextjs/server"
 import { createClient } from "@/lib/supabase"
 
 /**
- * Guarda el RUT validado en los metadata públicos del usuario.
+ * Guarda el RUT Persona y RUT Empresa en la tabla profiles de Supabase.
  */
-export async function saveRutMetadata(rut: string): Promise<{ ok: boolean; error?: string }> {
+export async function saveRutMetadata(rutPersona: string, rutEmpresa: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('sb-access-token')?.value
+    const { userId } = await auth()
 
-    if (!token) {
+    if (!userId) {
       return { ok: false, error: "No authenticated user" }
     }
 
-    const supabase = createClient({
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    })
+    const supabase = createClient()
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    // Upsert into profiles table
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .upsert({
+        id: userId,
+        rut_persona: rutPersona,
+        rut_empresa: rutEmpresa,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' })
 
-    if (authError || !user) {
-      return { ok: false, error: "No authenticated user" }
-    }
-
-    const { error } = await supabase.auth.updateUser({
-      data: { rut }
-    })
-
-    if (error) throw error
+    if (profileError) throw profileError
 
     return { ok: true }
   } catch (error: any) {
+    console.error("[saveRutMetadata] Error saving RUT to profiles:", error)
     return { ok: false, error: error?.message || "Failed to save RUT" }
   }
 }

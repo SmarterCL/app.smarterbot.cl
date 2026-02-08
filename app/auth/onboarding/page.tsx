@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowRight, Bot } from "lucide-react"
+import { ArrowRight, Bot, Building2, User } from "lucide-react"
 
 export default function RutOnboardingPage() {
   const router = useRouter()
-  const [rut, setRut] = useState("")
+  const [rutPersona, setRutPersona] = useState("")
+  const [rutEmpresa, setRutEmpresa] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -22,13 +23,13 @@ export default function RutOnboardingPage() {
       const res = await fetch("/api/tenant/link-rut", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rut }),
+        body: JSON.stringify({ rutPersona, rutEmpresa }),
       })
 
       const data = await res.json()
 
       if (!data.ok) {
-        setError(data.error || "Error al vincular RUT")
+        setError(data.error || "Error al vincular los datos")
         setLoading(false)
         return
       }
@@ -55,7 +56,7 @@ export default function RutOnboardingPage() {
         </svg>
       </div>
 
-      <div className="w-full max-w-[440px] px-6 animate-in fade-in zoom-in duration-700 relative z-10">
+      <div className="w-full max-w-[480px] px-6 animate-in fade-in zoom-in duration-700 relative z-10">
         <div className="relative group">
           {/* Ambient Shadow */}
           <div className="absolute -inset-1.5 rounded-[52px] bg-black/10 opacity-40 blur-2xl"></div>
@@ -72,26 +73,37 @@ export default function RutOnboardingPage() {
                 Configuración Final
               </div>
 
-              <h3 className="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight text-center">Vincula tu RUT</h3>
+              <h3 className="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight text-center">Datos de Acceso</h3>
               <div className="h-1.5 w-12 bg-[#FFCE00] rounded-full mt-3" />
             </div>
 
-            <form onSubmit={handleSubmit} className="px-10 pb-10 space-y-6">
+            <form onSubmit={handleSubmit} className="px-10 pb-10 space-y-5">
               <div className="space-y-3">
-                <Label htmlFor="rut" className="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] ml-2">
-                  RUT de Empresa o Persona
+                <Label htmlFor="rutPersona" className="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                  <User className="h-3 w-3" /> RUT Persona
                 </Label>
                 <Input
-                  id="rut"
-                  placeholder="12.345.678-9"
-                  value={rut}
-                  onChange={(e) => setRut(e.target.value)}
+                  id="rutPersona"
+                  placeholder="12.345.678-k"
+                  value={rutPersona}
+                  onChange={(e) => setRutPersona(e.target.value)}
                   required
-                  className="w-full h-14 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[20px] transition-all border-2 px-6"
+                  className="w-full h-12 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/5 text-base rounded-[18px] transition-all border-2 px-6"
                 />
-                <p className="text-[10px] text-slate-400 font-bold px-2">
-                  Formato: 12.345.678-9 o 12345678-9
-                </p>
+              </div>
+
+              <div className="space-y-3">
+                <Label htmlFor="rutEmpresa" className="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                  <Building2 className="h-3 w-3" /> RUT Empresa
+                </Label>
+                <Input
+                  id="rutEmpresa"
+                  placeholder="76.123.456-7"
+                  value={rutEmpresa}
+                  onChange={(e) => setRutEmpresa(e.target.value)}
+                  required
+                  className="w-full h-12 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[18px] transition-all border-2 px-6"
+                />
               </div>
 
               {error && (
@@ -105,21 +117,13 @@ export default function RutOnboardingPage() {
                 disabled={loading}
                 className="w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[20px] transform active:scale-[0.98] shadow-xl text-base flex items-center justify-center gap-2 group"
               >
-                {loading ? "VINCULANDO..." : "FINALIZAR CONFIGURACIÓN"}
+                {loading ? "ACTUALIZANDO..." : "COMPLETAR PERFIL"}
                 {!loading && <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />}
               </Button>
 
-              <div className="pt-4 text-center">
-                <p className="text-xs font-medium text-slate-500 italic">
-                  Necesitas ayuda? {" "}
-                  <a
-                    href="https://wa.me/56979540471?text=Hola%20SmarterOS%2C%20necesito%20activar%20mi%20cuenta."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-600 font-black underline underline-offset-4"
-                  >
-                    Habla con nosotros
-                  </a>
+              <div className="pt-2 text-center">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  SmarterOS Billing System
                 </p>
               </div>
             </form>

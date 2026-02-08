@@ -5,13 +5,17 @@ export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest) {
   try {
-    const { rut } = await req.json()
+    const { rutPersona, rutEmpresa } = await req.json()
 
-    if (!rut || typeof rut !== "string") {
-      return NextResponse.json({ ok: false, error: "RUT requerido" }, { status: 400 })
+    if (!rutPersona || typeof rutPersona !== "string") {
+      return NextResponse.json({ ok: false, error: "RUT Persona requerido" }, { status: 400 })
     }
 
-    const result = await linkRutToUser(rut)
+    if (!rutEmpresa || typeof rutEmpresa !== "string") {
+      return NextResponse.json({ ok: false, error: "RUT Empresa requerido" }, { status: 400 })
+    }
+
+    const result = await linkRutToUser(rutPersona, rutEmpresa)
 
     if (!result.ok) {
       return NextResponse.json(result, { status: 400 })
@@ -19,6 +23,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(result)
   } catch (error: any) {
+    console.error("[api/tenant/link-rut] Error:", error)
     return NextResponse.json(
       { ok: false, error: error?.message || "Error interno" },
       { status: 500 }

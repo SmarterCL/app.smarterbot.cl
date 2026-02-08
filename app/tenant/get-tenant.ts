@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase"
 export interface Tenant {
   id: string
   rut: string
-  business_name: string
+  name: string
   metabase_card_id?: number | null
   status?: string
 }
