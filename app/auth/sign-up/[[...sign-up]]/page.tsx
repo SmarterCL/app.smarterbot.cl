@@ -44,9 +44,18 @@ export default function SignUpPage() {
 
           {/* Ecosystem Tags */}
           <div className="mt-16 flex flex-wrap gap-3">
-            {['Chatwoot', 'N8N', 'Supabase', 'Clerk', 'Odoo v16'].map((tag) => (
-              <span key={tag} className="px-5 py-2.5 rounded-2xl bg-black text-[#FFCE00] text-[10px] font-black uppercase tracking-[0.2em] shadow-lg animate-in zoom-in duration-700">
-                {tag}
+            {[
+              { name: 'Chatwoot', delay: 'delay-[100ms]' },
+              { name: 'N8N', delay: 'delay-[200ms]' },
+              { name: 'Supabase', delay: 'delay-[300ms]' },
+              { name: 'Clerk', delay: 'delay-[400ms]' },
+              { name: 'Odoo v16', delay: 'delay-[500ms]' }
+            ].map((tag) => (
+              <span
+                key={tag.name}
+                className={`px-5 py-2.5 rounded-2xl bg-black text-[#FFCE00] text-[10px] font-black uppercase tracking-[0.2em] shadow-lg animate-in zoom-in duration-700 ${tag.delay}`}
+              >
+                {tag.name}
               </span>
             ))}
           </div>
@@ -83,7 +92,7 @@ export default function SignUpPage() {
                   Acceso Sistema Operativo
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight text-center uppercase italic">Nuevo Registro</h3>
+                <h3 className="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight text-center uppercase italic">Portal Registro</h3>
                 <div className="h-1.5 w-12 bg-[#FFCE00] rounded-full mt-3" />
               </div>
 
