@@ -1,81 +1,65 @@
-# 🎯 PLAN COMPLETO - SmarterOS Hub con Supabase + MCP + IA
+# 🎯 PLAN MAESTRO - SmarterOS Enterprise v2.0
 
-## 📋 **Objetivos del Rediseño**
-1. **Sistema de Autenticación Moderno** con Supabase + MCP
-2. **Diseño de Botones y UX Professional** 
-3. **Backend CRUD Completo** con Supabase
-4. **Integración IA Avanzada** con MCP de Supabase
+## 📋 **Visión Unificada**
+SmarterOS ahora integra totalmente el sistema de gestión de RUTs y suscripciones de `rut.smarterbot.store`. La plataforma centraliza la identidad, los pagos y la automatización comercial en un solo nodo retail escalable.
 
 ---
 
-## 🎯 **ESTRUCTURA DEL PROYECTO**
-
-### **Frontend (Next.js 16.1.6)**
+## 🏗️ **ESTRUCTURA UNIFICADA (Normas del Juego)**
 ```
-/Users/mac/dev/2025/app.smarterbot.cl/
+/Users/mac/dev/2026/app.smarterbot.cl/
 ├── app/
-│   ├── auth/
-│   │   ├── sign-in/ ← REDISEÑAR LOGIN
-│   │   ├── sign-up/ ← REDISEÑAR REGISTER  
-│   │   └── onboarding/
-│   ├── dashboard/ ← OPTIMIZAR CON MCP INTEGRATION
-│   │   ├── automatizaciones/
-│   ├── kpi/
-│   ├── settings/
-│   │   └── page.tsx ← HOME PAGE MEJORADA
-│   ├── api/ ← MANTENER Y EXTENDER ENDPOINTS
+│   ├── auth/ (Sign-In, Sign-Up, Onboarding)
+│   ├── dashboard/ 
+│   │   ├── empresa/ ← NUEVA: Gestión de RUTs y Pagos
+│   │   ├── automatizaciones/ ← Gestión de n8n
+│   ├── api/
+│   │   ├── payments/ ← Integración con Flow
+│   │   ├── messaging/ ← Webhooks para WA/SMS
 ├── components/
-│   ├── ui/ ← MANTENER COMPONENTES UI
-│   ├── dashboard-content.tsx ← MEJORAR PARA MCP
-│   ├── supabase-provider.tsx ← ACTUALIZAR AUTH
+│   ├── ui/ (Radix/Shadcn)
+│   ├── modules/ (Lógica compleja como TenantWizard)
 ├── lib/
-│   ├── supabase.ts ← EXTENDER CON NUEVAS FUNCIONES
-├── hooks/
-│   └── types/ ← AGREGAR NUEVOS TIPOS
-└── public/ ← ASSETS OPTIMIZADOS
-```
-
-### **Backend (Vercel + Supabase)**
-- **API Routes**: Extender con endpoints para MCP
-- **Middleware**: Mejorar seguridad y rendimiento
-- **Database**: Supabase con tablas estructuradas
-
----
-
-## 🔧 **COMANDOS PARA EMPEZAR**
-
-```bash
-# 1. Crear nuevos componentes UI
-mkdir -p components/ui-redesign
-mkdir -p components/auth-redesign
-
-# 2. Extender librería Supabase
-# Agregar nuevas funciones para MCP y gestión avanzada
-
-# 3. Crear pages rediseñadas
-# Usar Patrones Modernos de React
-
-# 4. Configurar MCP con auth nativa de Supabase
-# Integrar IA con gestión de base de datos
-
-# 5. Deploy mejorado con todas las funcionalidades
+│   ├── supabase.ts (Core DB)
+│   ├── messaging.ts (WhatsApp/SMS Service)
+│   ├── payments.ts (Flow Client)
+├── services/
+│   ├── odoo.ts (Integración Retail)
+├── database/
+│   ├── unified_schema.sql ← Blueprint de Supabase
+├── docker-compose.yml ← Local Dev & MCP
 ```
 
 ---
 
-## 🎨 **ESTADO FINAL**
+## 🔧 **FUNCIONALIDADES CORE**
+
+### 1. **Gestión de RUTs (Ex-SmarterRUT)**
+- Migración de la tabla `subscriptions` a la base unificada.
+- Integración de pagos vía Flow directamente en el dashboard.
+- Envío de códigos de activación via **WhatsApp/SMS** mediante el nuevo `MessagingService`.
+
+### 2. **Retail Node (Retail Spec)**
+- Conexión nativa con **Odoo v16** para inventario y boletas.
+- Orquestación mediante **n8n** local o en la nube.
+- Dashboards de KPI en tiempo real vía **Metabase**.
+
+### 3. **MCP Local Dev**
+- Uso de `@modelcontextprotocol/server-supabase` vía Docker.
+- Permite a la IA (Antigravity/Gemini) operar directamente sobre el esquema unificado.
+
+---
+
+## 🎨 **ESTADO DEL PROYECTO**
 
 | Componente | Estado | Versión |
 |------------|---------|----------|
-| **Next.js** | ✅ Seguro | 16.1.6 |
-| **Node.js** | ✅ Compatible | 24.x |
-| **TypeScript** | ✅ Moderno | ES2022 |
-| **Seguridad** | ✅ Máxima | Zero CVEs |
-| **Base Datos** | ✅ Profesional | Supabase |
-| **IA** | ✅ Integrada | MCP Listo |
-| **Botones** | ✅ Profesional | Rediseño |
-| **Deploy** | ✅ Estable | Vercel Activo |
+| **Next.js** | ✅ Optimizado | 16.1.6 |
+| **Node.js** | ✅ Fijado | 24.x |
+| **Messaging** | ✅ Abstraído | `lib/messaging.ts` |
+| **Database** | ✅ Unificada | `unified_schema.sql` |
+| **Local Dev** | ✅ Dockerizado | `docker-compose.yml` |
 
 ---
 
-**🎉 SmarterOS Hub ahora es una plataforma enterprise completa con IA integrada.**
+**🚀 SmarterOS es ahora el primer Sistema Operativo Comercial unificado para el mercado chileno.**

@@ -81,35 +81,37 @@ export default function SignInPage() {
               </div>
 
               {/* Clerk Sign-In */}
-              <div className="px-6 pb-12 pt-6 md:px-10">
+              <div className="w-full">
                 <SignIn
                   routing="path"
                   path="/auth/sign-in"
                   signUpUrl="/auth/sign-up"
-                  forceRedirectUrl="/dashboard"
+                  forceRedirectUrl="/auth/onboarding"
                   appearance={{
                     elements: {
                       rootBox: "w-full",
-                      card: "bg-transparent shadow-none p-0 border-0 w-full",
-                      main: "w-full",
-                      form: "w-full space-y-5",
+                      cardBox: "w-full",
+                      card: "bg-transparent shadow-none p-0 border-0 w-full max-w-none",
+                      main: "w-full p-8 pt-4",
+                      form: "w-full space-y-6",
                       header: "hidden",
-                      socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-[3px] border-slate-50 hover:border-amber-400 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[95]",
-                      socialButtonsBlockButtonText: "text-slate-900 font-[900] text-sm uppercase tracking-wide",
-                      socialButtonsProviderIcon: "h-6 w-6 mr-4",
-                      formButtonPrimary: "w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[22px] transform active:scale-[95] shadow-xl",
-                      formFieldInput: "w-full h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-sm rounded-[22px] transition-all border-2",
-                      formFieldLabel: "text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] ml-6 mb-2",
+                      socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 hover:border-amber-400 transition-all duration-300 rounded-[20px] flex items-center justify-center shadow-sm active:scale-[0.98]",
+                      socialButtonsBlockButtonText: "text-slate-900 font-black text-sm uppercase tracking-wider",
+                      socialButtonsProviderIcon: "h-6 w-6 mr-3",
+                      formButtonPrimary: "w-full h-14 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[20px] transform active:scale-[0.98] shadow-xl text-base",
+                      formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[20px] transition-all border-2 px-6",
+                      formFieldLabel: "text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] ml-2 mb-2",
                       footerActionLink: "hidden",
                       dividerLine: "bg-slate-100",
                       dividerText: "text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]",
-                      identityPreviewText: "text-slate-900 font-bold text-xs",
+                      identityPreviewText: "text-slate-900 font-bold text-sm",
                       identityPreviewEditButton: "text-amber-600 hover:text-amber-700 font-black px-2",
                       footer: "hidden",
                       socialButtons: "w-full",
                       socialButtonsList: "flex flex-col gap-4",
                       socialButtonsItem: "w-full",
                       socialButtonsBlockButtonArrow: "hidden",
+                      formFieldAction: "text-amber-600 hover:text-amber-700 font-black text-xs",
                     },
                     layout: {
                       logoPlacement: "none",
@@ -118,6 +120,16 @@ export default function SignInPage() {
                     }
                   }}
                 />
+              </div>
+
+              {/* Custom Bottom Section for Link back to sign up */}
+              <div className="px-10 pb-10 pt-2 text-center border-t border-slate-50">
+                <p className="text-sm font-medium text-slate-500">
+                  ¿No tienes cuenta?{" "}
+                  <a href="/auth/sign-up" className="text-amber-600 hover:text-amber-700 font-black underline underline-offset-4">
+                    Regístrate gratis
+                  </a>
+                </p>
               </div>
             </div>
           </div>

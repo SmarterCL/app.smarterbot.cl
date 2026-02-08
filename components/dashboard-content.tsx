@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import ChatwootWidget from "@/components/chatwoot-widget"
+import { CodeVerification } from "@/components/modules/code-verification"
 
 import {
   Activity,
@@ -32,6 +33,9 @@ import {
   Upload,
   Users,
   Zap,
+  Building,
+  CreditCard,
+  CheckCircle2,
 } from "lucide-react"
 
 const overviewStats = [
@@ -43,9 +47,10 @@ const overviewStats = [
 
 const tabItems = [
   { value: "overview", label: "Overview", icon: BarChart3 },
+  { value: "empresa", label: "Empresa", icon: Building },
+  { value: "automation", label: "Automatización", icon: Zap },
   { value: "messages", label: "Mensajes", icon: MessageSquare },
   { value: "contacts", label: "Contactos", icon: Users },
-  { value: "automation", label: "Automatización", icon: Zap },
   { value: "qr", label: "QR Codes", icon: QrCode },
   { value: "api", label: "API Keys", icon: Key },
   { value: "settings", label: "Configuración", icon: Settings },
@@ -101,8 +106,8 @@ export default function DashboardContent() {
   const { user, isLoaded } = useUser()
   const [activeTab, setActiveTab] = useState("overview")
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
-  const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
+  const [systemStatus, setSystemStatus] = useState<any>(null)
 
   // Initialize Supabase client
   const supabase = createBrowserClient(
@@ -144,6 +149,18 @@ export default function DashboardContent() {
     }
 
     syncContact()
+
+    // Fetch system diagnostic
+    const fetchDiagnostic = async () => {
+      try {
+        const res = await fetch("/api/diagnostic")
+        const data = await res.json()
+        if (isMounted) setSystemStatus(data)
+      } catch (e) {
+        console.error("Diagnostic failed", e)
+      }
+    }
+    fetchDiagnostic()
 
     return () => {
       isMounted = false
@@ -199,6 +216,11 @@ export default function DashboardContent() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            {systemStatus?.services?.some((s: any) => s.status !== 'online') && (
+              <Badge variant="destructive" className="animate-pulse flex items-center gap-1">
+                <Shield className="h-3 w-3" /> Backend Offline
+              </Badge>
+            )}
             <Badge className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
               <Activity className="h-3 w-3" /> Online
             </Badge>
@@ -304,6 +326,127 @@ export default function DashboardContent() {
                         <Badge className="border border-accent/30 bg-accent/10 text-accent">Activo</Badge>
                       </div>
                     ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="empresa" className="space-y-6 sm:space-y-8">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <Card className="lg:col-span-2 border border-border bg-card shadow-sm">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-foreground">Suscripciones y RUTs</CardTitle>
+                        <CardDescription className="text-muted-foreground">Gestiona las entidades vinculadas a tu cuenta SmarterOS</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <CodeVerification />
+
+                    <div className="pt-6 border-t border-slate-100 space-y-4">
+                      <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Entidades Vinculadas</h3>
+                      <div className="rounded-xl border border-amber-100 bg-amber-50/30 p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center">
+                              <Building className="h-6 w-6 text-amber-600" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-slate-900">Empresa Principal Ltda.</p>
+                              <p className="text-sm text-slate-500">RUT: 76.123.456-K</p>
+                            </div>
+                          </div>
+                          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">Activo</Badge>
+                        </div>
+                        <div className="mt-4 flex gap-4 border-t border-amber-100/50 pt-3">
+                          <div className="flex items-center gap-2 text-[10px] font-black uppercase text-amber-700">
+                            <Shield className="h-3 w-3" /> Conexión MCP: <span className="text-emerald-600">En Línea</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] font-black uppercase text-amber-700">
+                            <Zap className="h-3 w-3" /> Webhook n8n: <span className="text-emerald-600">Vinculado</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-xl border border-slate-100 bg-slate-50/30 p-4 opacity-60">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center">
+                              <Building className="h-6 w-6 text-slate-400" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-slate-900">Cupo Disponible</p>
+                              <p className="text-sm text-slate-500">Sin RUT asignado</p>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="text-amber-600 font-bold">Asignar ahora</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border border-border bg-card shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="text-foreground">Acceso MCP (IA)</CardTitle>
+                    <CardDescription>Control e histórico de prompts</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <div className="space-y-0.5">
+                        <Label className="text-sm font-bold">Acceso FastAPI</Label>
+                        <p className="text-[10px] text-slate-500">Permitir prompts desde n8n</p>
+                      </div>
+                      <Badge className="bg-amber-500 cursor-pointer">ON</Badge>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+                      <p className="text-[10px] font-bold text-blue-700 uppercase mb-1">Tu Client ID (MCP)</p>
+                      <div className="flex items-center gap-2">
+                        <code className="flex-1 text-xs bg-white px-2 py-1 rounded border border-blue-200 block truncate">
+                          {user?.id || 'demo_id_smarter'}
+                        </code>
+                        {/* El usuario puede copiar directamente el ID */}
+                      </div>
+                      <p className="text-[9px] text-blue-600 mt-2">Úsalo en n8n como `client_id`</p>
+                    </div>
+
+                    <div className="space-y-2 pt-2">
+                      <Label className="text-[10px] font-black uppercase text-slate-400">Webhook n8n (FastAPI)</Label>
+                      <div className="text-[10px] bg-slate-900 text-slate-300 p-2 rounded-lg font-mono break-all line-clamp-2">
+                        POST http://localhost:8080/webhook/n8n-mcp/{"{client_id}"}/{"{flow_name}"}
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <Button variant="outline" className="w-full text-xs h-9 border-slate-200 text-slate-600 hover:bg-slate-50">
+                        Ver guía de integración
+                      </Button>
+                    </div>
+
+                    {systemStatus?.services && (
+                      <div className="pt-4 border-t border-slate-100">
+                        <p className="text-[10px] font-black uppercase text-slate-400 mb-2">Estado de Servicios</p>
+                        <div className="space-y-2">
+                          {systemStatus.services.map((s: any) => (
+                            <div key={s.name} className="flex items-center justify-between text-[10px]">
+                              <span className="text-slate-500">{s.name}</span>
+                              <Badge
+                                variant="outline"
+                                className={`text-[9px] h-4 px-1.5 ${s.status === 'online'
+                                  ? 'border-emerald-200 text-emerald-600 bg-emerald-50'
+                                  : 'border-red-200 text-red-600 bg-red-50'
+                                  }`}
+                              >
+                                {s.status.toUpperCase()}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
