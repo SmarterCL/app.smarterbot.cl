@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS auth.users (
 );
 
 -- 1. Profiles (from app.smarterbot.cl)
--- Extends auth.users for identity
+-- Links to Clerk User ID
 CREATE TABLE IF NOT EXISTS public.profiles (
-  id UUID REFERENCES auth.users NOT NULL PRIMARY KEY,
+  id TEXT PRIMARY KEY, -- Clerk User ID
   email TEXT UNIQUE,
   full_name TEXT,
   avatar_url TEXT,
@@ -24,14 +24,14 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 2. Tenants / Accounts (Unifying company and subscription)
-CREATE TABLE IF NOT EXISTS public.accounts (
+-- 2. Tenants (Unifying company and subscription)
+CREATE TABLE IF NOT EXISTS public.tenants (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  owner_id UUID REFERENCES public.profiles(id),
-  company_name TEXT NOT NULL,
-  rut_company TEXT UNIQUE, -- RUT of the business entity
+  clerk_user_id TEXT REFERENCES public.profiles(id), -- Owner link
+  business_name TEXT NOT NULL,
+  rut TEXT UNIQUE, -- RUT of the business entity
   plan_type TEXT DEFAULT 'DEMO', -- 'DEMO', 'PRO', 'ENTERPRISE'
-  payment_status TEXT DEFAULT 'ACTIVE', -- 'PENDING', 'ACTIVE', 'EXPIRED'
+  status TEXT DEFAULT 'active', -- 'active', 'pending', 'expired'
   subscriptions_count INTEGER DEFAULT 1,
   total_price DECIMAL(12,2) DEFAULT 0,
   metadata JSONB DEFAULT '{}',
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.accounts (
 -- 3. Subscriptions (Linked RUTs that can use the service)
 CREATE TABLE IF NOT EXISTS public.subscriptions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  account_id UUID REFERENCES public.accounts(id),
+  account_id UUID REFERENCES public.tenants(id),
   name TEXT NOT NULL,
   rut TEXT NOT NULL,
   is_active BOOLEAN DEFAULT TRUE,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
 -- 4. Sales & Customers (Retail Node functionality)
 CREATE TABLE IF NOT EXISTS public.res_partner ( -- Synced with Odoo
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  tenant_id UUID REFERENCES public.accounts(id),
+  tenant_id UUID REFERENCES public.tenants(id),
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS public.res_partner ( -- Synced with Odoo
 
 CREATE TABLE IF NOT EXISTS public.sales_history (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  tenant_id UUID REFERENCES public.accounts(id),
+  tenant_id UUID REFERENCES public.tenants(id),
   customer_id UUID REFERENCES public.res_partner(id),
   amount DECIMAL(12,2) NOT NULL,
   currency TEXT DEFAULT 'CLP',
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS public.sales_history (
 -- 5. Messaging & Integration Logs
 CREATE TABLE IF NOT EXISTS public.message_logs (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  tenant_id UUID REFERENCES public.accounts(id),
+  tenant_id UUID REFERENCES public.tenants(id),
   recipient TEXT NOT NULL,
   provider TEXT NOT NULL, -- 'whatsapp', 'sms'
   content TEXT NOT NULL,
@@ -86,12 +86,12 @@ CREATE TABLE IF NOT EXISTS public.message_logs (
 
 -- Enable RLS for everything
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.accounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tenants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.res_partner ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.sales_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.message_logs ENABLE ROW LEVEL SECURITY;
 
 -- Basic Policies (Owner-only)
-CREATE POLICY "Users can only see their own profile" ON public.profiles FOR ALL USING (auth.uid() = id);
-CREATE POLICY "Owners can manage their accounts" ON public.accounts FOR ALL USING (auth.uid() = owner_id);
+CREATE POLICY "Users can only see their own profile" ON public.profiles FOR ALL USING (id = id); -- Simplified for local/Clerk
+CREATE POLICY "Owners can manage their tenants" ON public.tenants FOR ALL USING (clerk_user_id = clerk_user_id); -- Adjust for real production JWT

@@ -45,20 +45,20 @@ services:
     ports:
       - "8080:8000"
     environment:
-      - MCP_API_URL=http://mcp-server:8000
+      - MCP_API_URL=http://smartermcp:8000
       - DATABASE_URL=postgresql://postgres:postgres_password@db:5432/postgres
       - JWT_SECRET=smarter_secret_2026
     depends_on:
       - db
-      - mcp-server
+      - smartermcp
 
   # 4. SmarterMCP Server (HTTP Interface for Tools)
-  mcp-server:
+  smartermcp:
     build: ./services/mcp-server
     container_name: smarteros-mcp
     restart: always
     ports:
-      - "8001:8000"
+      - "8081:8000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres_password@db:5432/postgres
     depends_on:

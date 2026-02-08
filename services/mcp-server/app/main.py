@@ -38,14 +38,14 @@ async def get_db():
 
 @app.post("/api/v1/access/validate")
 async def validate_access(request: AccessValidationRequest, db = Depends(get_db)):
-    # Lógica de validación: Buscar si el cliente existe en 'accounts' o 'profiles'
+    # Lógica de validación: Buscar si el cliente existe en 'tenants' o 'profiles'
     try:
-        row = await db.fetchrow("SELECT id FROM public.accounts WHERE owner_id::text = $1 OR id::text = $1", request.client_id)
+        row = await db.fetchrow("SELECT id FROM public.tenants WHERE clerk_user_id = $1 OR id::text = $1", request.client_id)
         if row:
             return {"valid": True}
         
-        # Si no está en accounts, buscamos en profiles
-        row = await db.fetchrow("SELECT id FROM public.profiles WHERE id::text = $1", request.client_id)
+        # Si no está en tenants, buscamos en profiles
+        row = await db.fetchrow("SELECT id FROM public.profiles WHERE id = $1", request.client_id)
         return {"valid": row is not None}
     except Exception as e:
         print(f"Error validating access: {e}")
@@ -62,7 +62,7 @@ async def execute_flow(request: FlowExecutionRequest, db = Depends(get_db)):
     try:
         if flow == "get_client_data":
             # Herramienta: Obtener datos del cliente
-            data = await db.fetchrow("SELECT * FROM public.accounts WHERE id::text = $1 OR owner_id::text = $1", client_id)
+            data = await db.fetchrow("SELECT * FROM public.tenants WHERE id::text = $1 OR clerk_user_id = $1", client_id)
             return {"status": "executed", "result": dict(data) if data else {}}
         
         elif flow == "list_sales":
@@ -73,6 +73,15 @@ async def execute_flow(request: FlowExecutionRequest, db = Depends(get_db)):
         return {"status": "error", "message": f"Flow '{flow}' not found"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+@app.get("/api/v1/flows")
+async def list_available_flows():
+    return {
+        "flows": [
+            {"name": "get_client_data", "description": "Obtener info de cuenta/tenant"},
+            {"name": "list_sales", "description": "Listar últimas 5 ventas"}
+        ]
+    }
 
 @app.get("/health")
 async def health():

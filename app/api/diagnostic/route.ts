@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     const services = [
         { name: "Orchestrator (FastAPI)", url: process.env.FASTAPI_URL || "http://localhost:8080" },
-        { name: "MCP Server", url: "http://localhost:8001/health" },
+        { name: "SmarterMCP Server", url: "http://localhost:8081/health" },
         { name: "n8n Automation", url: process.env.N8N_URL || "http://localhost:5678" },
     ];
 

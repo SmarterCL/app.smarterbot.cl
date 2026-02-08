@@ -106,6 +106,7 @@ export default function DashboardContent() {
   const { user, isLoaded } = useUser()
   const [activeTab, setActiveTab] = useState("overview")
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
+  const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
   const [systemStatus, setSystemStatus] = useState<any>(null)
 

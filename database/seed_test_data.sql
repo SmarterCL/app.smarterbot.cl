@@ -12,7 +12,7 @@ VALUES ('00000000-0000-0000-0000-000000000000', 'demo@smarterbot.cl', 'Usuario D
 ON CONFLICT (id) DO NOTHING;
 
 -- 3. Crear una cuenta (Tenant)
-INSERT INTO public.accounts (id, owner_id, company_name, rut_company, plan_type)
+INSERT INTO public.tenants (id, clerk_user_id, business_name, rut, plan_type)
 VALUES (
   '11111111-1111-1111-1111-111111111111', 
   '00000000-0000-0000-0000-000000000000', 

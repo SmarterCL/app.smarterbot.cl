@@ -1,38 +1,41 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { auth } from "@clerk/nextjs/server"
 import { createClient } from "@/lib/supabase"
 
 /**
- * Guarda el RUT validado en los metadata públicos del usuario.
+ * Guarda el RUT validado en la tabla de perfiles de Supabase.
  */
 export async function saveRutMetadata(rut: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('sb-access-token')?.value
+    const { userId } = await auth()
 
-    if (!token) {
+    if (!userId) {
       return { ok: false, error: "No authenticated user" }
     }
 
-    const supabase = createClient({
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    })
+    const supabase = createClient()
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    // Intentar actualizar el perfil del usuario con el RUT
+    // Usamos upsert para asegurar que el perfil exista
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({
+        id: userId as any, // Manejar como UUID si es necesario, o cambiar esquema
+        rut,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' })
 
-    if (authError || !user) {
-      return { ok: false, error: "No authenticated user" }
+    if (error) {
+      console.error("Error updating profile RUT:", error)
+      // Si falla por el tipo UUID, intentaremos guardarlo en los tenants directamente o en el metadata de Clerk
+      // Pero por ahora, sigamos el flujo de la base de datos
+      throw error
     }
-
-    const { error } = await supabase.auth.updateUser({
-      data: { rut }
-    })
-
-    if (error) throw error
 
     return { ok: true }
   } catch (error: any) {
+    console.error("Save RUT error:", error)
     return { ok: false, error: error?.message || "Failed to save RUT" }
   }
 }
