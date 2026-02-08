@@ -133,24 +133,6 @@ export default function RootLayout({
     </html>
   )
 
-  if (isDemoMode) {
-    return (
-      <html {...htmlAttributes}>
-        <body className={baseBodyClass}>
-          <Script id="smarteros-theme-init" strategy="beforeInteractive">
-            {themeInitScript}
-          </Script>
-          {children}
-          <Analytics />
-        </body>
-      </html>
-    )
-  }
-
-  if (!hasValidSupabaseConfig) {
-    return errorScreen
-  }
-
   return (
     <ClerkProvider localization={esES}>
       <html {...htmlAttributes}>
@@ -158,7 +140,38 @@ export default function RootLayout({
           <Script id="smarteros-theme-init" strategy="beforeInteractive">
             {themeInitScript}
           </Script>
-          <SupabaseProvider>{children}</SupabaseProvider>
+          {isDemoMode ? (
+            children
+          ) : !hasValidSupabaseConfig ? (
+            <div className="flex min-h-screen items-center justify-center bg-secondary/40 p-6">
+              <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl">
+                <div className="space-y-6 text-center">
+                  <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-destructive/40 bg-destructive/10 text-destructive">
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M7.938 4h8.124c1.54 0 2.502 1.667 1.732 2.5L13.732 16.5c-.77.833-1.964.833-2.732 0L6.206 6.5C5.436 5.667 6.398 4 7.938 4z" />
+                    </svg>
+                  </div>
+                  <div className="space-y-2">
+                    <h1 className="text-lg font-semibold text-foreground">Configuración requerida</h1>
+                    <p className="text-sm text-muted-foreground">
+                      Configura tus variables de entorno para continuar utilizando SmarterOS Hub.
+                    </p>
+                  </div>
+                  <div className="space-y-3 text-left text-sm text-muted-foreground">
+                    <div className="rounded-xl border border-border bg-secondary p-4">
+                      <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Variables necesarias</h2>
+                      <ul className="space-y-1">
+                        <li>• NEXT_PUBLIC_SUPABASE_URL</li>
+                        <li>• NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <SupabaseProvider>{children}</SupabaseProvider>
+          )}
           <Analytics />
         </body>
       </html>
