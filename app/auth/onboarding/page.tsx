@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowRight, Bot, Building2, User } from "lucide-react"
+import { formatRUT } from "@/lib/utils"
 
 export default function RutOnboardingPage() {
   const router = useRouter()
@@ -42,7 +43,7 @@ export default function RutOnboardingPage() {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[#FFCE00] overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#FFCE00] overflow-x-hidden relative py-12">
       {/* Background Decorative Element (Lightning Bolt) */}
       <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 opacity-10 pointer-events-none">
         <svg className="w-[800px] h-[800px] text-black" viewBox="0 0 24 24" fill="currentColor">
@@ -56,7 +57,7 @@ export default function RutOnboardingPage() {
         </svg>
       </div>
 
-      <div className="w-full max-w-[480px] px-6 animate-in fade-in zoom-in duration-700 relative z-10">
+      <div className="w-full max-w-[440px] md:max-w-[480px] px-6 animate-in fade-in zoom-in duration-700 relative z-10 m-auto">
         <div className="relative group">
           {/* Ambient Shadow */}
           <div className="absolute -inset-1.5 rounded-[52px] bg-black/10 opacity-40 blur-2xl"></div>
@@ -86,7 +87,7 @@ export default function RutOnboardingPage() {
                   id="rutPersona"
                   placeholder="12.345.678-k"
                   value={rutPersona}
-                  onChange={(e) => setRutPersona(e.target.value)}
+                  onChange={(e) => setRutPersona(formatRUT(e.target.value))}
                   required
                   className="w-full h-12 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/5 text-base rounded-[18px] transition-all border-2 px-6"
                 />
@@ -100,7 +101,7 @@ export default function RutOnboardingPage() {
                   id="rutEmpresa"
                   placeholder="76.123.456-7"
                   value={rutEmpresa}
-                  onChange={(e) => setRutEmpresa(e.target.value)}
+                  onChange={(e) => setRutEmpresa(formatRUT(e.target.value))}
                   required
                   className="w-full h-12 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[18px] transition-all border-2 px-6"
                 />

@@ -11,9 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Skeleton } from "@/components/ui/skeleton"
-import ChatwootWidget from "@/components/chatwoot-widget"
+import { SubscriptionsView } from "@/components/subscriptions-view"
+import { getUserServices, ensureUserProfile, type UserService } from "@/lib/supabase"
 
 import {
   Activity,
@@ -32,6 +31,7 @@ import {
   Upload,
   Users,
   Zap,
+  CreditCard,
 } from "lucide-react"
 
 const overviewStats = [
@@ -45,6 +45,7 @@ const tabItems = [
   { value: "overview", label: "Overview", icon: BarChart3 },
   { value: "messages", label: "Mensajes", icon: MessageSquare },
   { value: "contacts", label: "Contactos", icon: Users },
+  { value: "subscriptions", label: "Suscripciones", icon: CreditCard },
   { value: "automation", label: "Automatización", icon: Zap },
   { value: "qr", label: "QR Codes", icon: QrCode },
   { value: "api", label: "API Keys", icon: Key },
@@ -102,6 +103,9 @@ export default function DashboardContent() {
   const { user, isLoaded } = useUser()
   const [activeTab, setActiveTab] = useState("overview")
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
+  const [userProfile, setUserProfile] = useState<any>(null)
+  const [userServices, setUserServices] = useState<UserService[]>([])
+  const [tenant, setTenant] = useState<any>(null)
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
 
@@ -118,33 +122,46 @@ export default function DashboardContent() {
 
     let isMounted = true
 
-    const syncContact = async () => {
+    const syncData = async () => {
       setSyncState("loading")
       setSyncError(null)
 
       try {
-        const response = await fetch("/api/contacts/me")
+        // 1. Ensure User Profile exists (Principles: Auth != Entitlement)
+        const profile = await ensureUserProfile(user.id, user.primaryEmailAddress?.emailAddress || "", user.fullName || "")
+        setUserProfile(profile)
 
-        if (!response.ok) {
-          const payload = await response.json().catch(() => ({}))
-          throw new Error(payload?.error || "No se pudo sincronizar el contacto")
+        // 2. Fetch User Entitlements and Runtime Status
+        const services = await getUserServices(user.id)
+        setUserServices(services)
+
+        // 3. Sync Legacy Contact (Keep for compatibility until fully migrated)
+        const response = await fetch("/api/contacts/me")
+        if (response.ok) {
+          const payload = (await response.json()) as { contact: SyncedContact }
+          setSupabaseContact(payload.contact)
         }
 
-        const payload = (await response.json()) as { contact: SyncedContact }
+        // 4. Fetch Tenant (Legacy)
+        const { data: tenantData } = await supabase
+          .from("tenants")
+          .select("*")
+          .eq("clerk_user_id", user.id)
+          .single()
 
         if (!isMounted) return
-
-        setSupabaseContact(payload.contact)
+        setTenant(tenantData)
         setSyncState("success")
-      } catch (error) {
-        console.error("Failed to sync contact", error)
-        if (!isMounted) return
-        setSyncState("error")
-        setSyncError(error instanceof Error ? error.message : "No se pudo sincronizar el contacto")
+      } catch (error: any) {
+        console.error("Dashboard sync error:", error)
+        if (isMounted) {
+          setSyncState("error")
+          setSyncError(error.message || "Error al sincronizar dashboard")
+        }
       }
     }
 
-    syncContact()
+    syncData()
 
     return () => {
       isMounted = false
@@ -218,6 +235,20 @@ export default function DashboardContent() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        {userProfile && !userProfile.onboarding_completed && (
+          <div className="mb-8 p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 text-amber-900 flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-3">
+              <Shield className="h-6 w-6 text-amber-600" />
+              <div>
+                <p className="font-black text-sm uppercase tracking-tight">Onboarding Incompleto</p>
+                <p className="text-xs text-amber-700 font-medium">Faltan servicios por provisionar. Tu dashboard no estará completo hasta habilitar tu RUT.</p>
+              </div>
+            </div>
+            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-black text-[10px] rounded-xl uppercase px-4" asChild>
+              <a href="/auth/onboarding">Completar ahora</a>
+            </Button>
+          </div>
+        )}
         <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {overviewStats.map(({ title, value, delta, icon: Icon }) => (
             <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
@@ -291,23 +322,66 @@ export default function DashboardContent() {
 
                 <Card className="border border-border bg-card shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-foreground">Estado del sistema</CardTitle>
-                    <CardDescription className="text-muted-foreground">Monitoreo en tiempo real</CardDescription>
+                    <CardTitle className="text-foreground">Mis servicios</CardTitle>
+                    <CardDescription className="text-muted-foreground">Estado y habilitación de tu consola</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {[
-                      { label: "WhatsApp API", icon: Shield },
-                      { label: "Base de datos", icon: Database },
-                      { label: "IA Assistant", icon: Bot },
-                    ].map(({ label, icon: Icon }) => (
-                      <div key={label} className="flex items-center justify-between rounded-lg border border-border bg-secondary p-3">
-                        <div className="flex items-center gap-3">
-                          <Icon className="h-5 w-5 text-accent" />
-                          <span className="text-sm text-foreground">{label}</span>
-                        </div>
-                        <Badge className="border border-accent/30 bg-accent/10 text-accent">Activo</Badge>
+                    {userServices.length > 0 ? (
+                      userServices.map((service) => {
+                        const Icon = ({
+                          whatsapp: MessageSquare,
+                          odoo: Database,
+                          smarterchat: Bot,
+                          sms: Zap
+                        } as any)[service.service_code] || Shield
+
+                        const label = ({
+                          whatsapp: "WhatsApp API",
+                          odoo: "Tienda Odoo",
+                          smarterchat: "SmarterChat AI",
+                          sms: "Marketing SMS"
+                        } as any)[service.service_code] || service.service_code
+
+                        return (
+                          <div key={service.service_code} className="flex items-center justify-between rounded-lg border border-border bg-secondary p-3">
+                            <div className="flex items-center gap-3">
+                              <Icon className={`h-5 w-5 ${service.enabled ? 'text-amber-500' : 'text-slate-300'}`} />
+                              <div className="flex flex-col">
+                                <span className={`text-sm ${service.enabled ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                                  {label}
+                                </span>
+                                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">
+                                  Plan {service.plan}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {!service.enabled ? (
+                                <Badge variant="outline" className="border-slate-200 bg-slate-50 text-slate-400 font-bold">
+                                  No habilitado
+                                </Badge>
+                              ) : (
+                                <Badge
+                                  variant="outline"
+                                  className={service.status === 'ok'
+                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 font-bold"
+                                    : service.status === 'provisioning'
+                                      ? "border-amber-500/30 bg-amber-500/10 text-amber-600 font-bold"
+                                      : "border-red-500/30 bg-red-500/10 text-red-600 font-bold"
+                                  }
+                                >
+                                  {service.status === 'ok' ? 'Activo' : service.status === 'provisioning' ? 'Configurando' : 'Error'}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })
+                    ) : (
+                      <div className="text-center py-4 text-sm text-muted-foreground italic">
+                        {syncState === 'loading' ? 'Cargando servicios...' : 'No hay servicios habilitados'}
                       </div>
-                    ))}
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -435,6 +509,10 @@ export default function DashboardContent() {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="subscriptions" className="space-y-6 sm:space-y-8">
+              <SubscriptionsView />
             </TabsContent>
 
             <TabsContent value="automation" className="space-y-6 sm:space-y-8">

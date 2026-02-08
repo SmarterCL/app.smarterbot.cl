@@ -138,51 +138,64 @@ export async function createTenant(tenant: {
   return data as Tenant
 }
 
-/**
- * Update tenant services
- */
-export async function updateTenantServices(
-  tenantId: string,
-  services: any
-) {
-  const supabase = getSupabaseClient()
-  if (!supabase) throw new Error('Supabase not initialized')
+// =========================================================
+// Service Model Helpers (2026-02-08 Update)
+// Principle: Auth != Entitlement != Provisioning
+// =========================================================
 
-  const { data, error } = await supabase
-    .from("tenants")
-    .update({ services_enabled: services as any })
-    .eq("id", tenantId)
-    .select()
-    .single()
-
-  if (error) throw error
-  return data as Tenant
+export type UserService = {
+  service_code: string
+  enabled: boolean
+  plan: string
+  status?: string
+  error_msg?: string
 }
 
-/**
- * Update tenant integration IDs (after bootstrap)
- */
-export async function updateTenantIntegrations(
-  tenantId: string,
-  integrations: {
-    chatwoot_inbox_id?: number
-    botpress_workspace_id?: string
-    odoo_company_id?: number
-    n8n_project_id?: string
-    metabase_dashboard_id?: string
-  }
-) {
+export async function getUserServices(userId: string) {
+  const supabase = getSupabaseClient()
+  if (!supabase) throw new Error('Supabase not initialized')
+
+  // Fetch both entitlements and runtime status
+  const [servicesRes, statusRes] = await Promise.all([
+    supabase.from("user_services").select("*").eq("user_id", userId),
+    supabase.from("user_service_status").select("*").eq("user_id", userId)
+  ])
+
+  if (servicesRes.error) throw servicesRes.error
+
+  // Merge runtime status into entitlement data
+  return servicesRes.data.map(service => {
+    const status = statusRes.data?.find(s => s.service_code === service.service_code)
+    return {
+      service_code: service.service_code,
+      enabled: service.enabled,
+      plan: service.plan,
+      status: status?.status || 'provisioning',
+      error_msg: status?.error_msg
+    }
+  }) as UserService[]
+}
+
+export async function ensureUserProfile(userId: string, email: string, nombre?: string) {
   const supabase = getSupabaseClient()
   if (!supabase) throw new Error('Supabase not initialized')
 
   const { data, error } = await supabase
-    .from("tenants")
-    .update(integrations)
-    .eq("id", tenantId)
+    .from("user_profile")
+    .upsert({
+      user_id: userId,
+      email: email,
+      nombre: nombre || email.split('@')[0],
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' })
     .select()
     .single()
 
   if (error) throw error
-  return data as Tenant
+
+  // Also initialize services if they don't exist
+  await supabase.rpc('initialize_user_services', { target_user_id: userId })
+
+  return data
 }
 
