@@ -85,7 +85,8 @@
   },
   "pnpm": {
     "allowedBuilds": {
-      "sharp": true
+      "sharp": true,
+      "@clerk/shared": true
     }
   }
 }
