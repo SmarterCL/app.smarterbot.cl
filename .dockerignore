@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.vercel
+dist
+*.log
+.env.local
+.env
+.DS_Store
+rut/
+venv/
+.n8n_data/
+postgres_data/

@@ -22,7 +22,7 @@ Ver: `/dashboard/automatizaciones` | Docs: `specs/N8N-AUTOMATION-INTEGRATION.md`
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router, React 19)
+- **Framework:** Next.js 16.1.6 (App Router, React 19)
 - **Auth:** Supabase (Email/password, OAuth)
 - **Styling:** Tailwind CSS + custom design tokens (SmarterOS theme)
 - **Forms & Validation:** React Hook Form, Zod
@@ -53,7 +53,7 @@ This project is configured for deployment on Vercel. Simply connect your reposit
 
 ## Architecture
 
-- `/app` - Next.js 15 App Router pages
+- `/app` - Next.js 16.1.6 App Router pages
 - `/components` - Reusable UI components
 - `/lib` - Shared utilities and Supabase client
 - `/public` - Static assets

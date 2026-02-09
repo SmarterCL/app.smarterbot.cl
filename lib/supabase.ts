@@ -11,12 +11,13 @@ const getEnv = () => {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !anonKey) {
-    // During build time on Vercel, these might be missing.
-    // Instead of crashing, we log a warning and return strict fallbacks.
-    console.warn("Supabase environment variables are missing! Using fallbacks for build.")
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("CRITICAL: Supabase environment variables are missing in production!")
+    }
+    // During local development or build time, we allow fallbacks to avoid crashing the build process
     return {
-      url: "https://placeholder.supabase.co",
-      anonKey: "placeholder"
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-configure-me.supabase.co",
+      anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "missing-key-check-env"
     }
   }
 
@@ -197,5 +198,53 @@ export async function ensureUserProfile(userId: string, email: string, nombre?: 
   await supabase.rpc('initialize_user_services', { target_user_id: userId })
 
   return data
+}
+
+/**
+ * Update tenant services (Legacy)
+ */
+export async function updateTenantServices(
+  tenantId: string,
+  services: any
+) {
+  const supabase = getSupabaseClient()
+  if (!supabase) throw new Error('Supabase not initialized')
+
+  const { data, error } = await supabase
+    .from("tenants")
+    .update({ services_enabled: services as any })
+    .eq("id", tenantId)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data as Tenant
+}
+
+/**
+ * Update tenant integration IDs (Legacy)
+ */
+export async function updateTenantIntegrations(
+  tenantId: string,
+  integrations: {
+    chatwoot_inbox_id?: number
+    botpress_workspace_id?: string
+    odoo_company_id?: number
+    n8n_project_id?: string
+    metabase_dashboard_id?: string
+  }
+) {
+  const supabase = getSupabaseClient()
+  if (!supabase) throw new Error('Supabase not initialized')
+
+  const { data, error } = await supabase
+    .from("tenants")
+    .update(integrations)
+    .eq("id", tenantId)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data as Tenant
 }
 

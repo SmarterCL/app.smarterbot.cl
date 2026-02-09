@@ -1,5 +1,7 @@
 "use server"
 
+import { auth } from "@clerk/nextjs/server"
+import { createClient } from "@/lib/supabase"
 import { validateRUT, formatRUT } from "./validate-rut"
 import { saveRutMetadata } from "./save-metadata"
 import { getTenantByRut } from "./get-tenant"
@@ -36,21 +38,55 @@ export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: st
   }
 
   // Buscamos si existe un tenant para el RUT de Empresa
-  const tenant = await getTenantByRut(rutEmpresa)
+  let tenant = await getTenantByRut(rutEmpresa)
 
   if (!tenant) {
-    return {
-      ok: true,
-      error: "RUTs guardados. No se encontró un tenant activo para esta empresa. Contacta soporte."
+    // Si no existe, lo creamos automáticamente para permitir el acceso inmediato
+    const { userId } = await auth()
+    const supabase = createClient()
+
+    const { data: newTenant, error: createError } = await supabase
+      .from("tenants")
+      .insert({
+        rut: rutEmpresa,
+        name: `Empresa ${rutEmpresa}`,
+        clerk_user_id: userId,
+        plan_type: 'DEMO',
+        payment_status: 'ACTIVE',
+        status: 'active'
+      })
+      .select()
+      .single()
+
+    if (createError || !newTenant) {
+      return { ok: false, error: "Error al crear tenant automático" }
+    }
+
+    tenant = newTenant as any
+
+    // Disparamos la creación de la DB aislada en el Orchestrator
+    try {
+      const FASTAPI_URL = process.env.FASTAPI_URL || "http://api-backend:8000"
+      await fetch(`${FASTAPI_URL}/webhook/n8n-mcp/${userId}/provision_erp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: userId,
+          flow_name: "provision_erp",
+          payload: { rut: rutEmpresa }
+        })
+      })
+    } catch (e) {
+      console.error("[linkRutToUser] Async provisioning trigger failed:", e)
     }
   }
 
   return {
     ok: true,
     tenant: {
-      id: tenant.id,
-      rut: tenant.rut,
-      name: tenant.business_name || (tenant as any).name, // handle possible field name variants
+      id: tenant!.id,
+      rut: tenant!.rut,
+      name: (tenant as any).business_name || (tenant as any).name,
     },
   }
 }

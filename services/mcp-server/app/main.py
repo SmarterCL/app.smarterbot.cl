@@ -70,6 +70,37 @@ async def execute_flow(request: FlowExecutionRequest, db = Depends(get_db)):
             sales = await db.fetch("SELECT * FROM public.sales_history WHERE tenant_id::text = $1 ORDER BY created_at DESC LIMIT 5", client_id)
             return {"status": "executed", "result": [dict(s) for s in sales]}
             
+        elif flow == "provision_erp":
+            # Herramienta: Crear base de datos aislada para el tenant
+            rut = request.payload.get("rut", "").replace(".", "").replace("-", "")
+            if not rut:
+                return {"status": "error", "message": "RUT is required"}
+            
+            db_name = f"smarter_{rut}"
+            try:
+                # 1. Conectamos al servidor de bases de datos de Odoo (usamos env vars dedicadas)
+                ODOO_DB_URL = os.getenv("ODOO_DB_URL", DATABASE_URL)
+                conn = await asyncpg.connect(ODOO_DB_URL)
+                
+                # 2. Verificamos si ya existe
+                exists = await conn.fetchval("SELECT 1 FROM pg_database WHERE datname = $1", db_name)
+                if exists:
+                    await conn.close()
+                    return {"status": "already_exists", "db_name": db_name}
+                
+                # 3. Clonamos desde el template maestro 'smarter_base' que creamos en el VPS
+                # Nota: CREATE DATABASE no puede ejecutarse dentro de una transacción
+                await conn.execute(f'CREATE DATABASE {db_name} TEMPLATE smarter_base OWNER odoo')
+                await conn.close()
+                
+                return {
+                    "status": "success", 
+                    "db_name": db_name,
+                    "url": f"https://{rut}.smarterbot.cl"
+                }
+            except Exception as e:
+                return {"status": "error", "message": f"Provisioning failed: {str(e)}"}
+            
         return {"status": "error", "message": f"Flow '{flow}' not found"}
     except Exception as e:
         return {"status": "error", "message": str(e)}

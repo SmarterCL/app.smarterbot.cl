@@ -1,8 +1,8 @@
 {
     "security": {
         "tokens": {
-            "smartermcp_access_token": "3707d94abbf895f8a3b210f98e0d6e156959e3ef3d1eb7a93eec9cae19f72245",
-            "jwt_secret": "clave_secreta_segura_para_jwt"
+            "smartermcp_access_token": "USE_ENV_VAR_SMARTERMCP_ACCESS_TOKEN",
+            "jwt_secret": "USE_ENV_VAR_JWT_SECRET"
         },
         "domains": [
             "rut.smarterbot.store",

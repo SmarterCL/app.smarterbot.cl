@@ -214,7 +214,7 @@ export default function DashboardContent() {
               <Bot className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">SmarterOS Dashboard</h1>
+              <h1 className="text-lg font-semibold text-gray-900">SmarterOS</h1>
               <p className="text-xs text-amber-700/70">Automatización WhatsApp + IA</p>
             </div>
           </div>

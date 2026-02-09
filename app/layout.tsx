@@ -44,7 +44,7 @@ const themeInitScript = `
 `
 
 export const metadata = {
-  title: "SmarterOS Hub",
+  title: "SmarterOS",
   description: "Gestión de automatizaciones y datos para SmarterOS",
   generator: "v0.dev",
   icons: {
@@ -106,7 +106,7 @@ export default function RootLayout({
               <div className="space-y-2">
                 <h1 className="text-lg font-semibold text-foreground">Configuración requerida</h1>
                 <p className="text-sm text-muted-foreground">
-                  Configura tus variables de entorno para continuar utilizando SmarterOS Hub.
+                  Configura tus variables de entorno para continuar utilizando SmarterOS.
                 </p>
               </div>
               <div className="space-y-3 text-left text-sm text-muted-foreground">
@@ -154,7 +154,7 @@ export default function RootLayout({
                   <div className="space-y-2">
                     <h1 className="text-lg font-semibold text-foreground">Configuración requerida</h1>
                     <p className="text-sm text-muted-foreground">
-                      Configura tus variables de entorno para continuar utilizando SmarterOS Hub.
+                      Configura tus variables de entorno para continuar utilizando SmarterOS.
                     </p>
                   </div>
                   <div className="space-y-3 text-left text-sm text-muted-foreground">
