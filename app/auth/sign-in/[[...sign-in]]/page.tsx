@@ -76,7 +76,7 @@ export default function SignInPage() {
             <div className="absolute -inset-4 rounded-[60px] bg-black/5 opacity-50 blur-3xl transition-all duration-500 group-hover:opacity-80"></div>
             <div className="absolute -inset-1 rounded-[48px] bg-gradient-to-br from-black/5 to-transparent opacity-50"></div>
 
-            <div className="relative bg-black rounded-[40px] shadow-2xl border border-black/10 overflow-hidden">
+            <div className="relative bg-white rounded-[40px] shadow-2xl border border-black/5 overflow-hidden">
 
               {/* Card Header */}
               <div className="flex flex-col items-center px-6 pt-12 pb-2 md:px-10">
@@ -86,58 +86,62 @@ export default function SignInPage() {
                     <img
                       src="/logo-smarteros.jpg"
                       alt="SmarterOS"
-                      className="h-16 w-auto object-contain"
+                      className="h-16 w-auto object-contain rounded-2xl"
                     />
                   </div>
                 </div>
 
-                <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-[0.3em] text-[#FFCE00] mb-6">
+                <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-black uppercase tracking-[0.3em] text-slate-800 mb-6">
                   Acceso Sistema Operativo
                 </div>
               </div>
 
               {/* Clerk Sign-In */}
-              <SignIn
-                routing="path"
-                path="/auth/sign-in"
-                signUpUrl="/auth/sign-up"
-                forceRedirectUrl="/dashboard"
-                appearance={{
-                  elements: {
-                    rootBox: "w-full",
-                    card: "bg-transparent shadow-none p-0 border-0 w-full",
-                    main: "w-full",
-                    form: "w-full space-y-5",
-                    header: "hidden",
-                    socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-200 border-0 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[98]",
-                    socialButtonsBlockButtonText: "text-black font-bold text-sm",
-                    socialButtonsProviderIcon: "h-5 w-5",
-                    formButtonPrimary: "w-full h-14 bg-[#FFCE00] text-black hover:bg-[#FFD700] font-black transition-all duration-300 rounded-[22px] transform active:scale-[0.95] shadow-xl text-base",
-                    formButtonPrimaryArrow: "hidden",
-                    formFieldInput: "w-full h-14 bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus:border-[#FFCE00] focus:bg-slate-900 focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
-                    formFieldLabel: "text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] ml-6 mb-2",
-                    footerActionLink: "hidden",
-                    dividerLine: "bg-slate-800",
-                    dividerText: "text-slate-600 text-[10px] font-black uppercase tracking-[0.4em]",
-                    identityPreviewText: "text-white font-bold text-xs",
-                    identityPreviewEditButton: "text-[#FFCE00] hover:text-[#FFD700] font-black px-2",
-                    footer: "hidden",
-                    socialButtons: "w-full",
-                    socialButtonsList: "flex flex-col gap-4",
-                    socialButtonsItem: "w-full",
-                  },
-                  layout: {
-                    logoPlacement: "none",
-                    socialButtonsPlacement: "top",
-                    showOptionalFields: false,
-                  }
-                }}
-              />
+              <div className="px-6 md:px-10 pb-4">
+                <SignIn
+                  routing="path"
+                  path="/auth/sign-in"
+                  signUpUrl="/auth/sign-up"
+                  forceRedirectUrl="/dashboard"
+                  appearance={{
+                    elements: {
+                      rootBox: "w-full flex justify-center",
+                      card: "bg-transparent shadow-none p-0 border-0 w-full mx-auto flex flex-col items-center",
+                      main: "w-full flex flex-col items-center",
+                      form: "w-full space-y-5",
+                      header: "hidden",
+                      socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[98] hover:border-amber-400/50 hover:shadow-md",
+                      socialButtonsBlockButton__google: "hover:border-red-500/30",
+                      socialButtonsBlockButton__github: "hover:border-slate-800",
+                      socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
+                      socialButtonsProviderIcon: "h-5 w-5",
+                      formButtonPrimary: "w-full h-14 bg-[#FFCE00] text-black hover:bg-[#FFD700] font-black transition-all duration-300 rounded-[22px] transform active:scale-[0.95] shadow-xl text-base",
+                      formButtonPrimaryArrow: "hidden",
+                      formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FFCE00] focus:bg-white focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
+                      formFieldLabel: "text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] ml-6 mb-2",
+                      footerActionLink: "hidden",
+                      dividerLine: "bg-slate-100",
+                      dividerText: "text-slate-400 text-[10px] font-black uppercase tracking-[0.4em]",
+                      identityPreviewText: "text-slate-900 font-bold text-xs",
+                      identityPreviewEditButton: "text-[#FFCE00] hover:text-[#FFD700] font-black px-2",
+                      footer: "hidden",
+                      socialButtons: "w-full",
+                      socialButtonsList: "flex flex-col gap-4 w-full",
+                      socialButtonsItem: "w-full",
+                    },
+                    layout: {
+                      logoPlacement: "none",
+                      socialButtonsPlacement: "top",
+                      showOptionalFields: false,
+                    }
+                  }}
+                />
+              </div>
 
               <div className="px-10 pb-10 pt-4 text-center">
-                <p className="text-sm font-bold text-slate-400 mb-6">
+                <p className="text-sm font-bold text-slate-500 mb-6">
                   ¿No tienes cuenta?{" "}
-                  <a href="/auth/sign-up" className="text-white hover:text-[#FFCE00] font-black underline underline-offset-4 decoration-2 transition-colors">
+                  <a href="/auth/sign-up" className="text-slate-900 hover:text-[#FFCE00] font-black underline underline-offset-4 decoration-2 transition-colors">
                     Regístrate gratis
                   </a>
                 </p>
@@ -145,7 +149,7 @@ export default function SignInPage() {
                   href="https://wa.me/56912345678"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-[#FFCE00] text-black text-[10px] font-black uppercase tracking-widest hover:bg-[#FFD700] transition-all shadow-lg active:scale-95"
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-black text-[#FFCE00] text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg active:scale-95"
                 >
                   <MessageSquare className="h-4 w-4" />
                   Soporte WhatsApp Portal RUT

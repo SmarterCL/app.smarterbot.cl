@@ -109,12 +109,14 @@ export default function SignUpPage() {
                   forceRedirectUrl="/auth/onboarding"
                   appearance={{
                     elements: {
-                      rootBox: "w-full",
-                      card: "bg-transparent shadow-none p-0 border-0 w-full",
-                      main: "w-full",
+                      rootBox: "w-full flex justify-center",
+                      card: "bg-transparent shadow-none p-0 border-0 w-full mx-auto flex flex-col items-center",
+                      main: "w-full flex flex-col items-center",
                       form: "w-full space-y-4",
                       header: "hidden",
-                      socialButtonsBlockButton: "w-full h-12 bg-white hover:bg-slate-50 border-2 border-slate-100 hover:border-amber-400 transition-all duration-300 rounded-[18px] flex items-center justify-center shadow-sm active:scale-[98]",
+                      socialButtonsBlockButton: "w-full h-12 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[18px] flex items-center justify-center shadow-sm active:scale-[98] hover:border-amber-400/50 hover:shadow-md",
+                      socialButtonsBlockButton__google: "hover:border-red-500/30",
+                      socialButtonsBlockButton__github: "hover:border-slate-800",
                       socialButtonsBlockButtonText: "text-slate-900 font-bold text-xs",
                       socialButtonsProviderIcon: "h-4 w-4",
                       formButtonPrimary: "w-full h-12 bg-slate-900 text-white hover:bg-black font-black transition-all duration-300 rounded-[18px] transform active:scale-[0.98] shadow-xl text-sm",
@@ -128,7 +130,7 @@ export default function SignUpPage() {
                       identityPreviewEditButton: "text-amber-600 hover:text-amber-700 font-black px-2",
                       footer: "hidden",
                       socialButtons: "w-full",
-                      socialButtonsList: "flex flex-col gap-3",
+                      socialButtonsList: "flex flex-col gap-3 w-full",
                       socialButtonsItem: "w-full",
                     },
                     layout: {

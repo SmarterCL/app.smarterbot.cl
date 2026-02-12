@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import { createBrowserClient } from "@supabase/ssr"
 import { UserButton, useUser } from "@clerk/nextjs"
 
@@ -13,6 +14,13 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SubscriptionsView } from "@/components/subscriptions-view"
 import { getUserServices, ensureUserProfile, type UserService } from "@/lib/supabase"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
+
+const ChatwootWidget = dynamic(() => import("@/components/chatwoot-widget"), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[400px] w-full" />,
+})
 
 import {
   Activity,
@@ -223,7 +231,7 @@ export default function DashboardContent() {
               <Activity className="h-3 w-3" /> Online
             </Badge>
             <UserButton
-              afterSignOutUrl="/"
+              fallbackRedirectUrl="/"
               appearance={{
                 elements: {
                   avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",

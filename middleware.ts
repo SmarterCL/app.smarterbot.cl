@@ -1,28 +1,34 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rate-limiter";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 const isPublicRoute = createRouteMatcher([
-  "/auth/sign-in(.*)",
-  "/auth/sign-up(.*)",
   "/",
+  "/login(.*)",
+  "/signup(.*)",
+  "/sign-up(.*)",
+  "/auth(.*)",
+  "/pay(.*)",
+  "/subscribe(.*)",
+  "/precios",
+  "/quienes-somos",
+  "/preguntas-frecuentes",
+  "/terminos-y-condiciones",
+  "/politicas-de-privacidad",
+  "/privacy"
 ]);
 const isApiRoute = createRouteMatcher(["/(api|trpc)(.*)"]);
 
-export default clerkMiddleware(async (auth, req) => {
-  // 1. Rate Limiting for API routes
-  if (isApiRoute(req)) {
-    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
-    if (!checkRateLimit(ip)) {
-      return new NextResponse("Too Many Requests", { status: 429 });
+const proxy = clerkMiddleware(async (auth, req) => {
+  // 1. Authentication Logic
+  if (!isPublicRoute(req)) {
+    if (isProtectedRoute(req) || isApiRoute(req)) {
+      await auth.protect();
     }
   }
-
-  // 2. Authentication Logic
-  if (isPublicRoute(req)) return;
-  if (isProtectedRoute(req)) await auth.protect();
 });
+
+export default proxy;
 
 export const config = {
   matcher: [
@@ -32,4 +38,3 @@ export const config = {
     '/(api|trpc)(.*)',
   ],
 };
-

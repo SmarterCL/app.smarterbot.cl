@@ -1,0 +1,13 @@
+:root {
+  --ui-bg-base: #FFFFFF;        /* cleaner white */
+  --ui-bg-muted: #F9F9F9;
+
+  --ui-text-primary: #212529;  /* standard dark */
+  --ui-text-muted: #666666;
+
+  --ui-accent-primary: #714B67; /* Odoo Purple */
+  --ui-accent-secondary: #017E84; /* Odoo Teal */
+
+  --ui-warning: #e6a700;
+  --ui-success: #017E84; /* Use Teal for success/brand consistency */
+}
