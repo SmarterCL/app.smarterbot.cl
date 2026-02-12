@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import { supabase } from '../../../../services/supabaseClient';
-import bcrypt from 'bcryptjs-react';
+import bcrypt from 'bcryptjs';
 
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
 

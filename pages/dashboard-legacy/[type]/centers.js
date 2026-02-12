@@ -7,7 +7,7 @@ import ChileanRutify from 'chilean-rutify';
 import { supabase } from '../../../services/supabaseClient';
 import DashNav from '../../../components/DashNav';
 import Footer from '../../../components/Footer';
-import bcrypt from 'bcryptjs-react';
+import bcrypt from 'bcryptjs';
 
 
 function Centers(props) {

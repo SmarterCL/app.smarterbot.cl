@@ -5,7 +5,9 @@ import Script from 'next/script';
 import { supabase } from '../../../services/supabaseClient';
 
 
-const mailgun = require('mailgun.js');
+const Mailgun = require('mailgun.js');
+const formData = require('form-data');
+const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
   username: 'api',
   key: process.env.MAILGUN_API_KEY || process.env.NEXT_PUBLIC_MAILGUN_KEY || '',

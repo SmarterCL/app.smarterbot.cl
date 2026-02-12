@@ -7,7 +7,7 @@ import ChileanRutify from 'chilean-rutify';
 import { supabase } from '../../../services/supabaseClient';
 import moment from 'moment';
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
-import bcrypt from 'bcryptjs-react';
+import bcrypt from 'bcryptjs';
 import DashNav from '../../../components/DashNav';
 import Footer from '../../../components/Footer';
 

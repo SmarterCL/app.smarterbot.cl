@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { supabase } from '../../services/supabaseClient';
-import bcrypt from 'bcryptjs-react';
+import bcrypt from 'bcryptjs';
 
 function Change() {
   useEffect(() => {

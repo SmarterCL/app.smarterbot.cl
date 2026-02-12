@@ -6,11 +6,13 @@ import Footer from '../../components/Footer';
 import ChileanRutify from 'chilean-rutify';
 import { Fragment, useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient';
-import bcrypt from 'bcryptjs-react';
+import bcrypt from 'bcryptjs';
 import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
-const mailgun = require('mailgun.js');
+const Mailgun = require('mailgun.js');
+const formData = require('form-data');
+const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
   username: 'api',
   key: process.env.MAILGUN_API_KEY || process.env.NEXT_PUBLIC_MAILGUN_KEY || '',
