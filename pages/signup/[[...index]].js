@@ -83,7 +83,8 @@ export default function SignUpPage() {
                                         routing="path"
                                         path="/signup"
                                         signInUrl="/login"
-                                        afterSignUpUrl="/dashboard"
+                                        fallbackRedirectUrl="/dashboard"
+                                        forceRedirectUrl="/dashboard"
                                         appearance={{
                                             elements: {
                                                 rootBox: "w-full",
@@ -120,18 +121,6 @@ export default function SignUpPage() {
                                         </a>
                                     </p>
                                 </div>
-                            </div>
-
-                            <div className="text-center pt-8 border-t border-slate-50">
-                                <a
-                                    href="https://wa.me/56979540471"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-3 text-slate-400 hover:text-slate-600 transition-colors text-xs font-bold"
-                                >
-                                    <MessageSquare className="h-4 w-4" />
-                                    Soporte WhatsApp Portal RUT
-                                </a>
                             </div>
                         </div>
                     </div>

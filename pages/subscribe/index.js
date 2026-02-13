@@ -9,20 +9,7 @@ import bcrypt from 'bcryptjs';
 import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
-let mg = null;
-if (typeof window === 'undefined' || process.env.NEXT_PUBLIC_MAILGUN_KEY) {
-  try {
-    const Mailgun = require('mailgun.js');
-    const formData = require('form-data');
-    const mailgun = new Mailgun(formData);
-    mg = mailgun.client({
-      username: 'api',
-      key: process.env.MAILGUN_API_KEY || process.env.NEXT_PUBLIC_MAILGUN_KEY || '',
-    });
-  } catch (e) {
-    console.error('Failed to initialize mailgun', e);
-  }
-}
+// Email sending is now handled via /api/send-email to keep API keys secure.
 
 
 export default function Home() {
@@ -228,18 +215,14 @@ export default function Home() {
         console.error(subErr);
       }
 
-      if (!mg) {
-        setReady(true);
-        return;
-      }
-
-      mg.messages
-        .create('rut.smarterbot.store', { // Assuming mail domain matches or needs change. Keeping generic if unsure, but text must change.
-          from: 'SmarterBOT<noreply@rut.smarterbot.store>',
-          to: [email],
-          subject: 'Te damos la bienvenida a SmarterBOT',
-          text: 'Te damos la bienvenida a SmarterBOT',
-          html: `<html><head>
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: email,
+            subject: 'Te damos la bienvenida a SmarterBOT',
+            html: `<html><head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                     <title>Simple Transactional Email</title>
@@ -280,14 +263,14 @@ export default function Home() {
                         <td>&nbsp;</td>
                       </tr>
                     </table>
-                  </body></html>`,
-        })
-        .then((msg) => {
-          setReady(true);
-        })
-        .catch((err) => {
-          setReady(true);
+                  </body></html>`
+          })
         });
+      } catch (err) {
+        console.error('Error sending welcome email:', err);
+      } finally {
+        setReady(true);
+      }
     }
   };
 

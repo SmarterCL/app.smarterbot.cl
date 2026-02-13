@@ -59,13 +59,10 @@ export default function SignUpPage() {
 
       {/* Right Column: Redesigned Hub Card */}
       <div className="flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 relative min-h-screen w-full bg-[#FFCE00]/5">
-
         <div className="w-full max-w-[500px] relative z-10">
           <div className="relative group">
             <div className="absolute -inset-8 rounded-[70px] bg-black/5 opacity-40 blur-3xl transition-all duration-700"></div>
-
             <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
-
               <div className="text-center mb-10">
                 <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
                 <p className="text-slate-400 font-bold italic">Activa tu Consola de Inteligencia</p>
@@ -85,7 +82,8 @@ export default function SignUpPage() {
                     routing="path"
                     path="/auth/sign-up"
                     signInUrl="/auth/sign-in"
-                    forceRedirectUrl="/auth/onboarding"
+                    fallbackRedirectUrl="/dashboard"
+                    forceRedirectUrl="/dashboard"
                     appearance={{
                       elements: {
                         rootBox: "w-full",
@@ -122,18 +120,6 @@ export default function SignUpPage() {
                     </a>
                   </p>
                 </div>
-              </div>
-
-              <div className="text-center pt-8 border-t border-slate-50">
-                <a
-                  href="https://wa.me/56979540471"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 text-slate-400 hover:text-slate-600 transition-colors text-xs font-bold"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  Soporte WhatsApp Portal RUT
-                </a>
               </div>
             </div>
           </div>

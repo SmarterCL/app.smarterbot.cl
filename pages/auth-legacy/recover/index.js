@@ -5,13 +5,7 @@ import Script from 'next/script';
 import { supabase } from '../../../services/supabaseClient';
 
 
-const Mailgun = require('mailgun.js');
-const formData = require('form-data');
-const mailgun = new Mailgun(formData);
-const mg = mailgun.client({
-  username: 'api',
-  key: process.env.MAILGUN_API_KEY || process.env.NEXT_PUBLIC_MAILGUN_KEY || '',
-});
+// Email sending is now handled via /api/send-email to keep API keys secure.
 
 function RecorverPassword(props) {
   const [loading, setLoading] = useState(false);
@@ -30,28 +24,66 @@ function RecorverPassword(props) {
             .from('accounts')
             .update({ recoverToken: token })
             .eq('id', account.id);
-          mg.messages
-            .create('rut.smarterbot.store', {
-              from: 'SmarterBOT<noreply@rut.smarterbot.store>',
-              to: [email],
-              subject: 'Solicitud de cambio de contraseña',
-              text: 'Solicitud de cambio de contraseña',
-              html: `<html>...${account.firstName}...${token}...</html>`, // Keep original structure
-            })
-            .then((msg) => {
-              alert(
-                'Te enviamos un correo con las instrucciones para reestablecer la contraseña'
-              );
-              setEmail('');
-              setLoading(false);
-            })
-            .catch((err) => {
-              alert(
-                'Te enviamos un correo con las instrucciones para reestablecer la contraseña'
-              );
-              setEmail('');
-              setLoading(false);
+          try {
+            await fetch('/api/send-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                to: email,
+                subject: 'Solicitud de cambio de contraseña',
+                html: `<html><head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                        <title>Simple Transactional Email</title>
+                        <style>
+                          /*All the styling*/
+                          img { border: none; -ms-interpolation-mode: bicubic; max-width: 100%; }
+                          body { background-color: var(--ui-bg-muted); font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; }
+                          table { border-collapse: separate; width: 100%; }
+                          .container { max-width: 580px; margin: 0 auto; padding: 10px; }
+                          .main { background: var(--ui-bg-base); width: 100%; }
+                          .btn-primary a { background-color: var(--odoo-purple); color: var(--ui-bg-base); padding: 12px 25px; text-decoration: none; border-radius: 100px; display: inline-block; font-weight: bold; }
+                        </style>
+                      </head>
+                      <body>
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td class="container">
+                              <div class="content">
+                                <table role="presentation" class="main">
+                                  <tr>
+                                    <td class="wrapper">
+                                      <img src="https://rut.smarterbot.store/images/logo-smarteros.jpg" width="100%" style="border-radius: 10px;">
+                                      <h1 style="font-size:22px">Hola <span style="color: var(--odoo-purple)">${account.firstName},</span></h1>
+                                      <p>Solicitaste un cambio de contraseña para tu cuenta SmarterBOT.</p>
+                                      <p>Usa el siguiente enlace para restablecerla:</p>
+                                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                                        <tr>
+                                          <td align="left">
+                                            <a href="https://rut.smarterbot.store/auth/reset?token=${token}" target="_blank">Restablecer contraseña</a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            </td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </table>
+                      </body></html>`
+              })
             });
+            alert('Te enviamos un correo con las instrucciones para reestablecer la contraseña');
+          } catch (err) {
+            console.error('Error sending recovery email:', err);
+            alert('Hubo un error al enviar el correo. Por favor intenta más tarde.');
+          } finally {
+            setEmail('');
+            setLoading(false);
+          }
         } else {
           alert('El email no está registrado en la plataforma');
           setEmail('');

@@ -1,8 +1,11 @@
 import { SignIn } from "@clerk/nextjs";
-import { Bot, Zap, ArrowRight, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard } from "lucide-react";
+import { Bot, Zap, ArrowRight, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard, X } from "lucide-react";
 import Head from 'next/head';
+import { useState } from 'react';
 
 export default function SignInPage() {
+    const [showConfirm, setShowConfirm] = useState(false);
+
     return (
         <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-2 bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
             <Head>
@@ -89,7 +92,7 @@ export default function SignInPage() {
                                 <p className="text-slate-400 font-bold">¿Cómo querés empezar?</p>
                             </div>
 
-                            <div className="space-y-4 mb-10 text-center">
+                            <div className="space-y-4 text-center">
                                 <a
                                     href="/precios"
                                     className="w-full h-14 bg-slate-100 hover:bg-slate-200 text-slate-900 font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-slate-200"
@@ -113,19 +116,21 @@ export default function SignInPage() {
                                     </div>
                                 </div>
 
-                                <div className="clerk-container w-full">
+                                <div className="clerk-container w-full min-h-[300px] flex items-center justify-center">
                                     <SignIn
                                         routing="path"
                                         path="/login"
                                         signUpUrl="/signup"
-                                        afterSignInUrl="/dashboard"
+                                        fallbackRedirectUrl="/dashboard"
+                                        forceRedirectUrl="/dashboard"
                                         appearance={{
                                             elements: {
                                                 rootBox: "w-full",
                                                 card: "bg-transparent shadow-none p-0 border-0 w-full flex flex-col items-center",
                                                 main: "w-full flex flex-col items-center",
                                                 form: "w-full space-y-4",
-                                                header: "hidden",
+                                                headerTitle: "hidden",
+                                                headerSubtitle: "hidden",
                                                 socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98] hover:border-[#FFCE00]/50 hover:shadow-md",
                                                 socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
                                                 formButtonPrimary: "w-full h-14 bg-[#FFCE00] text-black hover:bg-slate-900 hover:text-[#FFCE00] font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
@@ -147,30 +152,56 @@ export default function SignInPage() {
                                     />
                                 </div>
 
-                                <a
-                                    href="/signup"
+                                <button
+                                    onClick={() => setShowConfirm(true)}
                                     className="w-full h-14 bg-slate-900 hover:bg-black text-[#FFCE00] font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mt-8"
                                 >
                                     <Rocket className="h-5 w-5" />
                                     Activar CRM/ERP
-                                </a>
-                            </div>
-
-                            <div className="text-center pt-8 border-t border-slate-50">
-                                <a
-                                    href="https://wa.me/56979540471"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-3 text-slate-400 hover:text-slate-600 transition-colors text-xs font-bold"
-                                >
-                                    <MessageSquare className="h-4 w-4" />
-                                    Soporte WhatsApp Portal RUT
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Confirmation Modal */}
+            {showConfirm && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-md bg-black/40 animate-in fade-in duration-300">
+                    <div className="bg-white rounded-[40px] shadow-2xl p-10 max-w-md w-full relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-6">
+                            <button onClick={() => setShowConfirm(false)} className="text-slate-300 hover:text-slate-500 transition-colors">
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="h-20 w-20 bg-[#FFCE00]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Rocket className="h-10 w-10 text-slate-900" />
+                            </div>
+                            <h3 className="text-3xl font-black text-slate-900 tracking-tighter mb-4">¿Activar instancia?</h3>
+                            <p className="text-slate-500 font-bold leading-relaxed mb-8">
+                                Esto provisionará una instancia dedicada de Odoo v16 y Workflows de n8n para tu RUT. ¿Deseas proceder?
+                            </p>
+
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={() => setShowConfirm(false)}
+                                    className="flex-1 h-14 bg-slate-100 hover:bg-slate-200 text-slate-500 font-black rounded-full transition-all"
+                                >
+                                    No, cancelar
+                                </button>
+                                <button
+                                    onClick={() => window.location.href = '/signup'}
+                                    className="flex-1 h-14 bg-[#FFCE00] hover:bg-slate-900 hover:text-[#FFCE00] text-black font-black rounded-full transition-all shadow-lg"
+                                >
+                                    Sí, activar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
