@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { Fragment } from 'react';
-import Link from 'next/link';
-import Faq from '../components/Faq';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Faq from '../components/Faq';
 
 export default function Home() {
   return (
@@ -12,64 +12,58 @@ export default function Home() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="mont d-flex flex-column h-100">
-        <header>
-          <nav className="navbar navbar-expand-md fixed-top">
-            <div className="container-fluid">
-              <Link className="navbar-brand" href="/">
-                <img
-                  className="margin-top img-fluid"
-                  src="/images/logo-smarteros.jpg"
-                  width={220}
+
+      <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
+        <Header showAuthButtons={true} />
+
+        {/* Hero Section */}
+        <div className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/5 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
+            <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-6">
+              Preguntas <span className="text-[#FFCE00] underline decoration-4 underline-offset-4">Frecuentes</span>
+            </h1>
+            <p className="text-lg text-slate-600 font-bold max-w-2xl mx-auto leading-relaxed">
+              Resolvemos tus dudas sobre nuestra plataforma, planes y los servicios de automatización de SmarterOS.
+            </p>
+          </div>
+        </div>
+
+        {/* FAQ Area */}
+        <div className="py-20 bg-white">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="max-w-3xl mx-auto space-y-6">
+              {/* Note: the Faq component might still be Bootstrap-based internals (like accordion), but we place it in a modern container. */}
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Qué es SmarterBOT?"
+                  answer="SmarterBOT es una plataforma integral para la gestión y automatización de procesos empresariales. Integra los mejores CRMs y ERPs con Inteligencia Artificial alojados de manera local o compartida."
                 />
-              </Link>
-              <div className="collapse navbar-collapse" id="navbarCollapse">
-                <ul className="navbar-nav me-auto mb-2 mb-md-0"></ul>
-                <a
-                  className="btn btn-secondary mx-2 btn-header"
-                  href="/login"
-                >
-                  Ingresa
-                </a>
               </div>
-            </div>
-          </nav>
-        </header>
-        <div className="section-single">
-          <div className="container">
-            <div className="row align-content-start align-items-center">
-              <div className="col-12 col-sm-12 col-md-10 mx-auto">
-                <h1 className="mb-5 text-center">
-                  <span className="color">Preguntas</span> Frecuentes
-                </h1>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Cómo puedo registrarme?"
+                  answer="Puedes registrarte completando nuestro formulario de registro en la pantalla de inicio ('Crear cuenta' o 'Pro'). El registro con nosotros proveerá una instancia para tu empresa que escalará a medida que crezcas."
+                />
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
-                <div className="partner-container d-flex justify-content-center">
-                  <div className="accordion" id="accordionExample">
-                    <Faq
-                      title="¿Qué es SmarterBOT?"
-                      answer="SmarterBOT es una plataforma integral para la gestión y automatización de procesos empresariales."
-                    />
-                    <Faq
-                      title="¿Cómo puedo registrarme?"
-                      answer="Puedes registrarte haciendo clic en el botón 'Regístrate Gratis' en nuestra página de inicio o en la sección de planes."
-                    />
-                    <Faq
-                      title="¿Tienen soporte técnico?"
-                      answer="Sí, ofrecemos soporte técnico a través de nuestro correo electrónico de contacto y chat en línea para los planes Pro."
-                    />
-                    <Faq
-                      title="¿Puedo cancelar mi suscripción?"
-                      answer="Sí, puedes cancelar tu suscripción en cualquier momento desde tu panel de control."
-                    />
-                  </div>
-                </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Tienen soporte técnico?"
+                  answer="Sí, ofrecemos soporte técnico a través de WhatsApp, correo electrónico y para los planes Enterprise incluimos atención prioritaria y asesorías conjuntas."
+                />
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Puedo cancelar mi suscripción?"
+                  answer="Sí, las suscripciones mensuales (Plan Enterprise o Pro) pueden ser anuladas o pausadas desde tu consola de control en cualquier momento. ¡Las instancias en DEMO no requieren cancelación pues son a demanda!"
+                />
               </div>
             </div>
           </div>
         </div>
+
         <Footer />
       </div>
     </Fragment>

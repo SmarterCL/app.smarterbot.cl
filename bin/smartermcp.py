@@ -1,67 +1,93 @@
 #!/usr/bin/env python3
+import os
 import sys
 import json
 import httpx
-import argparse
+import asyncio
+from mcp.server.fastmcp import FastMCP
 
-API_URL = "http://localhost:8081"
+# Configuración de la API
+# Por defecto apuntamos al contenedor de mcp-server en el puerto 8001 (mapeado en docker-compose)
+API_URL = os.getenv("SMARTERMCP_SERVER_URL", "http://localhost:8001")
 
-def list_flows():
-    try:
-        url = f"{API_URL}/api/v1/flows"
-        with httpx.Client() as client:
-            resp = client.get(url)
-            if resp.status_code == 200:
-                data = resp.json()
-                print("Flujos disponibles en SmarterMCP:")
-                for flow in data.get("flows", []):
-                    print(f" - {flow['name']}: {flow['description']}")
-            else:
-                print(f"No se pudieron cargar los flujos ({resp.status_code})")
-    except Exception as e:
-        print(f"Error cargando flujos: {e}")
+# Inicializar FastMCP
+mcp = FastMCP("SmarterOS")
 
-def execute_flow(flow_name, client_id, payload_str):
-    try:
-        payload = json.loads(payload_str) if payload_str else {}
-        url = f"{API_URL}/api/v1/flows/execute"
-        print(f"Ejecutando '{flow_name}' para el cliente {client_id}...")
-        
-        with httpx.Client() as client:
-            resp = client.post(url, json={
-                "client_id": client_id,
-                "flow_name": flow_name,
-                "payload": payload
-            }, timeout=30.0)
-            
-            if resp.status_code == 200:
-                print(json.dumps(resp.json(), indent=2))
-            else:
-                print(f"Error ({resp.status_code}): {resp.text}")
-    except Exception as e:
-        print(f"Error: {str(e)}")
+@mcp.tool()
+async def get_client_data(client_id: str) -> str:
+    """
+    Obtiene información básica de la cuenta de un cliente o tenant.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.post(
+                f"{API_URL}/api/v1/flows/execute",
+                json={
+                    "client_id": client_id,
+                    "flow_name": "get_client_data",
+                    "payload": {}
+                },
+                timeout=10.0
+            )
+            return json.dumps(resp.json(), indent=2)
+        except Exception as e:
+            return f"Error conectando con el orquestador: {e}"
+
+@mcp.tool()
+async def list_sales(client_id: str) -> str:
+    """
+    Obtiene el historial de las últimas ventas de un inquilino específico.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.post(
+                f"{API_URL}/api/v1/flows/execute",
+                json={
+                    "client_id": client_id,
+                    "flow_name": "list_sales",
+                    "payload": {}
+                },
+                timeout=10.0
+            )
+            return json.dumps(resp.json(), indent=2)
+        except Exception as e:
+            return f"Error conectando con el orquestador: {e}"
+
+@mcp.tool()
+async def provision_erp(client_id: str, rut: str) -> str:
+    """
+    Provisiona y configura una nueva instancia de Odoo/ERP para un cliente dado su RUT.
+    Este proceso clona la base de datos template y activa el subdominio.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.post(
+                f"{API_URL}/api/v1/flows/execute",
+                json={
+                    "client_id": client_id,
+                    "flow_name": "provision_erp",
+                    "payload": {"rut": rut}
+                },
+                timeout=60.0
+            )
+            return json.dumps(resp.json(), indent=2)
+        except Exception as e:
+            return f"Error ejecutando provisionamiento: {e}"
+
+def list_flows_cli():
+    """Función de compatibilidad para listar flujos vía CLI"""
+    print("SmarterMCP - Herramientas de Inteligencia Artificial disponibles:")
+    print(" - get_client_data: Consulta información de cuentas")
+    print(" - list_sales: Consulta historial de transacciones")
+    print(" - provision_erp: Despliegue automático de instancias ERP")
 
 def main():
-    parser = argparse.ArgumentParser(description="SmarterMCP CLI - Interfaz de comandos para SmarterOS")
-    subparsers = parser.add_subparsers(dest="command")
-
-    # List
-    subparsers.add_parser("list", help="Listar flujos disponibles")
-
-    # Execute
-    exec_parser = subparsers.add_parser("execute", help="Ejecutar un flujo")
-    exec_parser.add_argument("flow", help="Nombre del flujo")
-    exec_parser.add_argument("client_id", help="ID del cliente/tenancy")
-    exec_parser.add_argument("--payload", default="{}", help="Payload JSON (opcional)")
-
-    args = parser.parse_args()
-
-    if args.command == "list":
-        list_flows()
-    elif args.command == "execute":
-        execute_flow(args.flow, args.client_id, args.payload)
+    # Si se pasa 'list', actuamos como CLI para compatibilidad
+    if len(sys.argv) > 1 and sys.argv[1] == "list":
+        list_flows_cli()
     else:
-        parser.print_help()
+        # Por defecto, iniciamos el servidor MCP (STDIO)
+        mcp.run()
 
 if __name__ == "__main__":
     main()

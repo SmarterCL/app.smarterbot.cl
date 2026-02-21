@@ -16,7 +16,6 @@
     "@clerk/nextjs": "^6.37.3",
     "@clerk/types": "^4.101.14",
     "@hookform/resolvers": "^3.9.1",
-    "@next/font": "^14.2.15",
     "@popperjs/core": "^2.11.8",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",

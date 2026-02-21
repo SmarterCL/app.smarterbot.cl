@@ -66,7 +66,6 @@ export default function SignUpPage() {
                         <div className="absolute -inset-8 rounded-[70px] bg-black/5 opacity-40 blur-3xl transition-all duration-700"></div>
                         <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
                             <div className="text-center mb-10">
-                                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
                                 <p className="text-slate-400 font-bold italic">Activa tu Consola de Inteligencia</p>
                             </div>
 
@@ -94,7 +93,7 @@ export default function SignUpPage() {
                                                 header: "hidden",
                                                 socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98] hover:border-[#FFCE00]/50 hover:shadow-md",
                                                 socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
-                                                formButtonPrimary: "w-full h-14 bg-slate-900 text-[#FFCE00] hover:bg-black font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
+                                                formButtonPrimary: "w-full h-14 bg-orange-500 text-white hover:bg-orange-600 font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
                                                 formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
                                                 formFieldLabel: "hidden",
                                                 footerAction: "hidden",

@@ -87,34 +87,7 @@ export default function SignInPage() {
                     <div className="relative group">
                         <div className="absolute -inset-8 rounded-[70px] bg-black/5 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
                         <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
-                            <div className="text-center mb-10">
-                                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
-                                <p className="text-slate-400 font-bold">¿Cómo querés empezar?</p>
-                            </div>
-
                             <div className="space-y-4 text-center">
-                                <a
-                                    href="/precios"
-                                    className="w-full h-14 bg-slate-100 hover:bg-slate-200 text-slate-900 font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-slate-200"
-                                >
-                                    <CreditCard className="h-5 w-5 opacity-60" />
-                                    Ver planes y precios
-                                </a>
-
-                                <a
-                                    href="#"
-                                    className="w-full h-14 bg-slate-100 hover:bg-slate-200 text-slate-900 font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-slate-200"
-                                >
-                                    <Eye className="h-5 w-5 opacity-60" />
-                                    Ver demo en vivo
-                                </a>
-
-                                <div className="relative py-6">
-                                    <div className="absolute inset-x-0 top-1/2 h-px bg-slate-100" />
-                                    <div className="relative inline-block px-4 bg-white text-[10px] font-black uppercase tracking-[0.4em] text-slate-300">
-                                        Ir a mi app
-                                    </div>
-                                </div>
 
                                 <div className="clerk-container w-full min-h-[300px] flex items-center justify-center">
                                     <SignIn
@@ -133,7 +106,7 @@ export default function SignInPage() {
                                                 headerSubtitle: "hidden",
                                                 socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98] hover:border-[#FFCE00]/50 hover:shadow-md",
                                                 socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
-                                                formButtonPrimary: "w-full h-14 bg-[#FFCE00] text-black hover:bg-slate-900 hover:text-[#FFCE00] font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
+                                                formButtonPrimary: "w-full h-14 bg-orange-500 text-white hover:bg-orange-600 font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
                                                 formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
                                                 formFieldLabel: "hidden",
                                                 footerAction: "hidden",
@@ -152,13 +125,13 @@ export default function SignInPage() {
                                     />
                                 </div>
 
-                                <button
-                                    onClick={() => setShowConfirm(true)}
-                                    className="w-full h-14 bg-slate-900 hover:bg-black text-[#FFCE00] font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mt-8"
+                                <a
+                                    href="/signup"
+                                    className="w-full h-14 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mt-8"
                                 >
                                     <Rocket className="h-5 w-5" />
-                                    Activar CRM/ERP
-                                </button>
+                                    Crear cuenta
+                                </a>
                             </div>
                         </div>
                     </div>

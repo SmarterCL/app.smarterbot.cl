@@ -92,7 +92,6 @@ export default function SignInPage() {
             <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
 
               <div className="text-center mb-10">
-                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
                 <p className="text-slate-400 font-bold">¿Cómo querés empezar?</p>
               </div>
 
@@ -158,13 +157,13 @@ export default function SignInPage() {
                   />
                 </div>
 
-                <button
-                  onClick={() => setShowConfirm(true)}
+                <a
+                  href="/signup"
                   className="w-full h-14 bg-slate-900 hover:bg-black text-[#FFCE00] font-black rounded-full flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mt-8"
                 >
                   <Rocket className="h-5 w-5" />
-                  Activar CRM/ERP
-                </button>
+                  Crear cuenta
+                </a>
               </div>
             </div>
           </div>

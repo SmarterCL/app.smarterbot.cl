@@ -10,10 +10,10 @@ The SmarterOS architecture is designed for high-security isolation between busin
 - **Isolation Benefit**: This prevents accidental data leaks and allows for individual database backups, restores, and custom schema migrations per tenant.
 - **Odoo Integration**: Leverages Odoo's native `dbfilter` capability to automatically route requests to the correct database based on the subdomain.
 
-### B. Routing Layer (Caddy / Traefik)
-- **Wildcard Subdomains**: The infrastructure supports `*.odoo.smarterbot.cl` and `*.tienda.smarterbot.cl`.
-- **Dynamic Mapping**: The reverse proxy forwards the `Host` header to the ERP/Frontend.
-- **SSL Termination**: Automated certificate generation for all tenant subdomains.
+### B. Routing & API Layer
+- **Centralized Door**: The infrastructure is accessed entirely through `app.smarterbot.cl`.
+- **Dynamic Database Routing**: Odoo and other services dynamically route traffic by matching the authorized user to their specific database (`db_{rut}`). No wildcard subdomains are created.
+- **SSL Termination**: Simplified, requires SSL only for the main platform `app.smarterbot.cl` and internal API gateways, avoiding the need for continuous wildcard generation.
 
 ### C. Application Layer (Next.js & Orchestrator)
 - **Unified Auth**: Clerk handles identity. The login email from `app.smarterbot.cl` is mapped to the admin user in the tenant's isolated environment.
@@ -27,7 +27,7 @@ The SmarterOS architecture is designed for high-security isolation between busin
 | **Facturación QR** | `service_code: 'qr_billing'` | Configures `l10n_cl` + sets up electronic invoicing credentials via n8n. |
 
 ## 4. Visual Flow
-1. **User Sign Up** -> `app.smarterbot.cl`
+1. **User Sign Up** -> `app.smarterbot.cl` (`MAIN KEY` created via Clerk)
 2. **Onboarding** -> User provides RUT 76.xxx.xxx-k.
-3. **Provisioning** -> Orchestrator creates `db_76xxxxxx`.
-4. **Access** -> User enters `76xxxxxx.smarterbot.cl` (Isolated Instance).
+3. **Provisioning** -> Orchestrator deployed Flow validation and creates `db_76xxxxxx`.
+4. **Access** -> User accesses their system directly from `app.smarterbot.cl/dashboard`, switching databases transparently in the background without needing a separate subdomain.

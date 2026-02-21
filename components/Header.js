@@ -62,8 +62,9 @@ const Header = ({ showAuthButtons = true }) => {
             {showAuthButtons && (
               <>
                 <a
-                  className="btn btn-secondary mx-2 btn-header"
+                  className="btn btn-dark mx-2 btn-header text-white"
                   href="/login"
+                  style={{ background: 'var(--text-primary)', border: 'none' }}
                 >
                   Entrar al sistema
                 </a>
