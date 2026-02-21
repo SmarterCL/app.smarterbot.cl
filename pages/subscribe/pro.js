@@ -267,717 +267,337 @@ export default function Home() {
         } catch (e) {
           console.error("Failed to send welcome email:", e);
         }
-                      img {
-          border: none;
-          -ms - interpolation - mode: bicubic;
-          max - width: 100 %;
-        }
 
-                      body {
-          background - color: var(--ui - bg - muted);
-          font - family: sans - serif;
-          -webkit - font - smoothing: antialiased;
-          font - size: 14px;
-          line - height: 1.4;
-          margin: 0;
-          padding: 0;
-          -ms - text - size - adjust: 100 %;
-          -webkit - text - size - adjust: 100 %;
-        }
-
-                      table {
-          border - collapse: separate;
-          mso - table - lspace: 0pt;
-          mso - table - rspace: 0pt;
-          width: 100 %;
-        }
-                        table td {
-          font - family: sans - serif;
-          font - size: 14px;
-          vertical - align: top;
-        }
-
-                      .body {
-    background - color: var(--ui - bg - muted);
-    width: 100 %;
-  }
-
-                      .container {
-    display: block;
-    margin: 0 auto!important;
-    max - width: 580px;
-    padding: 10px;
-    width: 580px;
-  }
-
-                      .content {
-    box - sizing: border - box;
-    display: block;
-    margin: 0 auto;
-    max - width: 580px;
-    padding: 10px;
-  }
-
-                      .main {
-    background: var(--ui - bg - base);
-    border - radius: px;
-    width: 100 %;
-  }
-
-                      .wrapper {
-    box - sizing: border - box;
-    padding: 20px;
-  }
-
-                      .content - block {
-    padding - bottom: 10px;
-    padding - top: 10px;
-  }
-
-                      .footer {
-    clear: both;
-    margin - top: 10px;
-    text - align: center;
-    width: 100 %;
-  }
-                        .footer td,
-                        .footer p,
-                        .footer span,
-                        .footer a {
-    color: var(--ui - text - muted);
-    font - size: 12px;
-    text - align: center;
-  }
-
-  h1,
-    h2,
-    h3,
-    h4 {
-    color: var(--ui - text - primary);
-    font - family: sans - serif;
-    font - weight: 400;
-    line - height: 1.4;
-    margin: 0;
-    margin - bottom: 30px;
-  }
-
-                      h1 {
-    font - size: 40px;
-    font - weight: 800;
-    text - align: left;
-    margin - top: .5em;
-  }
-
-  p,
-    ul,
-    ol {
-    font - family: sans - serif;
-    font - size: 14px;
-    font - weight: normal;
-    margin: 0;
-    margin - bottom: 15px;
-  }
-                        p li,
-    ul li,
-      ol li {
-    list - style - position: inside;
-    margin - left: 5px;
-  }
-
-                      a {
-    color: #3498db;
-    text - decoration: underline;
-  }
-
-                      .btn {
-    box - sizing: border - box;
-    width: 100 %;
-  }
-                        .btn > tbody > tr > td {
-    padding - bottom: 15px;
-  }
-                        .btn table {
-    width: auto;
-  }
-                        .btn table td {
-    background - color: var(--ui - bg - base);
-    border - radius: 5px;
-    text - align: center;
-  }
-                        .btn a {
-    background - color: var(--ui - bg - base);
-    border: solid 1px #3498db;
-    border - radius: 100px;
-    box - sizing: border - box;
-    color: #3498db;
-    cursor: pointer;
-    display: inline - block;
-    font - size: 14px;
-    font - weight: bold;
-    margin: 0;
-    padding: 12px 25px;
-    text - decoration: none;
-    text - transform: capitalize;
-  }
-
-                      .btn - primary table td {
-    background - color: var(--odoo - purple);
-    border - radius: 100px;
-  }
-
-                      .btn - primary a {
-    background - color: var(--odoo - purple);
-    border - color: var(--odoo - purple);
-    color: var(--ui - bg - base);
-  }
-
-
-                      .last {
-    margin - bottom: 0;
-  }
-
-                      .first {
-    margin - top: 0;
-  }
-
-                      .align - center {
-    text - align: center;
-  }
-
-                      .align - right {
-    text - align: right;
-  }
-
-                      .align - left {
-    text - align: left;
-  }
-
-                      .clear {
-    clear: both;
-  }
-
-                      .mt0 {
-    margin - top: 0;
-  }
-
-                      .mb0 {
-    margin - bottom: 0;
-  }
-
-                      .preheader {
-    color: transparent;
-    display: none;
-    height: 0;
-    max - height: 0;
-    max - width: 0;
-    opacity: 0;
-    overflow: hidden;
-    mso - hide: all;
-    visibility: hidden;
-    width: 0;
-  }
-
-                      .powered - by a {
-    text - decoration: none;
-  }
-
-                      hr {
-    border: 0;
-    border - bottom: 1px solid var(--ui - bg - muted);
-    margin: 20px 0;
-  }
-
-  @media only screen and(max - width: 620px) {
-    table.body h1 {
-      font - size: 28px!important;
-      margin - bottom: 10px!important;
-    }
-    table.body p,
-      table.body ul,
-        table.body ol,
-          table.body td,
-            table.body span,
-              table.body a {
-      font - size: 16px!important;
-    }
-    table.body.wrapper,
-      table.body.article {
-      padding: 10px!important;
-    }
-    table.body.content {
-      padding: 0!important;
-    }
-    table.body.container {
-      padding: 0!important;
-      width: 100 % !important;
-    }
-    table.body.main {
-      border - left - width: 0!important;
-      border - radius: 0!important;
-      border - right - width: 0!important;
-    }
-    table.body.btn table {
-      width: 100 % !important;
-    }
-    table.body.btn a {
-      width: 100 % !important;
-    }
-    table.body.img - responsive {
-      height: auto!important;
-      max - width: 100 % !important;
-      width: auto!important;
-    }
-  }
-
-  @media all {
-                        .ExternalClassName {
-      width: 100 %;
-    }
-                        .ExternalClassName,
-                        .ExternalClassName p,
-                        .ExternalClassName span,
-                        .ExternalClassName font,
-                        .ExternalClassName td,
-                        .ExternalClassName div {
-      line - height: 100 %;
-    }
-                        .apple - link a {
-      color: inherit!important;
-      font - family: inherit!important;
-      font - size: inherit!important;
-      font - weight: inherit!important;
-      line - height: inherit!important;
-      text - decoration: none!important;
-    }
-    #MessageViewBody a {
-      color: inherit;
-      text - decoration: none;
-      font - size: inherit;
-      font - family: inherit;
-      font - weight: inherit;
-      line - height: inherit;
-    }
-                        .btn - primary table td:hover {
-      background - color: #34495e!important;
-    }
-                        .btn - primary a:hover {
-      background - color: #34495e!important;
-      border - color: #34495e!important;
-    }
-  }
-
-                    </style >
-                  </head >
-    <body>
-      <span class="preheader">Tu cuenta ya está creada y tus subscripciones listas para ser inscritas.</span>
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
-        <tbody><tr>
-          <td>&nbsp;</td>
-          <td class="container">
-            <div class="content">
-
-              <table width="100%" style="max-width:640px;">
-                <!-- START CENTERED WHITE CONTAINER -->
-              </table><table role="presentation" class="main">
-                <!-- START MAIN CONTENT AREA -->
-                <tbody><tr>
-                  <td class="wrapper">
-                    <table>
-                      <tbody><tr>
-                        <td>
-                          <img src="https://rut.smarterbot.store/images/logo-smarteros.jpg" width="100%" style="border-radius: 10px;">
-                        </td>
-                      </tr>
-                      </tbody></table>
-
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                      <tbody><tr>
-                        <td>
-                          <h1 style="font-size:22px">Hola <span style="color: var(--odoo-purple)">${firstName},</span><br />¡Te damos la bienvenida a SmarterBOT!</h1>
-                          <p>Tu cuenta SmarterBOT ya está creada y te invitamos a completar el pago de tu suscripción</p>
-                          <p>En caso de que no puedas o no quieras realizar el pago de tu cuenta ahora, puedes seguir el proceso en este link: </p>
-                          <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                            <tbody>
-                              <tr>
-                                <td align="left">
-                                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                      <tr>
-                                        <td> <a href="https://rut.smarterbot.store/pay/${account.id}" target="_blank">Paga tu suscripción aquí</a> </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                        </td>
-                      </tr>
-                      </tbody></table>
-                  </td>
-                </tr>
-
-                  <!-- END MAIN CONTENT AREA -->
-                </tbody></table>
-              <!-- END CENTERED WHITE CONTAINER -->
-
-              <!-- START FOOTER -->
-              <div class="footer">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                  <tbody><tr>
-                    <td class="content-block">
-                      <span class="apple-link">SmarterBOT 2025</span>
-                    </td>
-                  </tr>
-
-                  </tbody></table>
-              </div>
-              <!-- END FOOTER -->
-
-            </div>
-          </td>
-          <td>&nbsp;</td>
-        </tr>
-        </tbody></table>
-
-    </body></html >
-      `,
-          })
-          .then((msg) => {
-            window.location.href = `/ pay / ${ account.id }/process`;
-})
-          .catch ((err) => {
-  window.location.href = `/pay/${account.id}/process`;
-});
+        // Ensure successful redirect
+        window.location.href = `/pay/${account.id}/process`;
       }
     } else {
-  alert('No has seleccionado opciones');
-  setSaving(false);
-}
+      alert('No has seleccionado opciones');
+      setSaving(false);
+    }
   };
 
-return (
-  <Fragment>
-    <Head>
-      <title>SmarterBOT</title>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta
-        name="description"
-        content="SmarterBOT - Gestión inteligente"
-      />
-      <meta name="author" content="SmarterBOT" />
-      <title>SmarterBOT - Gestión inteligente</title>
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="SmarterBOT - Gestión inteligente"
-      />
-      <meta
-        property="og:description"
-        content="SmarterBOT - Gestión inteligente"
-      />
-      <meta
-        property="og:image"
-        content="https://rut.smarterbot.store/images/logo-smarteros.jpg"
-      />
-      <meta property="og:image:width" content="828" />
-      <meta property="og:image:height" content="450" />
-      <meta property="og:url" content="https://rut.smarterbot.store" />
-      <meta property="og:site_name" content="SmarterBOT" />
-      <meta property="fb:app_id" content="" />
-      <link
-        rel="icon"
-        type="image/png"
-        href="/images/logo-smarteros.jpg"
-        sizes="16x16"
-      ></link>
-      <link
-        rel="icon"
-        type="image/png"
-        href="/images/logo-smarteros.jpg"
-        sizes="32x32"
-      ></link>
-      <link
-        rel="icon"
-        type="image/png"
-        href="/images/logo-smarteros.jpg"
-        sizes="96x96"
-      ></link>
-      <link rel="apple-touch-icon" href="/images/logo-smarteros.jpg" />
-      <link
-        rel="apple-touch-icon"
-        sizes="76x76"
-        href="/images/logo-smarteros.jpg"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="120x120"
-        href="/images/logo-smarteros.jpg"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="152x152"
-        href="/images/logo-smarteros.jpg"
-      />
-    </Head>
-    <div className={`${"mont"} d-flex flex-column h-100`}>
-      {' '}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-MRN2ZCR8ZP"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
+  return (
+    <Fragment>
+      <Head>
+        <title>SmarterBOT</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="SmarterBOT - Gestión inteligente"
+        />
+        <meta name="author" content="SmarterBOT" />
+        <title>SmarterBOT - Gestión inteligente</title>
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="SmarterBOT - Gestión inteligente"
+        />
+        <meta
+          property="og:description"
+          content="SmarterBOT - Gestión inteligente"
+        />
+        <meta
+          property="og:image"
+          content="https://rut.smarterbot.store/images/logo-smarteros.jpg"
+        />
+        <meta property="og:image:width" content="828" />
+        <meta property="og:image:height" content="450" />
+        <meta property="og:url" content="https://rut.smarterbot.store" />
+        <meta property="og:site_name" content="SmarterBOT" />
+        <meta property="fb:app_id" content="" />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/logo-smarteros.jpg"
+          sizes="16x16"
+        ></link>
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/logo-smarteros.jpg"
+          sizes="32x32"
+        ></link>
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/logo-smarteros.jpg"
+          sizes="96x96"
+        ></link>
+        <link rel="apple-touch-icon" href="/images/logo-smarteros.jpg" />
+        <link
+          rel="apple-touch-icon"
+          sizes="76x76"
+          href="/images/logo-smarteros.jpg"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="120x120"
+          href="/images/logo-smarteros.jpg"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/images/logo-smarteros.jpg"
+        />
+      </Head>
+      <div className={`${"mont"} d-flex flex-column h-100`}>
+        {' '}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-MRN2ZCR8ZP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', 'G-MRN2ZCR8ZP');
         `}
-      </Script>{' '}
-      <Script
-        src="https://www.googletagmanager.com/gtm.js?id=GTM-WS4L7S5"
-        strategy="afterInteractive"
-      />
-      <Header showAuthButtons={false} />
-      <div className="section-shop pt-5 pb-0">
-        <div className="container">
-          <div className="z-index">
-            <h5 className="text-uppercase text-center">Paso 2 de 3</h5>
-            <h1 className="text-center mb-4">Crea tu cuenta</h1>
-            <div className="bg-light rounded col-md-12 col-xl-6 py-5 mx-auto">
-              <div className="row order-container">
-                <div className="col-md-12">
-                  <div className="row">
-                    <h3 className="mb-4">Regístrate en SmarterBOT</h3>
-                    <div className="col-md-12">
-                      <div className="form-floating mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="floatingInputGrid"
-                          placeholder="Nombre"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                        />
-                        <label>Nombre</label>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-floating mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Apellido"
-                          value={lastName1}
-                          onChange={(e) => setLastName1(e.target.value)}
-                        />
-                        <label>Apellido</label>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-floating mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="2º Apellido"
-                          value={lastName2}
-                          onChange={(e) => setLastName2(e.target.value)}
-                        />
-                        <label>Segundo Apellido</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-floating mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="floatingInput"
-                      placeholder="111111-1"
-                      value={rut}
-                      onChange={(e) => handleRut(e.target.value)}
-                      onBlur={(e) => verifyRut()}
-                    />
-                    <label>RUT</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="phone"
-                      placeholder="Número de teléfono ( 9 dígitos )"
-                      maxLength={9}
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-floating mb-3">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="floatingInput"
-                      placeholder="nombre@correo.com"
-                      value={email}
-                      onChange={(e) =>
-                        setEmail(e.target.value.toLowerCase().trim())
-                      }
-                      onBlur={() => updateEmail(email)}
-                    />
-                    <label>Correo Electrónico</label>
-                  </div>
-                  <div className="form-floating input-password">
-                    <input
-                      type={passwordType}
-                      className="form-control"
-                      placeholder="Contraseña"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      name="password"
-                    />
-                    {eye ? (
-                      <RxEyeClosed
-                        className="eye"
-                        size={25}
-                        onClick={() => toggleEye()}
-                      />
-                    ) : (
-                      <RxEyeOpen
-                        className="eye"
-                        size={25}
-                        onClick={() => toggleEye()}
-                      />
-                    )}
-                    <label>Contraseña</label>
-                  </div>
-                  <h3 className="mt-5">Resumen de tu compra:</h3>
-                  <div
-                    className="rounded-small alert alert-primary mt-4"
-                    role="alert"
-                  >
-                    <div className="row justify-content-center align-items-center">
-                      <div className="col-md-7">
-                        <h4 className="mb-2 text-left">
-                          <strong>
-                            <small>
-                              {subscriptionsCount == 1
-                                ? '1 Asiento Pro'
-                                : `${subscriptionsCount} Asientos Pro`}{' '}
-                              {subscriptionsCount > 1 ? '24 meses' : '24 meses'}
-                            </small>
-                          </strong>
-                        </h4>
-                        <h3>
-                          $
-                          {totalPrice
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                        </h3>
-                      </div>
-                      <div className="col-md-5">
-                        <div className="qty mt-2">
-                          <span
-                            className="minus-small"
-                            onClick={() => updateCount('minus')}
-                          >
-                            <img
-                              className="align-middle img-fluid"
-                              src="/images/i-minus.svg"
-                              width="50"
-                            />
-                          </span>
+        </Script>{' '}
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-WS4L7S5"
+          strategy="afterInteractive"
+        />
+        <Header showAuthButtons={false} />
+        <div className="section-shop pt-5 pb-0">
+          <div className="container">
+            <div className="z-index">
+              <h5 className="text-uppercase text-center">Paso 2 de 3</h5>
+              <h1 className="text-center mb-4">Crea tu cuenta</h1>
+              <div className="bg-light rounded col-md-12 col-xl-6 py-5 mx-auto">
+                <div className="row order-container">
+                  <div className="col-md-12">
+                    <div className="row">
+                      <h3 className="mb-4">Regístrate en SmarterBOT</h3>
+                      <div className="col-md-12">
+                        <div className="form-floating mb-3">
                           <input
-                            type="number"
-                            className="count-small"
-                            name="qty"
-                            value={subscriptionsCount}
+                            type="text"
+                            className="form-control"
+                            id="floatingInputGrid"
+                            placeholder="Nombre"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                           />
-                          <span
-                            className="plus-small"
-                            onClick={() => updateCount('plus')}
-                          >
-                            <img
-                              className="align-middle img-fluid"
-                              src="/images/i-plus.svg"
-                              width="50"
-                            />
-                          </span>
+                          <label>Nombre</label>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-floating mb-3">
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Apellido"
+                            value={lastName1}
+                            onChange={(e) => setLastName1(e.target.value)}
+                          />
+                          <label>Apellido</label>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-floating mb-3">
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="2º Apellido"
+                            value={lastName2}
+                            onChange={(e) => setLastName2(e.target.value)}
+                          />
+                          <label>Segundo Apellido</label>
                         </div>
                       </div>
                     </div>
-                    {Array(subscriptionsCount)
-                      .fill(0)
-                      .map((_, i) => (
-                        <Fragment key={i}>
-                          <hr />
-                          <div className="form-floating">
-                            <p className="mb-1 pl-3">
-                              Asiento {i + 1}{' '}
-                              {i > 0 ? '' : `(tu asiento)`}
-                            </p>
-                            <select
-                              className="form-select form-select-lg mb-3"
-                              aria-label=".form-select-lg example"
-                              onChange={(e) =>
-                                updateValues(e.target.value, i)
-                              }
-                            >
-                              <option selected="">
-                                Seleccionar plan
-                              </option>
-                              <option value="1">
-                                Startup - $7.500
-                              </option>
-                              <option value="2">
-                                Pro - $14.700
-                              </option>
-                              <option value="3">
-                                Enterprise - $23.400
-                              </option>
-                            </select>
-                          </div>
-                        </Fragment>
-                      ))}
-                  </div>
-
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                      onChange={(e) => setCheck(e.target.checked)}
-                    />
-                    <label className="form-check-label">
-                      {' '}
-                      Acepto los{' '}
-                      <a
-                        href="https://rut.smarterbot.store/terminos-y-condiciones"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Términos y Condiciones
-                      </a>
-                    </label>
-                  </div>
-                  <div className="text-center">
-                    <button
-                      className="btn btn-primary w-100 btn-lg d-block mt-4"
-                      onClick={(e) => createAccount()}
-                      disabled={saving}
+                    <div className="form-floating mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="floatingInput"
+                        placeholder="111111-1"
+                        value={rut}
+                        onChange={(e) => handleRut(e.target.value)}
+                        onBlur={(e) => verifyRut()}
+                      />
+                      <label>RUT</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="phone"
+                        placeholder="Número de teléfono ( 9 dígitos )"
+                        maxLength={9}
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-floating mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="floatingInput"
+                        placeholder="nombre@correo.com"
+                        value={email}
+                        onChange={(e) =>
+                          setEmail(e.target.value.toLowerCase().trim())
+                        }
+                        onBlur={() => updateEmail(email)}
+                      />
+                      <label>Correo Electrónico</label>
+                    </div>
+                    <div className="form-floating input-password">
+                      <input
+                        type={passwordType}
+                        className="form-control"
+                        placeholder="Contraseña"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                      />
+                      {eye ? (
+                        <RxEyeClosed
+                          className="eye"
+                          size={25}
+                          onClick={() => toggleEye()}
+                        />
+                      ) : (
+                        <RxEyeOpen
+                          className="eye"
+                          size={25}
+                          onClick={() => toggleEye()}
+                        />
+                      )}
+                      <label>Contraseña</label>
+                    </div>
+                    <h3 className="mt-5">Resumen de tu compra:</h3>
+                    <div
+                      className="rounded-small alert alert-primary mt-4"
+                      role="alert"
                     >
-                      {saving ? 'Creando cuenta...' : 'Crear mi cuenta'}
-                    </button>
+                      <div className="row justify-content-center align-items-center">
+                        <div className="col-md-7">
+                          <h4 className="mb-2 text-left">
+                            <strong>
+                              <small>
+                                {subscriptionsCount == 1
+                                  ? '1 Asiento Pro'
+                                  : `${subscriptionsCount} Asientos Pro`}{' '}
+                                {subscriptionsCount > 1 ? '24 meses' : '24 meses'}
+                              </small>
+                            </strong>
+                          </h4>
+                          <h3>
+                            $
+                            {totalPrice
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                          </h3>
+                        </div>
+                        <div className="col-md-5">
+                          <div className="qty mt-2">
+                            <span
+                              className="minus-small"
+                              onClick={() => updateCount('minus')}
+                            >
+                              <img
+                                className="align-middle img-fluid"
+                                src="/images/i-minus.svg"
+                                width="50"
+                              />
+                            </span>
+                            <input
+                              type="number"
+                              className="count-small"
+                              name="qty"
+                              value={subscriptionsCount}
+                            />
+                            <span
+                              className="plus-small"
+                              onClick={() => updateCount('plus')}
+                            >
+                              <img
+                                className="align-middle img-fluid"
+                                src="/images/i-plus.svg"
+                                width="50"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {Array(subscriptionsCount)
+                        .fill(0)
+                        .map((_, i) => (
+                          <Fragment key={i}>
+                            <hr />
+                            <div className="form-floating">
+                              <p className="mb-1 pl-3">
+                                Asiento {i + 1}{' '}
+                                {i > 0 ? '' : `(tu asiento)`}
+                              </p>
+                              <select
+                                className="form-select form-select-lg mb-3"
+                                aria-label=".form-select-lg example"
+                                onChange={(e) =>
+                                  updateValues(e.target.value, i)
+                                }
+                              >
+                                <option selected="">
+                                  Seleccionar plan
+                                </option>
+                                <option value="1">
+                                  Startup - $7.500
+                                </option>
+                                <option value="2">
+                                  Pro - $14.700
+                                </option>
+                                <option value="3">
+                                  Enterprise - $23.400
+                                </option>
+                              </select>
+                            </div>
+                          </Fragment>
+                        ))}
+                    </div>
+
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                        onChange={(e) => setCheck(e.target.checked)}
+                      />
+                      <label className="form-check-label">
+                        {' '}
+                        Acepto los{' '}
+                        <a
+                          href="https://rut.smarterbot.store/terminos-y-condiciones"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Términos y Condiciones
+                        </a>
+                      </label>
+                    </div>
+                    <div className="text-center">
+                      <button
+                        className="btn btn-primary w-100 btn-lg d-block mt-4"
+                        onClick={(e) => createAccount()}
+                        disabled={saving}
+                      >
+                        {saving ? 'Creando cuenta...' : 'Crear mi cuenta'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
-    </div>
-  </Fragment>
-);
+    </Fragment>
+  );
 }
