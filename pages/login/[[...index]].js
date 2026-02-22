@@ -1,5 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
-import { Bot, Zap, ArrowRight, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard, X } from "lucide-react";
+import { Bot, Zap, Rocket, X } from "lucide-react";
 import Head from 'next/head';
 import { useState } from 'react';
 import Header from '../../components/Header';

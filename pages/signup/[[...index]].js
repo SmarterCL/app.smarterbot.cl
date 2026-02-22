@@ -1,5 +1,5 @@
 import { SignUp } from "@clerk/nextjs";
-import { Bot, Zap, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import Head from 'next/head';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
