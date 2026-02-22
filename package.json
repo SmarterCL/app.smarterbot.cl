@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "approve-builds": "pnpm approve-builds",
-    "build": "next build",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "next dev",
-    "lint": "next lint",
+    "build": "next build",
     "start": "next start",
-    "clean": "rm -rf dist .tsbuildinfo"
+    "lint": "next lint"
   },
   "dependencies": {
     "@clerk/localizations": "^3.35.3",
