@@ -11,4 +11,4 @@ fi
 
 # Instalar dependencias si es necesario (asumiendo que venv está activo o usando el del proyecto)
 # En este caso usamos el venv del proyecto principal para consistencia
-../../app.smarterbot.cl/venv/bin/python mcp_server.py
+../venv/bin/python mcp_server.py
