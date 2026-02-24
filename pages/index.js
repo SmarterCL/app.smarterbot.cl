@@ -214,7 +214,7 @@ export default function Home() {
                     {activeMedia === 'image' ? (
                       <img
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="/images/BOLTAI.jpeg"
+                        src="/images/stgo-hub.jpg"
                         alt="Detalle"
                       />
                     ) : (
