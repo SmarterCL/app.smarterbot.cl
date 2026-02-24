@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Script from 'next/script';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 import { Fragment, useEffect, useState } from 'react';
