@@ -47,7 +47,7 @@ export default function Home() {
       <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
 
         {/* Main Hero Section */}
-        <div className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
+        <div className="relative min-h-screen flex items-center py-12 lg:py-0 overflow-hidden border-b border-slate-200">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/10 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -174,7 +174,7 @@ export default function Home() {
         </div>
 
         {/* Video / Detalle Section */}
-        <div className="py-20 bg-white">
+        <div className="py-12 bg-white min-h-screen flex items-center">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex flex-col lg:flex-row items-center gap-12">
 
