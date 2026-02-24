@@ -46,7 +46,6 @@ export default function Home() {
       <Script src="https://www.googletagmanager.com/gtm.js?id=GTM-WS4L7S5" strategy="afterInteractive" />
 
       <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
-        <Header showAuthButtons={true} />
 
         {/* Main Hero Section */}
         <div className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
