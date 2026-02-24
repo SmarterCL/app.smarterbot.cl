@@ -10,7 +10,6 @@ export default function SignUpPage() {
             <Head>
                 <title>SmarterOS Hub - Registro</title>
             </Head>
-            <Header showAuthButtons={false} />
 
             <div className="flex-grow flex flex-col lg:grid lg:grid-cols-2 w-full">
 
@@ -92,21 +91,22 @@ export default function SignUpPage() {
                                             appearance={{
                                                 elements: {
                                                     rootBox: "w-full",
-                                                    card: "bg-transparent shadow-none p-0 border-0 w-full flex flex-col items-center",
-                                                    main: "w-full flex flex-col items-center",
-                                                    form: "w-full space-y-4",
+                                                    card: "bg-transparent shadow-none p-0 border-0 w-full flex flex-col",
+                                                    main: "w-full flex flex-col gap-6",
+                                                    form: "w-full flex flex-col gap-4",
                                                     header: "hidden",
                                                     socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98] hover:border-[#FFCE00]/50 hover:shadow-md",
                                                     socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
-                                                    formButtonPrimary: "w-full h-14 bg-slate-900 text-[#FFCE00] hover:bg-slate-800 font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
+                                                    formButtonPrimary: "w-full h-14 bg-slate-900 text-[#FFCE00] hover:bg-slate-800 font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base mt-2",
                                                     formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
-                                                    formFieldLabel: "hidden",
+                                                    formFieldLabel: "text-slate-700 font-bold text-sm mb-2 ml-1 text-left block",
                                                     footerAction: "hidden",
-                                                    dividerLine: "bg-slate-100",
-                                                    dividerText: "text-slate-400 text-[10px] font-black uppercase tracking-[0.4em]",
+                                                    dividerRow: "my-2",
+                                                    dividerLine: "bg-slate-200",
+                                                    dividerText: "text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] px-4 bg-transparent",
                                                     identityPreviewText: "text-slate-900 font-bold text-xs",
                                                     footer: "hidden",
-                                                    socialButtonsList: "flex flex-col gap-4 w-full",
+                                                    socialButtonsList: "flex flex-col gap-3 w-full",
                                                 },
                                                 layout: {
                                                     logoPlacement: "none",
