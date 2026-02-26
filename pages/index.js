@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Script from 'next/script';
 import Footer from '../components/Footer';
+import Faq from '../components/Faq';
 
 import { Fragment, useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
@@ -239,6 +240,46 @@ export default function Home() {
                 </div>
               </div>
 
+            </div>
+          </div>
+        </div>
+
+        {/* Preguntas Frecuentes Section */}
+        <div id="preguntas-frecuentes" className="py-20 bg-white">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                Preguntas <span className="text-[#FFCE00] underline decoration-4 underline-offset-4">Frecuentes</span>
+              </h2>
+              <p className="text-lg text-slate-600 font-bold max-w-2xl mx-auto leading-relaxed">
+                Resolvemos tus dudas sobre nuestra plataforma, planes y los servicios de automatización de SmarterOS.
+              </p>
+            </div>
+            <div className="max-w-3xl mx-auto space-y-6">
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Qué es SmarterBOT?"
+                  answer="SmarterBOT es una plataforma integral para la gestión y automatización de procesos empresariales. Integra los mejores CRMs y ERPs con Inteligencia Artificial alojados de manera local o compartida."
+                />
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Cómo puedo registrarme?"
+                  answer="Puedes registrarte completando nuestro formulario de registro en la pantalla de inicio ('Crear cuenta' o 'Pro'). El registro con nosotros proveerá una instancia para tu empresa que escalará a medida que crezcas."
+                />
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Tienen soporte técnico?"
+                  answer="Sí, ofrecemos soporte técnico a través de WhatsApp, correo electrónico y para los planes Enterprise incluimos atención prioritaria y asesorías conjuntas."
+                />
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-[30px] p-6 shadow-sm hover:border-slate-300 transition-colors">
+                <Faq
+                  title="¿Puedo cancelar mi suscripción?"
+                  answer="Sí, las suscripciones mensuales (Plan Enterprise o Pro) pueden ser anuladas o pausadas desde tu consola de control en cualquier momento. ¡Las instancias en DEMO no requieren cancelación pues son a demanda!"
+                />
+              </div>
             </div>
           </div>
         </div>
