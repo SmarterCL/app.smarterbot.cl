@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@clerk/localizations": "^3.35.3",
@@ -87,7 +89,7 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": "20.x || 22.x || 24.x"
+    "node": ">=24.0.0"
   },
   "pnpm": {
     "allowedBuilds": {

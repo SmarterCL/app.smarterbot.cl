@@ -117,19 +117,37 @@ export default function DashboardContent() {
   const [tenant, setTenant] = useState<any>(null)
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
-  
+
   // Integration stats from external API
   const [integrationStats, setIntegrationStats] = useState<any>(null)
   const [statsLoading, setStatsLoading] = useState(false)
 
-  // Initialize Supabase client
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  // Validate environment variables
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // Check if Supabase is properly configured
+  const isSupabaseConfigured = Boolean(
+    supabaseUrl && 
+    supabaseKey && 
+    !supabaseUrl.includes('placeholder') &&
+    !supabaseKey.includes('placeholder')
   )
+
+  // Initialize Supabase client only if configured
+  const supabase = isSupabaseConfigured && supabaseUrl && supabaseKey
+    ? createBrowserClient(supabaseUrl, supabaseKey)
+    : null
 
   useEffect(() => {
     if (!isLoaded || !user) {
+      return
+    }
+
+    // Check Supabase configuration before syncing
+    if (!isSupabaseConfigured) {
+      setSyncState("error")
+      setSyncError("Supabase no configurado. Configura NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY")
       return
     }
 
@@ -155,12 +173,20 @@ export default function DashboardContent() {
           setSupabaseContact(payload.contact)
         }
 
-        // 4. Fetch Tenant (Legacy)
-        const { data: tenantData } = await supabase
-          .from("tenants")
-          .select("*")
-          .eq("clerk_user_id", user.id)
-          .single()
+        // 4. Fetch Tenant (Legacy) - Only if Supabase is configured
+        let tenantData = null
+        if (supabase) {
+          const { data, error } = await supabase
+            .from("tenants")
+            .select("*")
+            .eq("clerk_user_id", user.id)
+            .single()
+          
+          if (error && error.code !== 'PGRST116') { // PGRST116 = not found, which is OK
+            console.warn("Tenant fetch error:", error)
+          }
+          tenantData = data
+        }
 
         if (!isMounted) return
         setTenant(tenantData)
@@ -267,6 +293,55 @@ export default function DashboardContent() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        {/* Error Banner - Supabase not configured */}
+        {!isSupabaseConfigured && (
+          <div className="mb-8 p-6 rounded-2xl bg-red-500/10 border-2 border-red-500/30 text-red-900">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
+                <Shield className="h-5 w-5 text-red-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg">Configuración Requerida</h3>
+                <p className="text-sm mt-1">
+                  Las variables de entorno de Supabase no están configuradas. Para usar el dashboard necesitas:
+                </p>
+                <ul className="mt-3 space-y-1 text-sm">
+                  <li>• <code className="bg-red-100 px-2 py-0.5 rounded">NEXT_PUBLIC_SUPABASE_URL</code></li>
+                  <li>• <code className="bg-red-100 px-2 py-0.5 rounded">NEXT_PUBLIC_SUPABASE_ANON_KEY</code></li>
+                </ul>
+                <p className="mt-3 text-xs text-red-700">
+                  Mientras tanto, solo se mostrarán datos de demostración.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Banner - Sync Error */}
+        {syncState === 'error' && syncError && (
+          <div className="mb-8 p-4 rounded-2xl bg-red-500/10 border-2 border-red-500/20 text-red-900 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Shield className="h-6 w-6 text-red-600" />
+              <div>
+                <p className="font-bold text-sm">Error de Sincronización</p>
+                <p className="text-xs text-red-700">{syncError}</p>
+              </div>
+            </div>
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={() => {
+                setSyncState("idle")
+                setSyncError(null)
+              }}
+              className="border-red-300 text-red-700 hover:bg-red-50"
+            >
+              <RefreshCw className="h-3 w-3 mr-1" />
+              Reintentar
+            </Button>
+          </div>
+        )}
+
         {userProfile && !userProfile.onboarding_completed && (
           <div className="mb-8 p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 text-amber-900 flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top duration-500">
             <div className="flex items-center gap-3">

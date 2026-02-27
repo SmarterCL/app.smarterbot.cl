@@ -3,6 +3,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
   images: {
     unoptimized: false,
     remotePatterns: [
@@ -19,17 +22,21 @@ const nextConfig = {
   output: 'standalone',
   poweredByHeader: false,
   compress: true,
-  // Force dynamic rendering to avoid Clerk static generation issues
+  reactStrictMode: true,
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
-    // Skip static generation for auth-dependent pages
     serverComponentsHmrCache: false,
-  },
-  // Tell Next.js to skip static optimization for routes with auth
-  async rewrites() {
-    return []
+    optimizePackageImports: [
+      '@clerk/nextjs',
+      '@clerk/localizations',
+      '@supabase/supabase-js',
+      '@supabase/ssr',
+      'lucide-react',
+      'react-icons',
+      'recharts',
+    ],
   },
 }
 
