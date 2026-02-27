@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SubscriptionsView } from "@/components/subscriptions-view"
+import { FlowBridgeStatus } from "@/components/flow-bridge-status"
 import { getUserServices, ensureUserProfile, type UserService } from "@/lib/supabase"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -342,6 +343,9 @@ export default function DashboardContent() {
             </Button>
           </div>
         )}
+
+        {/* Flow Bridge Status (from flow.smarterbot.cl) */}
+        <FlowBridgeStatus />
 
         {userProfile && !userProfile.onboarding_completed && (
           <div className="mb-8 p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 text-amber-900 flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top duration-500">

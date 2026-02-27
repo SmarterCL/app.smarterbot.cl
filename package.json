@@ -55,6 +55,7 @@
     "flowcl-node-api-client": "^1.1.6",
     "input-otp": "latest",
     "jose": "^6.1.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.23",
     "lucide-react": "^0.454.0",
     "mailgun.js": "^12.7.0",
@@ -78,6 +79,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
