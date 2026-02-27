@@ -156,7 +156,7 @@ export function SubscriptionsView() {
             </div>
 
             {/* Billing Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card className="bg-slate-950 text-white border-0 shadow-2xl rounded-[40px] overflow-hidden relative group">
                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-700">
                         <Building2 size={100} />
@@ -206,14 +206,16 @@ export function SubscriptionsView() {
                     </CardHeader>
                     <CardContent className="relative z-10 px-8 pb-8">
                         <div className="flex items-center gap-3">
-                            <div className="bg-black/90 p-2 rounded-2xl shadow-lg">
+                            <div className="bg-black/90 p-2 rounded-2xl shadow-lg flex-shrink-0">
                                 <CheckCircle2 className="h-6 w-6 text-amber-400" />
                             </div>
-                            <div>
-                                <div className="text-2xl font-black text-slate-950 uppercase tracking-tighter">
+                            <div className="min-w-0 flex-1">
+                                <div className="text-xl font-black text-slate-950 uppercase tracking-tighter truncate">
                                     {tenant?.payment_status || "AL DÍA"}
                                 </div>
-                                <p className="text-[10px] font-black text-black/50 uppercase tracking-widest mt-1">Plan {tenant?.plan_type || "DEMO"}</p>
+                                <p className="text-[10px] font-black text-black/50 uppercase tracking-widest mt-1 truncate">
+                                    Plan {tenant?.plan_type || "DEMO"}
+                                </p>
                             </div>
                         </div>
                     </CardContent>

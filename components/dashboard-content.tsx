@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { createBrowserClient } from "@supabase/ssr"
-import { UserButton, useUser } from "@clerk/nextjs"
+import { UserButton, useUser, useClerk } from "@clerk/nextjs"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -287,6 +287,7 @@ export default function DashboardContent() {
                   avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",
                 }
               }}
+              afterSignOutUrl="/"
             />
           </div>
         </div>
