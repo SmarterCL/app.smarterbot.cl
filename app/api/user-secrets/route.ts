@@ -54,11 +54,13 @@ export async function POST(request: Request) {
         const vaultSecretName = `user_${userId}_${secret_name}`
 
         // First, try to delete existing secret if it exists
-        await supabase.rpc("delete_user_secret_if_exists", {
-            p_secret_name: vaultSecretName
-        }).catch(() => {
+        try {
+          await supabase.rpc("delete_user_secret_if_exists", {
+              p_secret_name: vaultSecretName
+            })
+        } catch {
             // Ignore if it doesn't exist
-        })
+        }
 
         // Store in Supabase Vault
         const { data: vaultData, error: vaultError } = await supabase.rpc("vault_create_secret", {
@@ -151,11 +153,13 @@ export async function DELETE(request: Request) {
 
         // Also try to delete from vault
         const vaultSecretName = `user_${userId}_${secretName}`
-        await supabase.rpc("delete_vault_secret", {
-            p_secret_name: vaultSecretName
-        }).catch(() => {
+        try {
+          await supabase.rpc("delete_vault_secret", {
+              p_secret_name: vaultSecretName
+            })
+        } catch {
             // Ignore vault errors
-        })
+        }
 
         return NextResponse.json({ message: "Secreto eliminado" })
     } catch (error) {

@@ -74,27 +74,24 @@ export async function POST(req: Request) {
       },
     })
 
-    // TODO: Trigger tenant bootstrap workflow
-    // Option A: Call n8n webhook
-    // await fetch('https://n8n.smarterbot.cl/webhook/bootstrap-tenant', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     tenant_id: tenant.id,
-    //     rut: tenant.rut,
-    //     services: tenant.services_enabled,
-    //   }),
-    // })
-
-    // Option B: Call FastAPI bootstrap endpoint
-    // await fetch('https://api.smarterbot.cl/tenants/bootstrap', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${process.env.FASTAPI_API_KEY}`,
-    //   },
-    //   body: JSON.stringify({ tenant_id: tenant.id }),
-    // })
+    // Trigger tenant bootstrap workflow via N8N webhook
+    const n8nWebhookUrl = process.env.N8N_BOOTSTRAP_WEBHOOK_URL
+    if (n8nWebhookUrl) {
+      fetch(n8nWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenant_id: tenant.id,
+          rut: tenant.rut,
+          services: tenant.services_enabled,
+        }),
+      }).catch((err) => {
+        console.error('[N8N] Bootstrap webhook failed:', err)
+        // Don't fail tenant creation if webhook fails
+      })
+    } else {
+      console.log('[N8N] Bootstrap webhook not configured, skipping')
+    }
 
     return NextResponse.json(
       {

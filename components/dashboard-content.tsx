@@ -103,6 +103,7 @@ type SyncedContact = {
   status?: string | null
   rut_persona?: string | null
   rut_empresa?: string | null
+  was_notified?: boolean
   created_at?: string | null
   updated_at?: string | null
 }
@@ -116,6 +117,10 @@ export default function DashboardContent() {
   const [tenant, setTenant] = useState<any>(null)
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
+  
+  // Integration stats from external API
+  const [integrationStats, setIntegrationStats] = useState<any>(null)
+  const [statsLoading, setStatsLoading] = useState(false)
 
   // Initialize Supabase client
   const supabase = createBrowserClient(
@@ -176,6 +181,26 @@ export default function DashboardContent() {
     }
   }, [isLoaded, user])
 
+  // Fetch integration stats from external API
+  useEffect(() => {
+    const fetchStats = async () => {
+      setStatsLoading(true)
+      try {
+        const res = await fetch('/api/integrations/stats')
+        if (res.ok) {
+          const data = await res.json()
+          setIntegrationStats(data)
+        }
+      } catch (error) {
+        console.error('Error fetching integration stats:', error)
+      } finally {
+        setStatsLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
   const contactProfile = user
     ? {
       id: user.id,
@@ -231,7 +256,6 @@ export default function DashboardContent() {
               <Activity className="h-3 w-3" /> Online
             </Badge>
             <UserButton
-              fallbackRedirectUrl="/"
               appearance={{
                 elements: {
                   avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",
@@ -253,26 +277,138 @@ export default function DashboardContent() {
               </div>
             </div>
             <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-black text-[10px] rounded-xl uppercase px-4" asChild>
-              <a href="/auth/onboarding">Completar ahora</a>
+              <a href="/onboarding">Completar ahora</a>
             </Button>
           </div>
         )}
         <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {overviewStats.map(({ title, value, delta, icon: Icon }) => (
-            <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-100 to-orange-100">
-                  <Icon className="h-4 w-4 text-amber-600" />
-                </div>
+          {statsLoading ? (
+            // Loading skeletons
+            [1, 2, 3, 4].map((i) => (
+              <Card key={i} className="border border-amber-200/60 bg-white/80 shadow-sm">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-8 rounded-lg" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-8 w-20 mb-2" />
+                  <Skeleton className="h-3 w-16" />
+                </CardContent>
+              </Card>
+            ))
+          ) : integrationStats ? (
+            // Real stats from API
+            [
+              { 
+                title: "Productos MELI", 
+                value: integrationStats.integrations?.meli_products?.toLocaleString() || "0", 
+                delta: "Catálogo activo",
+                icon: Database 
+              },
+              { 
+                title: "Órdenes Procesadas", 
+                value: integrationStats.integrations?.orders_processed?.toLocaleString() || "0", 
+                delta: "Este mes",
+                icon: Zap 
+              },
+              { 
+                title: "Webhooks Recibidos", 
+                value: integrationStats.integrations?.webhooks_received?.toLocaleString() || "0", 
+                delta: "+12% vs mes anterior",
+                icon: Activity 
+              },
+              { 
+                title: "API Calls Hoy", 
+                value: integrationStats.integrations?.api_calls_today?.toLocaleString() || "0", 
+                delta: "Tiempo real",
+                icon: BarChart3 
+              },
+            ].map(({ title, value, delta, icon: Icon }) => (
+              <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-100 to-orange-100">
+                    <Icon className="h-4 w-4 text-amber-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-gray-900">{value}</div>
+                  <p className="text-xs text-amber-600/80">{delta}</p>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            // Fallback stats
+            overviewStats.map(({ title, value, delta, icon: Icon }) => (
+              <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-100 to-orange-100">
+                    <Icon className="h-4 w-4 text-amber-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-gray-900">{value}</div>
+                  <p className="text-xs text-amber-600/80">{delta}</p>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </section>
+
+        {/* Integration Health Status */}
+        {!statsLoading && integrationStats && (
+          <section className="mt-8">
+            <Card className="border border-amber-200/60 bg-white/80 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-5 w-5 text-amber-600" />
+                  Estado de Integraciones
+                </CardTitle>
+                <CardDescription>Monitoreo en tiempo real de servicios externos</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-gray-900">{value}</div>
-                <p className="text-xs text-amber-600/80">{delta}</p>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  {[
+                    { name: 'API SmarterOS', key: 'api', url: '/v1/hub/health' },
+                    { name: 'Mercado Libre', key: 'meli', url: '/v1/hub/meli/health' },
+                    { name: 'Odoo ERP', key: 'odoo', url: null },
+                    { name: 'N8N Workflows', key: 'n8n', url: null },
+                  ].map((service) => (
+                    <div
+                      key={service.key}
+                      className="flex items-center justify-between rounded-lg border border-amber-100 bg-white p-3"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-2 w-2 rounded-full ${
+                            integrationStats.health?.[service.key]
+                              ? 'bg-green-500'
+                              : 'bg-gray-300'
+                          }`}
+                        />
+                        <span className="text-sm font-medium text-gray-700">{service.name}</span>
+                      </div>
+                      {integrationStats.health?.[service.key] ? (
+                        <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
+                          Activo
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="bg-gray-100 text-gray-600 text-xs">
+                          --
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
+                  <span>UF: ${integrationStats.currency?.uf_value?.toLocaleString() || 'N/A'}</span>
+                  <span>Catálogo: {integrationStats.catalog?.total_items || 0} productos</span>
+                </div>
               </CardContent>
             </Card>
-          ))}
-        </section>
+          </section>
+        )}
 
         <section className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">

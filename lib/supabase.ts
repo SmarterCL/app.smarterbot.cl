@@ -158,15 +158,15 @@ export async function getUserServices(userId: string) {
 
   // Fetch both entitlements and runtime status
   const [servicesRes, statusRes] = await Promise.all([
-    supabase.from("user_services").select("*").eq("user_id", userId),
-    supabase.from("user_service_status").select("*").eq("user_id", userId)
+    (supabase as any).from("user_services").select("*").eq("user_id", userId),
+    (supabase as any).from("user_service_status").select("*").eq("user_id", userId)
   ])
 
   if (servicesRes.error) throw servicesRes.error
 
   // Merge runtime status into entitlement data
-  return servicesRes.data.map(service => {
-    const status = statusRes.data?.find(s => s.service_code === service.service_code)
+  return servicesRes.data.map((service: any) => {
+    const status = statusRes.data?.find((s: any) => s.service_code === service.service_code)
     return {
       service_code: service.service_code,
       enabled: service.enabled,
@@ -181,7 +181,7 @@ export async function ensureUserProfile(userId: string, email: string, nombre?: 
   const supabase = getSupabaseClient()
   if (!supabase) throw new Error('Supabase not initialized')
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("user_profile")
     .upsert({
       user_id: userId,
@@ -195,7 +195,7 @@ export async function ensureUserProfile(userId: string, email: string, nombre?: 
   if (error) throw error
 
   // Also initialize services if they don't exist
-  await supabase.rpc('initialize_user_services', { target_user_id: userId })
+  await (supabase as any).rpc('initialize_user_services', { target_user_id: userId })
 
   return data
 }

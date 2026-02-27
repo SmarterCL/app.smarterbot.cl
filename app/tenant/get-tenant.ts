@@ -7,6 +7,7 @@ export interface Tenant {
   id: string
   rut: string
   name: string
+  business_name?: string
   metabase_card_id?: number | null
   status?: string
 }
@@ -31,7 +32,10 @@ export async function getTenantByRut(rut: string): Promise<Tenant | null> {
 
     if (error || !data) return null
 
-    return data as Tenant
+    return {
+      ...data,
+      name: data.business_name || '',
+    } as any as Tenant
   } catch {
     return null
   }
@@ -58,7 +62,10 @@ export async function getCurrentTenant(): Promise<Tenant | null> {
 
     if (error || !data) return null
 
-    return data as Tenant
+    return {
+      ...data,
+      name: data.business_name || '',
+    } as any as Tenant
   } catch {
     return null
   }

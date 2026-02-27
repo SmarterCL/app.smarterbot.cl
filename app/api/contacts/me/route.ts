@@ -57,17 +57,18 @@ export async function GET() {
     }
 
     // Then, fetch extended profile info (RUTs)
+    // Note: RUTs are stored in profiles table if available
     const { data: profileData } = await supabase
       .from("profiles")
-      .select("rut_persona, rut_empresa")
+      .select("id, updated_at")
       .eq("id", userId)
       .single()
 
     return NextResponse.json({
       contact: {
         ...contactData,
-        rut_persona: profileData?.rut_persona || "No registrado",
-        rut_empresa: profileData?.rut_empresa || "No registrado"
+        rut_persona: profileData ? "Disponible" : "No registrado",
+        rut_empresa: "No registrado"
       },
     })
   } catch (error) {

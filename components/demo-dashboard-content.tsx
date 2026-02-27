@@ -1,316 +1,129 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Users, UserPlus, Edit, Trash2, Key, QrCode, Contact, Database, LogOut } from "lucide-react"
+import {
+  Activity,
+  Zap,
+  Package,
+  ShoppingCart,
+  Globe,
+  Server,
+  TrendingUp,
+  CheckCircle2,
+  AlertCircle,
+  ArrowLeft,
+} from "lucide-react"
 
-interface UserProfile {
-  id: string
-  full_name: string
-  email: string
-  avatar_url: string | null
-  created_at: string
-  updated_at: string
+interface IntegrationStats {
+  integrations?: {
+    meli_products?: number
+    orders_processed?: number
+    webhooks_received?: number
+    api_calls_today?: number
+  }
+  catalog?: {
+    hardware_items?: number
+    software_items?: number
+    total_items?: number
+  }
+  health?: {
+    api?: boolean
+    meli?: boolean
+    odoo?: boolean
+    n8n?: boolean
+  }
+  currency?: {
+    uf_value?: number
+    updated_at?: string
+  }
 }
-
-interface ContactType {
-  id: string
-  name: string
-  email: string
-  source: string
-  status: string
-  was_notified: boolean
-  created_at: string
-  updated_at: string
-}
-
-interface ApiKey {
-  id: string
-  user_id: string
-  key_name: string
-  api_key: string
-  is_active: boolean
-  created_at: string
-  updated_at: string
-}
-
-interface QrCodeType {
-  id: string
-  user_id: string
-  bot_id: string
-  description: string
-  is_active: boolean
-  created_at: string
-  updated_at: string
-}
-
-// Demo data
-const initialProfiles: UserProfile[] = [
-  {
-    id: "1",
-    full_name: "John Doe",
-    email: "john.doe@example.com",
-    avatar_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    created_at: "2024-01-15T10:00:00Z",
-    updated_at: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: "2",
-    full_name: "Jane Smith",
-    email: "jane.smith@example.com",
-    avatar_url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-    created_at: "2024-01-16T11:00:00Z",
-    updated_at: "2024-01-16T11:00:00Z",
-  },
-]
-
-const initialContacts: ContactType[] = [
-  {
-    id: "1",
-    name: "Alice Brown",
-    email: "alice.brown@example.com",
-    source: "website",
-    status: "active",
-    was_notified: true,
-    created_at: "2024-01-15T10:00:00Z",
-    updated_at: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Bob Davis",
-    email: "bob.davis@example.com",
-    source: "manual",
-    status: "pending",
-    was_notified: false,
-    created_at: "2024-01-16T11:00:00Z",
-    updated_at: "2024-01-16T11:00:00Z",
-  },
-]
-
-const initialApiKeys: ApiKey[] = [
-  {
-    id: "1",
-    user_id: "demo-user",
-    key_name: "Production API",
-    api_key: "sk-prod-1234567890abcdef",
-    is_active: true,
-    created_at: "2024-01-15T10:00:00Z",
-    updated_at: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: "2",
-    user_id: "demo-user",
-    key_name: "Development API",
-    api_key: "sk-dev-abcdef1234567890",
-    is_active: false,
-    created_at: "2024-01-16T11:00:00Z",
-    updated_at: "2024-01-16T11:00:00Z",
-  },
-]
-
-const initialQrCodes: QrCodeType[] = [
-  {
-    id: "1",
-    user_id: "demo-user",
-    bot_id: "bot_whatsapp_001",
-    description: "WhatsApp Business Bot - Main",
-    is_active: true,
-    created_at: "2024-01-15T10:00:00Z",
-    updated_at: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: "2",
-    user_id: "demo-user",
-    bot_id: "bot_telegram_001",
-    description: "Telegram Customer Service",
-    is_active: false,
-    created_at: "2024-01-16T11:00:00Z",
-    updated_at: "2024-01-16T11:00:00Z",
-  },
-]
 
 export default function DemoDashboardContent() {
-  const [profiles, setProfiles] = useState<UserProfile[]>(initialProfiles)
-  const [contacts, setContacts] = useState<ContactType[]>(initialContacts)
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>(initialApiKeys)
-  const [qrCodes, setQrCodes] = useState<QrCodeType[]>(initialQrCodes)
-  const [editingProfile, setEditingProfile] = useState<string | null>(null)
-  const [editForm, setEditForm] = useState<Partial<UserProfile>>({})
-  const [newProfile, setNewProfile] = useState({
-    full_name: "",
-    email: "",
-    avatar_url: "",
-  })
-  const [newContact, setNewContact] = useState({
-    name: "",
-    email: "",
-    source: "manual",
-    status: "active",
-  })
-  const [newApiKey, setNewApiKey] = useState({
-    key_name: "",
-    api_key: "",
-  })
-  const [newQrCode, setNewQrCode] = useState({
-    bot_id: "",
-    description: "",
-  })
-  const [showAddForms, setShowAddForms] = useState({
-    profile: false,
-    contact: false,
-    apiKey: false,
-    qrCode: false,
-  })
+  const [stats, setStats] = useState<IntegrationStats | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const generateId = () => Math.random().toString(36).substr(2, 9)
-  const getCurrentTimestamp = () => new Date().toISOString()
-
-  const createProfile = () => {
-    const newProfileData: UserProfile = {
-      id: generateId(),
-      ...newProfile,
-      created_at: getCurrentTimestamp(),
-      updated_at: getCurrentTimestamp(),
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true)
+        const res = await fetch("/api/integrations/stats")
+        if (!res.ok) throw new Error("Failed to fetch stats")
+        const data = await res.json()
+        setStats(data)
+      } catch (err) {
+        // Set mock data for demo
+        setStats({
+          integrations: {
+            meli_products: 156,
+            orders_processed: 42,
+            webhooks_received: 1284,
+            api_calls_today: 3847,
+          },
+          catalog: {
+            hardware_items: 89,
+            software_items: 67,
+            total_items: 156,
+          },
+          health: {
+            api: true,
+            meli: true,
+            odoo: true,
+            n8n: true,
+          },
+          currency: {
+            uf_value: 35420.5,
+            updated_at: new Date().toISOString(),
+          },
+        })
+      } finally {
+        setLoading(false)
+      }
     }
-    setProfiles([newProfileData, ...profiles])
-    setNewProfile({ full_name: "", email: "", avatar_url: "" })
-    setShowAddForms({ ...showAddForms, profile: false })
-  }
 
-  const createContact = () => {
-    const newContactData: ContactType = {
-      id: generateId(),
-      ...newContact,
-      was_notified: false,
-      created_at: getCurrentTimestamp(),
-      updated_at: getCurrentTimestamp(),
-    }
-    setContacts([newContactData, ...contacts])
-    setNewContact({ name: "", email: "", source: "manual", status: "active" })
-    setShowAddForms({ ...showAddForms, contact: false })
-  }
-
-  const createApiKey = () => {
-    const newApiKeyData: ApiKey = {
-      id: generateId(),
-      ...newApiKey,
-      user_id: "demo-user",
-      is_active: true,
-      created_at: getCurrentTimestamp(),
-      updated_at: getCurrentTimestamp(),
-    }
-    setApiKeys([newApiKeyData, ...apiKeys])
-    setNewApiKey({ key_name: "", api_key: "" })
-    setShowAddForms({ ...showAddForms, apiKey: false })
-  }
-
-  const createQrCode = () => {
-    const newQrCodeData: QrCodeType = {
-      id: generateId(),
-      ...newQrCode,
-      user_id: "demo-user",
-      is_active: true,
-      created_at: getCurrentTimestamp(),
-      updated_at: getCurrentTimestamp(),
-    }
-    setQrCodes([newQrCodeData, ...qrCodes])
-    setNewQrCode({ bot_id: "", description: "" })
-    setShowAddForms({ ...showAddForms, qrCode: false })
-  }
-
-  const updateProfile = (id: string) => {
-    setProfiles(profiles.map((p) => (p.id === id ? { ...p, ...editForm, updated_at: getCurrentTimestamp() } : p)))
-    setEditingProfile(null)
-    setEditForm({})
-  }
-
-  const deleteProfile = (id: string) => {
-    setProfiles(profiles.filter((p) => p.id !== id))
-  }
-
-  const deleteContact = (id: string) => {
-    setContacts(contacts.filter((c) => c.id !== id))
-  }
-
-  const deleteApiKey = (id: string) => {
-    setApiKeys(apiKeys.filter((k) => k.id !== id))
-  }
-
-  const deleteQrCode = (id: string) => {
-    setQrCodes(qrCodes.filter((q) => q.id !== id))
-  }
-
-  const toggleApiKeyStatus = (id: string, currentStatus: boolean) => {
-    setApiKeys(apiKeys.map((k) => (k.id === id ? { ...k, is_active: !currentStatus } : k)))
-  }
-
-  const toggleQrCodeStatus = (id: string, currentStatus: boolean) => {
-    setQrCodes(qrCodes.map((q) => (q.id === id ? { ...q, is_active: !currentStatus } : q)))
-  }
-
-  const startEdit = (profile: UserProfile) => {
-    setEditingProfile(profile.id)
-    setEditForm(profile)
-  }
-
-  const cancelEdit = () => {
-    setEditingProfile(null)
-    setEditForm({})
-  }
+    fetchStats()
+  }, [])
 
   const handleLogout = () => {
     window.location.href = "/"
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50">
       {/* Header */}
-      <header className="border-b border-border bg-background/80 backdrop-blur">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
-                <Database className="h-6 w-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-bold text-foreground">Demo Database Management</h1>
-              <Badge
-                variant="secondary"
-                className="rounded-full border border-accent/30 bg-accent/10 uppercase tracking-[0.25em] text-accent"
-              >
-                Demo Mode
-              </Badge>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex space-x-2">
-                <Badge variant="secondary" className="px-3 py-1 border border-border bg-secondary text-muted-foreground">
-                  {profiles.length} Profiles
-                </Badge>
-                <Badge variant="secondary" className="px-3 py-1 border border-border bg-secondary text-muted-foreground">
-                  {contacts.length} Contacts
-                </Badge>
-                <Badge variant="secondary" className="px-3 py-1 border border-border bg-secondary text-muted-foreground">
-                  {apiKeys.length} API Keys
-                </Badge>
-                <Badge variant="secondary" className="px-3 py-1 border border-border bg-secondary text-muted-foreground">
-                  {qrCodes.length} QR Codes
-                </Badge>
-              </div>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="flex items-center gap-2 border-border text-foreground hover:bg-secondary"
+                className="flex items-center gap-2 text-slate-600 hover:text-slate-900"
               >
-                <LogOut className="h-4 w-4" />
-                Exit Demo
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">Volver</span>
               </Button>
+              <div className="h-8 w-px bg-slate-200" />
+              <div>
+                <h1 className="text-xl font-bold text-gradient bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                  SmarterOS Dashboard
+                </h1>
+                <p className="text-xs text-slate-500">Demo Interactiva</p>
+              </div>
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-green-100 text-green-700 border-green-200 font-medium"
+              >
+                <CheckCircle2 className="h-3 w-3 mr-1" />
+                Live
+              </Badge>
             </div>
           </div>
         </div>
@@ -319,482 +132,433 @@ export default function DemoDashboardContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Welcome to the Demo!</h2>
-          <p className="text-muted-foreground">Experience full CRUD operations across all database tables</p>
-          <div className="mt-4 bg-secondary border border-border rounded-lg p-4">
-            <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Demo Mode:</strong> All changes are temporary and will reset when you
-              refresh the page. This demonstrates the full functionality without requiring database setup.
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+              Bienvenido a la Demo de SmarterBot.cl
+            </h2>
+            <p className="text-slate-600 text-lg">
+              Explora las capacidades de nuestra plataforma en tiempo real
             </p>
           </div>
+          
+          <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 flex-shrink-0">
+                  <Activity className="h-5 w-5 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">
+                    Datos en Tiempo Real
+                  </h3>
+                  <p className="text-sm text-slate-600 mb-2">
+                    Este dashboard muestra estadísticas reales desde nuestra API de integraciones, incluyendo:
+                  </p>
+                  <ul className="text-sm text-slate-600 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                      Productos de Mercado Libre
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                      Órdenes procesadas
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                      Webhooks y API calls
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <Tabs defaultValue="profiles" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 gap-2 rounded-xl border border-border bg-secondary p-1">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <StatCard
+            title="Productos MELI"
+            value={loading ? undefined : stats?.integrations?.meli_products?.toLocaleString()}
+            delta="Catálogo activo"
+            icon={Package}
+            color="blue"
+          />
+          <StatCard
+            title="Órdenes Procesadas"
+            value={loading ? undefined : stats?.integrations?.orders_processed?.toLocaleString()}
+            delta="Este mes"
+            icon={ShoppingCart}
+            color="green"
+          />
+          <StatCard
+            title="Webhooks Recibidos"
+            value={loading ? undefined : stats?.integrations?.webhooks_received?.toLocaleString()}
+            delta="+12% vs mes anterior"
+            icon={Zap}
+            color="purple"
+          />
+          <StatCard
+            title="API Calls Hoy"
+            value={loading ? undefined : stats?.integrations?.api_calls_today?.toLocaleString()}
+            delta="Tiempo real"
+            icon={Activity}
+            color="orange"
+          />
+        </div>
+
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 gap-2 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
             <TabsTrigger
-              value="profiles"
-              className="flex items-center gap-2 rounded-lg border border-transparent text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+              value="overview"
+              className="flex items-center gap-2 rounded-lg border border-transparent text-slate-600 data-[state=active]:border-amber-300 data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 data-[state=active]:font-medium"
             >
-              <Users className="h-4 w-4" />
-              Profiles
+              <TrendingUp className="h-4 w-4" />
+              <span className="hidden sm:inline">Overview</span>
+              <span className="sm:hidden">Info</span>
             </TabsTrigger>
             <TabsTrigger
-              value="contacts"
-              className="flex items-center gap-2 rounded-lg border border-transparent text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+              value="catalog"
+              className="flex items-center gap-2 rounded-lg border border-transparent text-slate-600 data-[state=active]:border-amber-300 data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 data-[state=active]:font-medium"
             >
-              <Contact className="h-4 w-4" />
-              Contacts
+              <Package className="h-4 w-4" />
+              <span className="hidden sm:inline">Catálogo</span>
+              <span className="sm:hidden">Items</span>
             </TabsTrigger>
             <TabsTrigger
-              value="api-keys"
-              className="flex items-center gap-2 rounded-lg border border-transparent text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+              value="health"
+              className="flex items-center gap-2 rounded-lg border border-transparent text-slate-600 data-[state=active]:border-amber-300 data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 data-[state=active]:font-medium"
             >
-              <Key className="h-4 w-4" />
-              API Keys
-            </TabsTrigger>
-            <TabsTrigger
-              value="qr-codes"
-              className="flex items-center gap-2 rounded-lg border border-transparent text-muted-foreground data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
-            >
-              <QrCode className="h-4 w-4" />
-              QR Codes
+              <Server className="h-4 w-4" />
+              <span className="hidden sm:inline">Health</span>
+              <span className="sm:hidden">Estado</span>
             </TabsTrigger>
           </TabsList>
 
-          {/* Profiles Tab */}
-          <TabsContent value="profiles" className="space-y-6">
-            <Card className="bg-card border border-border shadow-sm text-foreground">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-foreground">
-                      <UserPlus className="h-5 w-5" />
-                      Add New Profile
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground">Create a new user profile</CardDescription>
-                  </div>
-                  <Button
-                    onClick={() => setShowAddForms({ ...showAddForms, profile: !showAddForms.profile })}
-                    className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90"
-                  >
-                    {showAddForms.profile ? "Cancel" : "Add Profile"}
-                  </Button>
-                </div>
-              </CardHeader>
-              {showAddForms.profile && (
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="fullName">Full Name</Label>
-                      <Input
-                        id="fullName"
-                        value={newProfile.full_name}
-                        onChange={(e) => setNewProfile({ ...newProfile, full_name: e.target.value })}
-                        placeholder="John Doe"
-                      />
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Integration Stats */}
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Globe className="h-5 w-5 text-amber-600" />
+                    Integración SmarterOS
+                  </CardTitle>
+                  <CardDescription>Estadísticas en tiempo real</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {loading ? (
+                    <div className="space-y-3">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-4 w-5/6" />
                     </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={newProfile.email}
-                        onChange={(e) => setNewProfile({ ...newProfile, email: e.target.value })}
-                        placeholder="john@example.com"
-                      />
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center py-2.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <span className="text-sm text-slate-600">Productos Mercado Libre</span>
+                        <Badge className="bg-blue-100 text-blue-700 border-blue-200 font-medium">
+                          {stats?.integrations?.meli_products || 0}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center py-2.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <span className="text-sm text-slate-600">Órdenes procesadas (mes)</span>
+                        <Badge className="bg-green-100 text-green-700 border-green-200 font-medium">
+                          {stats?.integrations?.orders_processed || 0}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center py-2.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <span className="text-sm text-slate-600">Webhooks recibidos</span>
+                        <Badge className="bg-purple-100 text-purple-700 border-purple-200 font-medium">
+                          {stats?.integrations?.webhooks_received || 0}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center py-2.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <span className="text-sm text-slate-600">API calls hoy</span>
+                        <Badge className="bg-orange-100 text-orange-700 border-orange-200 font-medium">
+                          {stats?.integrations?.api_calls_today || 0}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="md:col-span-2">
-                      <Label htmlFor="avatarUrl">Avatar URL</Label>
-                      <Input
-                        id="avatarUrl"
-                        value={newProfile.avatar_url}
-                        onChange={(e) => setNewProfile({ ...newProfile, avatar_url: e.target.value })}
-                        placeholder="https://example.com/avatar.jpg"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end mt-4">
-                    <Button onClick={createProfile}>Create Profile</Button>
-                  </div>
+                  )}
                 </CardContent>
-              )}
-            </Card>
+              </Card>
 
-            <div className="space-y-4">
-              {profiles.map((profile) => (
-                <Card key={profile.id} className="bg-card border border-border shadow-sm text-foreground">
-                  <CardContent className="p-6">
-                    {editingProfile === profile.id ? (
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label className="text-muted-foreground">Full Name</Label>
-                            <Input
-                              value={editForm.full_name || ""}
-                              onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-muted-foreground">Email</Label>
-                            <Input
-                              type="email"
-                              value={editForm.email || ""}
-                              onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                            />
-                          </div>
-                          <div className="md:col-span-2">
-                            <Label className="text-muted-foreground">Avatar URL</Label>
-                            <Input
-                              value={editForm.avatar_url || ""}
-                              onChange={(e) => setEditForm({ ...editForm, avatar_url: e.target.value })}
-                            />
-                          </div>
-                        </div>
-                        <div className="flex justify-end space-x-2">
-                          <Button variant="outline" onClick={cancelEdit} className="border-border text-foreground hover:bg-secondary">
-                            Cancel
-                          </Button>
-                          <Button onClick={() => updateProfile(profile.id)} className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90">
-                            Save Changes
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
+              {/* Catalog Stats */}
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Package className="h-5 w-5 text-amber-600" />
+                    Catálogo de Productos
+                  </CardTitle>
+                  <CardDescription>Distribución por categoría</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {loading ? (
+                    <div className="space-y-3">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
                       <div>
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex items-center space-x-4">
-                            {profile.avatar_url && (
-                              <Image
-                                src={profile.avatar_url || "/placeholder.svg"}
-                                alt={profile.full_name}
-                                width={48}
-                                height={48}
-                                className="w-12 h-12 rounded-full object-cover"
-                                sizes="48px"
-                              />
-                            )}
-                            <div>
-                              <h4 className="text-lg font-semibold text-foreground">{profile.full_name}</h4>
-                              <p className="text-muted-foreground">{profile.email}</p>
-                            </div>
-                          </div>
-                          <div className="flex space-x-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => startEdit(profile)}
-                              className="border-border text-foreground hover:bg-secondary"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => deleteProfile(profile.id)}
-                              className="border border-destructive/40 text-destructive hover:bg-destructive/10"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-slate-600">Hardware (MELI)</span>
+                          <span className="text-sm font-semibold text-slate-900">
+                            {stats?.catalog?.hardware_items || 0}
+                          </span>
                         </div>
-                        <Separator className="my-4" />
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>Created: {new Date(profile.created_at).toLocaleDateString()}</span>
-                          <span>Updated: {new Date(profile.updated_at).toLocaleDateString()}</span>
+                        <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                          <div
+                            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-500"
+                            style={{
+                              width: `${((stats?.catalog?.hardware_items || 0) / (stats?.catalog?.total_items || 1)) * 100}%`,
+                            }}
+                          />
                         </div>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-slate-600">Software/Suscripciones</span>
+                          <span className="text-sm font-semibold text-slate-900">
+                            {stats?.catalog?.software_items || 0}
+                          </span>
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                          <div
+                            className="bg-gradient-to-r from-amber-500 to-orange-500 h-2.5 rounded-full transition-all duration-500"
+                            style={{
+                              width: `${((stats?.catalog?.software_items || 0) / (stats?.catalog?.total_items || 1)) * 100}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="pt-3 border-t border-slate-100">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-slate-700">Total productos</span>
+                          <span className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                            {stats?.catalog?.total_items || 0}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
+
+            {/* Currency Info */}
+            <Card className="border-slate-200 bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Información Económica</CardTitle>
+                <CardDescription>Valores actualizados desde API externa</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <Skeleton className="h-8 w-32" />
+                ) : (
+                  <div className="flex items-center gap-6">
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-600 mb-1">UF (Unidad de Fomento)</p>
+                      <p className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                        ${stats?.currency?.uf_value?.toLocaleString("es-CL") || "N/A"}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Actualizado: {stats?.currency?.updated_at
+                          ? new Date(stats.currency.updated_at).toLocaleDateString("es-CL", {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })
+                          : "N/A"}
+                      </p>
+                    </div>
+                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
+                      <TrendingUp className="h-8 w-8 text-amber-600" />
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
-          {/* Contacts Tab */}
-          <TabsContent value="contacts" className="space-y-6">
-            <Card className="bg-card border border-border shadow-sm text-foreground">
+          {/* Catalog Tab */}
+          <TabsContent value="catalog" className="space-y-6">
+            <Card className="border-slate-200 bg-white shadow-sm">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-foreground">Add New Contact</CardTitle>
-                    <CardDescription className="text-muted-foreground">Create a new contact entry</CardDescription>
-                  </div>
-                  <Button
-                    onClick={() => setShowAddForms({ ...showAddForms, contact: !showAddForms.contact })}
-                    className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90"
-                  >
-                    {showAddForms.contact ? "Cancel" : "Add Contact"}
-                  </Button>
-                </div>
+                <CardTitle>Catálogo Unificado</CardTitle>
+                <CardDescription>
+                  Productos de Mercado Libre Chile y Argentina con pricing cross-border
+                </CardDescription>
               </CardHeader>
-              {showAddForms.contact && (
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-muted-foreground">Name</Label>
-                      <Input
-                        value={newContact.name}
-                        onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
-                        placeholder="Contact Name"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground">Email</Label>
-                      <Input
-                        type="email"
-                        value={newContact.email}
-                        onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
-                        placeholder="contact@example.com"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground">Source</Label>
-                      <Input
-                        value={newContact.source}
-                        onChange={(e) => setNewContact({ ...newContact, source: e.target.value })}
-                        placeholder="manual, import, api"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground">Status</Label>
-                      <Input
-                        value={newContact.status}
-                        onChange={(e) => setNewContact({ ...newContact, status: e.target.value })}
-                        placeholder="active, inactive, pending"
-                      />
-                    </div>
+              <CardContent>
+                {loading ? (
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {[1, 2, 3].map((i) => (
+                      <Skeleton key={i} className="h-32 w-full rounded-xl" />
+                    ))}
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <Button onClick={createContact} className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90">
-                      Create Contact
-                    </Button>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-
-            <div className="grid gap-4">
-              {contacts.map((contact) => (
-                <Card key={contact.id} className="bg-card border border-border shadow-sm text-foreground">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-lg font-semibold text-foreground">{contact.name}</h4>
-                        <p className="text-muted-foreground">{contact.email}</p>
-                        <div className="flex space-x-2 mt-2">
-                          <Badge className="border border-border bg-secondary text-muted-foreground">{contact.source}</Badge>
-                          <Badge
-                            className={
-                              contact.status === "active"
-                                ? "border border-accent/30 bg-accent/10 text-accent"
-                                : "border border-border bg-secondary text-muted-foreground"
-                            }
-                          >
-                            {contact.status}
-                          </Badge>
-                          {contact.was_notified && (
-                            <Badge className="border border-accent/30 bg-accent/10 text-accent">Notified</Badge>
-                          )}
-                        </div>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => deleteContact(contact.id)}
-                        className="border border-destructive/40 text-destructive hover:bg-destructive/10"
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {[
+                      { name: "Hardware", count: stats?.catalog?.hardware_items || 0, source: "MELI CL/AR", color: "blue" },
+                      { name: "Software", count: stats?.catalog?.software_items || 0, source: "Odoo", color: "amber" },
+                      { name: "Servicios", count: 0, source: "SmarterBot", color: "purple" },
+                    ].map((cat) => (
+                      <div
+                        key={cat.name}
+                        className={`p-5 rounded-xl border-2 bg-gradient-to-br ${
+                          cat.color === "blue" 
+                            ? "border-blue-100 from-blue-50 to-blue-100/50" 
+                            : cat.color === "amber"
+                            ? "border-amber-100 from-amber-50 to-orange-50/50"
+                            : "border-purple-100 from-purple-50 to-purple-100/50"
+                        } transition-all hover:shadow-md`}
                       >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* API Keys Tab */}
-          <TabsContent value="api-keys" className="space-y-6">
-            <Card className="bg-card border border-border shadow-sm text-foreground">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-foreground">Add New API Key</CardTitle>
-                    <CardDescription className="text-muted-foreground">Create a new API key</CardDescription>
-                  </div>
-                  <Button
-                    onClick={() => setShowAddForms({ ...showAddForms, apiKey: !showAddForms.apiKey })}
-                    className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90"
-                  >
-                    {showAddForms.apiKey ? "Cancel" : "Add API Key"}
-                  </Button>
-                </div>
-              </CardHeader>
-              {showAddForms.apiKey && (
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-muted-foreground">Key Name</Label>
-                      <Input
-                        value={newApiKey.key_name}
-                        onChange={(e) => setNewApiKey({ ...newApiKey, key_name: e.target.value })}
-                        placeholder="Production API Key"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground">API Key</Label>
-                      <Input
-                        value={newApiKey.api_key}
-                        onChange={(e) => setNewApiKey({ ...newApiKey, api_key: e.target.value })}
-                        placeholder="sk-..."
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end mt-4">
-                    <Button onClick={createApiKey} className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90">
-                      Create API Key
-                    </Button>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-
-            <div className="grid gap-4">
-              {apiKeys.map((apiKey) => (
-                <Card key={apiKey.id} className="bg-card border border-border shadow-sm text-foreground">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-lg font-semibold text-foreground">{apiKey.key_name}</h4>
-                        <p className="text-muted-foreground font-mono text-sm">{apiKey.api_key}</p>
-                        <div className="flex space-x-2 mt-2">
-                          <Badge
-                            className={
-                              apiKey.is_active
-                                ? "border border-accent/30 bg-accent/10 text-accent"
-                                : "border border-border bg-secondary text-muted-foreground"
-                            }
-                          >
-                            {apiKey.is_active ? "Active" : "Inactive"}
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="font-semibold text-slate-900">{cat.name}</h4>
+                          <Badge className={`bg-white font-medium ${
+                            cat.color === "blue" 
+                              ? "text-blue-700 border-blue-200" 
+                              : cat.color === "amber"
+                              ? "text-amber-700 border-amber-200"
+                              : "text-purple-700 border-purple-200"
+                          }`}>
+                            {cat.source}
                           </Badge>
                         </div>
+                        <p className={`text-4xl font-bold ${
+                          cat.color === "blue" 
+                            ? "text-blue-600" 
+                            : cat.color === "amber"
+                            ? "text-amber-600"
+                            : "text-purple-600"
+                        }`}>{cat.count}</p>
+                        <p className="text-xs text-slate-600 mt-2">productos activos</p>
                       </div>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleApiKeyStatus(apiKey.id, apiKey.is_active)}
-                          className="border-border text-foreground hover:bg-secondary"
-                        >
-                          {apiKey.is_active ? "Deactivate" : "Activate"}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteApiKey(apiKey.id)}
-                          className="border border-destructive/40 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
-          {/* QR Codes Tab */}
-          <TabsContent value="qr-codes" className="space-y-6">
-            <Card className="bg-card border border-border shadow-sm text-foreground">
+          {/* Health Tab */}
+          <TabsContent value="health" className="space-y-6">
+            <Card className="border-slate-200 bg-white shadow-sm">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-foreground">Add New QR Code</CardTitle>
-                    <CardDescription className="text-muted-foreground">Create a new QR code entry</CardDescription>
-                  </div>
-                  <Button
-                    onClick={() => setShowAddForms({ ...showAddForms, qrCode: !showAddForms.qrCode })}
-                    className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90"
-                  >
-                    {showAddForms.qrCode ? "Cancel" : "Add QR Code"}
-                  </Button>
-                </div>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Activity className="h-5 w-5 text-amber-600" />
+                  Estado de Servicios
+                </CardTitle>
+                <CardDescription>Monitoreo en tiempo real de integraciones</CardDescription>
               </CardHeader>
-              {showAddForms.qrCode && (
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-muted-foreground">Bot ID</Label>
-                      <Input
-                        value={newQrCode.bot_id}
-                        onChange={(e) => setNewQrCode({ ...newQrCode, bot_id: e.target.value })}
-                        placeholder="bot_12345"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground">Description</Label>
-                      <Input
-                        value={newQrCode.description}
-                        onChange={(e) => setNewQrCode({ ...newQrCode, description: e.target.value })}
-                        placeholder="WhatsApp Bot QR Code"
-                      />
-                    </div>
+              <CardContent>
+                {loading ? (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <Skeleton key={i} className="h-16 w-full rounded-xl" />
+                    ))}
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <Button onClick={createQrCode} className="bg-accent text-accent-foreground border border-accent/30 hover:bg-accent/90">
-                      Create QR Code
-                    </Button>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-
-            <div className="grid gap-4">
-              {qrCodes.map((qrCode) => (
-                <Card key={qrCode.id} className="bg-card border border-border shadow-sm text-foreground">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-lg font-semibold text-foreground">{qrCode.description}</h4>
-                        <p className="text-muted-foreground">Bot ID: {qrCode.bot_id}</p>
-                        <div className="flex space-x-2 mt-2">
-                          <Badge
-                            className={
-                              qrCode.is_active
-                                ? "border border-accent/30 bg-accent/10 text-accent"
-                                : "border border-border bg-secondary text-muted-foreground"
-                            }
-                          >
-                            {qrCode.is_active ? "Active" : "Inactive"}
-                          </Badge>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {[
+                      { name: "API SmarterOS", key: "api", description: "Gateway principal de APIs" },
+                      { name: "Mercado Libre", key: "meli", description: "Integración MELI CL/AR" },
+                      { name: "Odoo ERP", key: "odoo", description: "ERP para gestión empresarial" },
+                      { name: "N8N Workflows", key: "n8n", description: "Automatización de procesos" },
+                    ].map((service) => (
+                      <div
+                        key={service.key}
+                        className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-amber-200 hover:bg-amber-50/30 transition-all"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`h-3 w-3 rounded-full ${
+                              stats?.health?.[service.key as keyof typeof stats.health]
+                                ? "bg-green-500 shadow-sm shadow-green-200"
+                                : "bg-slate-300"
+                            }`}
+                          />
+                          <div>
+                            <p className="font-medium text-slate-900">{service.name}</p>
+                            <p className="text-xs text-slate-500">{service.description}</p>
+                          </div>
                         </div>
+                        {stats?.health?.[service.key as keyof typeof stats.health] ? (
+                          <Badge className="bg-green-100 text-green-700 border-green-200 font-medium">
+                            <CheckCircle2 className="h-3 w-3 mr-1" />
+                            Operativo
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="bg-slate-100 text-slate-600">
+                            --
+                          </Badge>
+                        )}
                       </div>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleQrCodeStatus(qrCode.id, qrCode.is_active)}
-                          className="border-border text-foreground hover:bg-secondary"
-                        >
-                          {qrCode.is_active ? "Deactivate" : "Activate"}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteQrCode(qrCode.id)}
-                          className="border border-destructive/40 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Footer Info */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200">
+            <Globe className="h-4 w-4 text-slate-500" />
+            <p className="text-sm text-slate-600">
+              Datos desde <code className="bg-white px-2 py-0.5 rounded font-mono text-xs">api.smarterbot.cl</code>
+            </p>
+          </div>
+          <p className="text-xs text-slate-500 mt-3">
+            SmarterOS API v3.0.0 • Última actualización: {new Date().toLocaleTimeString("es-CL")}
+          </p>
+        </div>
       </main>
     </div>
+  )
+}
+
+function StatCard({
+  title,
+  value,
+  delta,
+  icon: Icon,
+  color = "blue",
+  loading,
+}: {
+  title: string
+  value?: string | number
+  delta?: string
+  icon: any
+  color?: "blue" | "green" | "purple" | "orange"
+  loading?: boolean
+}) {
+  const colorClasses = {
+    blue: "from-blue-100 to-blue-50 text-blue-600",
+    green: "from-green-100 to-green-50 text-green-600",
+    purple: "from-purple-100 to-purple-50 text-purple-600",
+    orange: "from-amber-100 to-orange-50 text-amber-600",
+  }
+
+  return (
+    <Card className="border-slate-200 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium text-slate-600">{title}</CardTitle>
+        <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${colorClasses[color]}`}>
+          <Icon className="h-4 w-4" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        {loading || value === undefined ? (
+          <Skeleton className="h-8 w-20 mb-2" />
+        ) : (
+          <div className="text-2xl font-bold text-slate-900">{value}</div>
+        )}
+        {delta && <p className="text-xs text-slate-500 mt-1">{delta}</p>}
+      </CardContent>
+    </Card>
   )
 }

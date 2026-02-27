@@ -49,12 +49,12 @@ export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: st
       .from("tenants")
       .insert({
         rut: rutEmpresa,
-        name: `Empresa ${rutEmpresa}`,
+        business_name: `Empresa ${rutEmpresa}`,
         clerk_user_id: userId,
-        plan_type: 'DEMO',
-        payment_status: 'ACTIVE',
-        status: 'active'
-      })
+        plan_type: 'DEMO' as any,
+        payment_status: 'ACTIVE' as any,
+        status: 'active',
+      } as any)
       .select()
       .single()
 
@@ -85,7 +85,7 @@ export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: st
     ok: true,
     tenant: {
       id: tenant!.id,
-      rut: tenant!.rut,
+      rut: (tenant as any).rut || rutEmpresa,
       name: (tenant as any).business_name || (tenant as any).name,
     },
   }

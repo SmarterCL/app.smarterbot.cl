@@ -8,6 +8,10 @@ import { esES } from "@clerk/localizations"
 
 import "./globals.css"
 
+// Force dynamic rendering to avoid Clerk static generation issues
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 const onest = Onest({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],

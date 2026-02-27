@@ -46,7 +46,7 @@ export function SubscriptionsView() {
             const { data: tenantData, error: tenantError } = await supabase
                 .from("tenants")
                 .select("*")
-                .eq("clerk_user_id", user?.id)
+                .eq("clerk_user_id", user?.id || '')
                 .single()
 
             if (tenantError) throw tenantError
@@ -61,7 +61,7 @@ export function SubscriptionsView() {
                 .order("created_at", { ascending: false })
 
             if (subsError) throw subsError
-            setSubscriptions(subsData || [])
+            setSubscriptions((subsData || []) as any)
         } catch (error: any) {
             console.error("Error fetching subscriptions:", error)
             toast.error("Error al cargar las suscripciones")
@@ -100,7 +100,7 @@ export function SubscriptionsView() {
 
             if (error) throw error
 
-            setSubscriptions([data, ...subscriptions])
+            setSubscriptions([data as any, ...subscriptions])
             setNewName("")
             setNewRut("")
             toast.success("Suscriptor añadido correctamente")
