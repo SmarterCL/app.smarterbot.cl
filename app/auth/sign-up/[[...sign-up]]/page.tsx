@@ -59,10 +59,10 @@ export default function SignUpPage() {
 
       {/* Right Column: Redesigned Hub Card */}
       <div className="flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 relative min-h-screen w-full bg-[#FFCE00]/5">
-        <div className="w-full max-w-[500px] relative z-10">
+        <div className="w-full max-w-md relative z-10 group mt-8 sm:mt-0">
           <div className="relative group">
-            <div className="absolute -inset-8 rounded-[70px] bg-black/5 opacity-40 blur-3xl transition-all duration-700"></div>
-            <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
+            <div className="absolute -inset-8 rounded-[70px] bg-[#FFCE00]/10 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
+            <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-6 sm:p-10">
               <div className="text-center mb-10">
                 <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
                 <p className="text-slate-400 font-bold italic">Activa tu Consola de Inteligencia</p>
@@ -89,12 +89,12 @@ export default function SignUpPage() {
                         rootBox: "w-full",
                         card: "bg-transparent shadow-none p-0 border-0 w-full flex flex-col items-center",
                         main: "w-full flex flex-col items-center",
-                        form: "w-full space-y-4",
+                        form: "w-full space-y-5",
                         header: "hidden",
-                        socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border-2 border-slate-100 transition-all duration-300 rounded-[22px] flex items-center justify-center shadow-sm active:scale-[0.98] hover:border-[#FFCE00]/50 hover:shadow-md",
+                        socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border border-slate-200 transition-all duration-300 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:scale-[1.02]",
                         socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
-                        formButtonPrimary: "w-full h-14 bg-slate-900 text-[#FFCE00] hover:bg-black font-black transition-all duration-300 rounded-full transform active:scale-[0.95] shadow-lg text-base",
-                        formFieldInput: "w-full h-14 bg-slate-50 border-slate-200 text-slate-900 focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/20 text-sm rounded-[22px] transition-all border-2 px-6",
+                        formButtonPrimary: "w-full h-14 bg-slate-900 text-[#FFCE00] hover:bg-black font-black transition-all duration-300 rounded-full shadow-xl hover:scale-[1.02] text-base",
+                        formFieldInput: "w-full h-14 bg-slate-50 border border-slate-100 text-slate-900 shadow-sm focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/10 text-sm rounded-full transition-all px-6",
                         formFieldLabel: "hidden",
                         footerAction: "hidden",
                         dividerLine: "bg-slate-100",

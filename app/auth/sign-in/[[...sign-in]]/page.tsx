@@ -84,17 +84,17 @@ export default function SignInPage() {
       {/* Right Column: Redesigned Hub Card */}
       <div className="flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 relative min-h-screen w-full bg-[#FFCE00]/5">
 
-        <div className="w-full max-w-[500px] relative z-10">
+        <div className="w-full max-w-md relative z-10 group mt-8 sm:mt-0">
           <div className="relative group">
             {/* Ambient Shadows */}
-            <div className="absolute -inset-8 rounded-[70px] bg-black/5 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
+            <div className="absolute -inset-8 rounded-[70px] bg-[#FFCE00]/10 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
 
-            <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-8 md:p-12">
-
+            <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-6 sm:p-10">
+              <h2 className="text-center text-3xl font-black text-slate-900 mb-8">Iniciar Sesión</h2>
               {/* Hub Navigation Options */}
               <div className="space-y-4 text-center">
                 {/* Clerk Sign-In Component */}
-                <div className="clerk-container w-full flex items-center justify-center -mt-6">
+                <div className="clerk-container w-full flex items-center justify-center">
                   <SignIn
                     routing="path"
                     path="/auth/sign-in"
@@ -106,13 +106,13 @@ export default function SignInPage() {
                         rootBox: "w-full",
                         card: "bg-transparent shadow-none p-0 border-0 w-full flex flex-col items-center",
                         main: "w-full flex flex-col items-center",
-                        form: "w-full space-y-4",
+                        form: "w-full space-y-5",
                         headerTitle: "hidden",
                         headerSubtitle: "hidden",
-                        socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border border-slate-200 transition-all duration-300 rounded-2xl flex items-center justify-center shadow-sm hover:shadow-md",
+                        socialButtonsBlockButton: "w-full h-14 bg-white hover:bg-slate-50 border border-slate-200 transition-all duration-300 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:scale-[1.02]",
                         socialButtonsBlockButtonText: "text-slate-900 font-bold text-sm",
-                        formButtonPrimary: "w-full h-14 bg-[#FFCE00] text-black hover:bg-slate-900 hover:text-[#FFCE00] font-black transition-all duration-300 rounded-2xl shadow-md text-base",
-                        formFieldInput: "w-full h-14 bg-white border border-slate-200 text-slate-900 shadow-sm focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/10 text-sm rounded-2xl transition-all px-6",
+                        formButtonPrimary: "w-full h-14 bg-[#FFCE00] hover:bg-[#E0B800] text-slate-900 font-black transition-all duration-300 rounded-full shadow-xl hover:scale-[1.02] text-base border-none",
+                        formFieldInput: "w-full h-14 bg-slate-50 border border-slate-100 text-slate-900 shadow-sm focus:border-[#FFCE00] focus:ring-4 focus:ring-[#FFCE00]/10 text-sm rounded-full transition-all px-6",
                         formFieldLabel: "hidden",
                         footerAction: "hidden",
                         dividerLine: "bg-slate-100",
@@ -132,7 +132,7 @@ export default function SignInPage() {
 
                 <a
                   href="/auth/sign-up"
-                  className="w-full h-14 bg-slate-900 hover:bg-black text-[#FFCE00] font-black rounded-2xl flex items-center justify-center shadow-md transition-all duration-300 mt-6"
+                  className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-[1.02] mt-8"
                 >
                   <Rocket className="h-5 w-5 mr-3" />
                   Crear cuenta

@@ -8,11 +8,11 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl) {
-  throw new Error("NEXT_PUBLIC_SUPABASE_URL is required")
+    throw new Error("NEXT_PUBLIC_SUPABASE_URL is required")
 }
 
 if (!supabaseServiceRoleKey) {
-  throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for admin operations. Never use the anon key for server-side operations.")
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for admin operations. Never use the anon key for server-side operations.")
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
@@ -65,8 +65,8 @@ export async function POST(request: Request) {
 
         // First, try to delete existing secret if it exists
         try {
-          await supabase.rpc("delete_user_secret_if_exists", {
-              p_secret_name: vaultSecretName
+            await supabase.rpc("delete_user_secret_if_exists", {
+                p_secret_name: vaultSecretName
             })
         } catch {
             // Ignore if it doesn't exist
@@ -128,7 +128,7 @@ export async function POST(request: Request) {
             vault_id: vaultData
         })
     } catch (error) {
-        logger.error("User secrets POST error", { error: error instanceof Error ? error.message : String(error), userId })
+        logger.error("User secrets POST error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -164,8 +164,8 @@ export async function DELETE(request: Request) {
         // Also try to delete from vault
         const vaultSecretName = `user_${userId}_${secretName}`
         try {
-          await supabase.rpc("delete_vault_secret", {
-              p_secret_name: vaultSecretName
+            await supabase.rpc("delete_vault_secret", {
+                p_secret_name: vaultSecretName
             })
         } catch {
             // Ignore vault errors
