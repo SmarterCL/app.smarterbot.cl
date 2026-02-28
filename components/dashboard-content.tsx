@@ -129,8 +129,8 @@ export default function DashboardContent() {
 
   // Check if Supabase is properly configured
   const isSupabaseConfigured = Boolean(
-    supabaseUrl && 
-    supabaseKey && 
+    supabaseUrl &&
+    supabaseKey &&
     !supabaseUrl.includes('placeholder') &&
     !supabaseKey.includes('placeholder')
   )
@@ -182,7 +182,7 @@ export default function DashboardContent() {
             .select("*")
             .eq("clerk_user_id", user.id)
             .single()
-          
+
           if (error && error.code !== 'PGRST116') { // PGRST116 = not found, which is OK
             console.warn("Tenant fetch error:", error)
           }
@@ -279,9 +279,17 @@ export default function DashboardContent() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Badge className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            <Badge className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700 hidden sm:flex">
               <Activity className="h-3 w-3" /> Online
             </Badge>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 rounded-full border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3"
+              asChild
+            >
+              <a href="/api/logout-telegram">Salir de Telegram</a>
+            </Button>
             <UserButton
               appearance={{
                 elements: {
@@ -329,8 +337,8 @@ export default function DashboardContent() {
                 <p className="text-xs text-red-700">{syncError}</p>
               </div>
             </div>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               variant="outline"
               onClick={() => {
                 setSyncState("idle")
@@ -379,29 +387,29 @@ export default function DashboardContent() {
           ) : integrationStats ? (
             // Real stats from API
             [
-              { 
-                title: "Productos MELI", 
-                value: integrationStats.integrations?.meli_products?.toLocaleString() || "0", 
+              {
+                title: "Productos MELI",
+                value: integrationStats.integrations?.meli_products?.toLocaleString() || "0",
                 delta: "Catálogo activo",
-                icon: Database 
+                icon: Database
               },
-              { 
-                title: "Órdenes Procesadas", 
-                value: integrationStats.integrations?.orders_processed?.toLocaleString() || "0", 
+              {
+                title: "Órdenes Procesadas",
+                value: integrationStats.integrations?.orders_processed?.toLocaleString() || "0",
                 delta: "Este mes",
-                icon: Zap 
+                icon: Zap
               },
-              { 
-                title: "Webhooks Recibidos", 
-                value: integrationStats.integrations?.webhooks_received?.toLocaleString() || "0", 
+              {
+                title: "Webhooks Recibidos",
+                value: integrationStats.integrations?.webhooks_received?.toLocaleString() || "0",
                 delta: "+12% vs mes anterior",
-                icon: Activity 
+                icon: Activity
               },
-              { 
-                title: "API Calls Hoy", 
-                value: integrationStats.integrations?.api_calls_today?.toLocaleString() || "0", 
+              {
+                title: "API Calls Hoy",
+                value: integrationStats.integrations?.api_calls_today?.toLocaleString() || "0",
                 delta: "Tiempo real",
-                icon: BarChart3 
+                icon: BarChart3
               },
             ].map(({ title, value, delta, icon: Icon }) => (
               <Card key={title} className="border border-amber-200/60 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
@@ -461,11 +469,10 @@ export default function DashboardContent() {
                     >
                       <div className="flex items-center gap-2">
                         <div
-                          className={`h-2 w-2 rounded-full ${
-                            integrationStats.health?.[service.key]
+                          className={`h-2 w-2 rounded-full ${integrationStats.health?.[service.key]
                               ? 'bg-green-500'
                               : 'bg-gray-300'
-                          }`}
+                            }`}
                         />
                         <span className="text-sm font-medium text-gray-700">{service.name}</span>
                       </div>
