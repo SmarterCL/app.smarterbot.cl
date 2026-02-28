@@ -35,7 +35,17 @@ export default function RutOnboardingPage() {
         return
       }
 
-      router.push("/dashboard")
+      // Proceso Híbrido: Identificar si traen un plan
+      const params = new window.URLSearchParams(window.location.search);
+      const chosenPlan = params.get('plan');
+
+      if (chosenPlan) {
+        // Redirigir directamente a la pasarela Flow (o procesador) según el plan elegido
+        // Reemplazar con URL real de Flow.cl o Stripe API
+        window.location.href = `https://www.flow.cl/app/webpay/pago.php?token=${chosenPlan}-demo-token-123`;
+      } else {
+        router.push("/dashboard")
+      }
     } catch (err: any) {
       setError(err.message || "Error de red")
       setLoading(false)
