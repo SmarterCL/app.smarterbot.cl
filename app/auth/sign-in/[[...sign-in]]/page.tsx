@@ -2,10 +2,21 @@
 
 import { SignIn } from "@clerk/nextjs"
 import { Bot, Zap, ArrowRight, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard, X } from "lucide-react"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function SignInPage() {
   const [showConfirm, setShowConfirm] = useState(false);
+  const [plan, setPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setPlan(params.get('plan'));
+    }
+  }, []);
+
+  const planName = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : null;
+  const redirectUrl = plan ? `/onboarding?plan=${plan}` : `/dashboard`;
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-2 bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
@@ -90,7 +101,9 @@ export default function SignInPage() {
             <div className="absolute -inset-8 rounded-[70px] bg-[#FFCE00]/10 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
 
             <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-6 sm:p-10">
-              <h2 className="text-center text-3xl font-black text-slate-900 mb-8">Iniciar Sesión</h2>
+              <h2 className="text-center text-3xl font-black text-slate-900 mb-8">
+                {planName ? `Plan ${planName}` : "Iniciar Sesión"}
+              </h2>
               {/* Hub Navigation Options */}
               <div className="space-y-4 text-center">
                 {/* Clerk Sign-In Component */}
@@ -98,9 +111,9 @@ export default function SignInPage() {
                   <SignIn
                     routing="path"
                     path="/auth/sign-in"
-                    signUpUrl="/auth/sign-up"
-                    fallbackRedirectUrl="/dashboard"
-                    forceRedirectUrl="/dashboard"
+                    signUpUrl={plan ? `/auth/sign-up?plan=${plan}` : "/auth/sign-up"}
+                    fallbackRedirectUrl={redirectUrl}
+                    forceRedirectUrl={redirectUrl}
                     appearance={{
                       elements: {
                         rootBox: "w-full",
@@ -131,7 +144,7 @@ export default function SignInPage() {
                 </div>
 
                 <a
-                  href="/auth/sign-up"
+                  href={plan ? `/auth/sign-up?plan=${plan}` : "/auth/sign-up"}
                   className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-[1.02] mt-8"
                 >
                   <Rocket className="h-5 w-5 mr-3" />

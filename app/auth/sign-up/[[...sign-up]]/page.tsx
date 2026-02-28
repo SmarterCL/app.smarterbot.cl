@@ -2,8 +2,21 @@
 
 import { SignUp } from "@clerk/nextjs"
 import { Bot, Zap, MessageSquare, LayoutDashboard, Rocket, Eye, CreditCard, CheckCircle2 } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export default function SignUpPage() {
+  const [plan, setPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setPlan(params.get('plan'));
+    }
+  }, []);
+
+  const planName = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : null;
+  const redirectUrl = plan ? `/onboarding?plan=${plan}` : `/dashboard`;
+
   return (
     <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-2 bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
 
@@ -64,8 +77,12 @@ export default function SignUpPage() {
             <div className="absolute -inset-8 rounded-[70px] bg-[#FFCE00]/10 opacity-40 blur-3xl transition-all duration-700 group-hover:opacity-60"></div>
             <div className="relative bg-white rounded-[50px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white overflow-hidden p-6 sm:p-10">
               <div className="text-center mb-10">
-                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">SmarterOS Hub</h2>
-                <p className="text-slate-400 font-bold italic">Activa tu Consola de Inteligencia</p>
+                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">
+                  {planName ? `Plan ${planName}` : "SmarterOS Hub"}
+                </h2>
+                <p className="text-slate-400 font-bold italic">
+                  {planName ? "Crea tu cuenta para activar suscripción" : "Activa tu Consola de Inteligencia"}
+                </p>
               </div>
 
               <div className="space-y-4 mb-10 text-center">
@@ -81,9 +98,9 @@ export default function SignUpPage() {
                   <SignUp
                     routing="path"
                     path="/auth/sign-up"
-                    signInUrl="/auth/sign-in"
-                    fallbackRedirectUrl="/dashboard"
-                    forceRedirectUrl="/dashboard"
+                    signInUrl={plan ? `/auth/sign-in?plan=${plan}` : "/auth/sign-in"}
+                    fallbackRedirectUrl={redirectUrl}
+                    forceRedirectUrl={redirectUrl}
                     appearance={{
                       elements: {
                         rootBox: "w-full",
@@ -115,7 +132,7 @@ export default function SignUpPage() {
                 <div className="pt-8">
                   <p className="text-sm font-bold text-slate-400">
                     ¿Ya tienes cuenta?{" "}
-                    <a href="/auth/sign-in" className="text-slate-900 hover:text-[#FFCE00] font-black underline underline-offset-4 decoration-2 transition-colors">
+                    <a href={plan ? `/auth/sign-in?plan=${plan}` : "/auth/sign-in"} className="text-slate-900 hover:text-[#FFCE00] font-black underline underline-offset-4 decoration-2 transition-colors">
                       Inicia sesión
                     </a>
                   </p>

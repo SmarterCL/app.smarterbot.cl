@@ -175,7 +175,7 @@ export default function Home() {
                                                 <li className="flex items-center gap-3"><Zap className="w-4 h-4 text-slate-400" /> CRM, Facturación</li>
                                                 <li className="flex items-center gap-3"><Zap className="w-4 h-4 text-slate-400" /> Automatizaciones limitadas</li>
                                             </ul>
-                                            <Link href="/auth/sign-up" className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-full flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
+                                            <Link href="/auth/sign-up?plan=demo" className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-full flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
                                                 Inscríbete gratis
                                             </Link>
                                         </div>
@@ -192,7 +192,7 @@ export default function Home() {
                                                 <li className="flex items-center gap-3"><Zap className="w-4 h-4 text-[#FFCE00]" /> Integraciones API (MCP)</li>
                                                 <li className="flex items-center gap-3"><Zap className="w-4 h-4 text-[#FFCE00]" /> Soporte Prioritario</li>
                                             </ul>
-                                            <Link href="/auth/sign-in" className="w-full h-14 bg-[#FFCE00] hover:bg-[#E0B800] text-slate-900 font-black rounded-full flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
+                                            <Link href="/auth/sign-up?plan=enterprise" className="w-full h-14 bg-[#FFCE00] hover:bg-[#E0B800] text-slate-900 font-black rounded-full flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
                                                 Comprar suscripción
                                             </Link>
                                         </div>
