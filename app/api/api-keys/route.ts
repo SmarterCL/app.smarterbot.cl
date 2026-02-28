@@ -2,11 +2,21 @@ import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import crypto from "crypto"
+import { logger } from "@/lib/logger"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+// Validate required environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl) {
+  throw new Error("NEXT_PUBLIC_SUPABASE_URL is required")
+}
+
+if (!supabaseServiceRoleKey) {
+  throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for admin operations. Never use the anon key for server-side operations.")
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
 // Generate a secure API key
 function generateApiKey(): string {
@@ -31,7 +41,7 @@ export async function GET() {
             .order("created_at", { ascending: false })
 
         if (error) {
-            console.error("Error fetching API keys:", error)
+            logger.error("Error fetching API keys", { error: error.message, userId })
             return NextResponse.json({ error: "Error al obtener API keys" }, { status: 500 })
         }
 
@@ -43,7 +53,7 @@ export async function GET() {
 
         return NextResponse.json({ apiKeys: maskedKeys || [] })
     } catch (error) {
-        console.error("API Keys GET error:", error)
+        logger.error("API Keys GET error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -78,7 +88,7 @@ export async function POST(request: Request) {
             .single()
 
         if (error) {
-            console.error("Error creating API key:", error)
+            logger.error("Error creating API key", { error: error.message, userId, key_name })
             return NextResponse.json({ error: "Error al crear API key" }, { status: 500 })
         }
 
@@ -87,14 +97,14 @@ export async function POST(request: Request) {
             apiKey: {
                 id: data.id,
                 key_name: data.key_name,
-                api_key: data.api_key, // Full key shown only once
+                api_key: data.api_key,
                 is_active: data.is_active,
                 created_at: data.created_at,
             },
             message: "API key creada. Guárdala en un lugar seguro, no se mostrará de nuevo."
         })
     } catch (error) {
-        console.error("API Keys POST error:", error)
+        logger.error("API Keys POST error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -122,13 +132,13 @@ export async function DELETE(request: Request) {
             .eq("user_id", userId) // Ensure user owns the key
 
         if (error) {
-            console.error("Error deleting API key:", error)
+            logger.error("Error deleting API key", { error: error.message, userId, keyId })
             return NextResponse.json({ error: "Error al eliminar API key" }, { status: 500 })
         }
 
         return NextResponse.json({ message: "API key eliminada" })
     } catch (error) {
-        console.error("API Keys DELETE error:", error)
+        logger.error("API Keys DELETE error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -158,13 +168,13 @@ export async function PATCH(request: Request) {
             .single()
 
         if (error) {
-            console.error("Error updating API key:", error)
+            logger.error("Error updating API key", { error: error.message, userId, id, is_active })
             return NextResponse.json({ error: "Error al actualizar API key" }, { status: 500 })
         }
 
         return NextResponse.json({ apiKey: data })
     } catch (error) {
-        console.error("API Keys PATCH error:", error)
+        logger.error("API Keys PATCH error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }

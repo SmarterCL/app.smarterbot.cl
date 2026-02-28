@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { clerkClient } from '@clerk/nextjs/server'
 import jwt from 'jsonwebtoken'
+import { logger } from '@/lib/logger'
 
 interface BridgePayload {
   phone: string
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
   const token = searchParams.get('token')
 
   if (!token) {
-    console.warn('[Bridge] No token provided')
+    logger.warn('[Bridge] No token provided', { path: request.nextUrl.pathname })
     return NextResponse.redirect(new URL('/auth/sign-in', request.url))
   }
 
@@ -27,10 +28,10 @@ export async function GET(request: NextRequest) {
       process.env.BRIDGE_JWT_SECRET || 'fallback-dev-secret-key-change-in-production'
     ) as BridgePayload
 
-    console.log('[Bridge] Token validated:', { 
-      phone: payload.phone, 
+    logger.info('[Bridge] Token validated', {
+      phone: payload.phone,
       verified: payload.verified,
-      product_id: payload.product_id 
+      product_id: payload.product_id
     })
 
     // 2. Verificar que no sea muy viejo (15 min)
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
     const { phone } = payload
     const normalizedPhone = phone.replace(/[^0-9+]/g, '')
 
-    console.log('[Bridge] Looking up user by phone:', normalizedPhone)
+    logger.debug('[Bridge] Looking up user by phone', { phoneNormalized: normalizedPhone })
 
     // 4. Buscar en Clerk por teléfono
     const client = await clerkClient()
@@ -58,10 +59,10 @@ export async function GET(request: NextRequest) {
     if (users.data.length > 0) {
       // Usuario existe → usar ese
       userId = users.data[0].id
-      console.log('[Bridge] Existing user found:', userId)
+      logger.info('[Bridge] Existing user found', { userId })
     } else {
       // Usuario no existe → crear
-      console.log('[Bridge] Creating new user for phone:', normalizedPhone)
+      logger.info('[Bridge] Creating new user', { phoneNormalized: normalizedPhone })
 
       const user = await client.users.createUser({
         externalId: `flow_${normalizedPhone}_${Date.now()}`,
@@ -76,7 +77,7 @@ export async function GET(request: NextRequest) {
       })
       userId = user.id
       isNewUser = true
-      console.log('[Bridge] New user created:', userId)
+      logger.info('[Bridge] New user created', { userId })
     }
 
     // 5. Guardar contexto de la compra en Supabase
@@ -99,7 +100,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log('[Bridge] Inserting flow session:', flowSessionData)
+    logger.debug('[Bridge] Inserting flow session', { userId, productId: payload.product_id })
 
     const { data: sessionData, error: sessionError } = await supabase
       .from('flow_sessions')
@@ -108,31 +109,31 @@ export async function GET(request: NextRequest) {
       .single()
 
     if (sessionError) {
-      console.error('[Bridge] Error saving flow session:', sessionError)
+      logger.error('[Bridge] Error saving flow session', { error: sessionError.message, userId })
       // No throw, continue anyway
     }
 
-    console.log('[Bridge] Flow session created:', sessionData?.id)
+    logger.info('[Bridge] Flow session created', { sessionId: sessionData?.id })
 
     // 6. Redirigir al dashboard con contexto
     const redirectUrl = new URL('/dashboard', request.url)
-    
+
     if (payload.product_id) {
       redirectUrl.searchParams.set('product_id', payload.product_id)
       redirectUrl.searchParams.set('from_flow', 'true')
     }
-    
+
     if (isNewUser) {
       redirectUrl.searchParams.set('new_user', 'true')
     }
 
-    console.log('[Bridge] Redirecting to:', redirectUrl.toString())
-    
+    logger.debug('[Bridge] Redirecting', { redirectUrl: redirectUrl.toString() })
+
     return NextResponse.redirect(redirectUrl)
 
   } catch (error: any) {
-    console.error('[Bridge] Auth error:', error.message)
-    
+    logger.error('[Bridge] Auth error', { error: error.message })
+
     // Token inválido o expirado → redirect a sign-in
     return NextResponse.redirect(new URL('/auth/sign-in?error=bridge_invalid', request.url))
   }

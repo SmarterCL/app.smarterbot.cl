@@ -1,5 +1,6 @@
 import { createClient as createSupabaseClient, SupabaseClient } from "@supabase/supabase-js"
 import { Database } from "@/types/supabase"
+import { logger } from "@/lib/logger"
 
 type SupabaseClientOptions = Parameters<typeof createSupabaseClient>[2]
 
@@ -12,9 +13,18 @@ const getEnv = () => {
 
   if (!url || !anonKey) {
     if (process.env.NODE_ENV === "production") {
+      logger.error("CRITICAL: Supabase environment variables are missing in production", {
+        hasUrl: !!url,
+        hasAnonKey: !!anonKey,
+      })
       throw new Error("CRITICAL: Supabase environment variables are missing in production!")
     }
     // During local development or build time, we allow fallbacks to avoid crashing the build process
+    logger.warn("Supabase environment variables not fully configured, using placeholders", {
+      hasUrl: !!url,
+      hasAnonKey: !!anonKey,
+      nodeEnv: process.env.NODE_ENV,
+    })
     return {
       url: process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-configure-me.supabase.co",
       anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "missing-key-check-env"
@@ -197,7 +207,7 @@ export async function ensureUserProfile(userId: string, email: string, nombre?: 
     if (error) {
       // If table doesn't exist, skip silently (not critical for dashboard)
       if (error.message.includes('could not find table') || error.message.includes('schema cache')) {
-        console.warn('profiles table not found, skipping user profile sync')
+        logger.warn('profiles table not found, skipping user profile sync', { userId })
         return { id: userId, email, nombre, onboarding_completed: true }
       }
       throw error
@@ -208,13 +218,13 @@ export async function ensureUserProfile(userId: string, email: string, nombre?: 
       await (supabase as any).rpc('initialize_user_services', { target_user_id: userId })
     } catch (rpcError: any) {
       if (!rpcError.message.includes('could not find function')) {
-        console.warn('initialize_user_services RPC not found')
+        logger.debug('initialize_user_services RPC not found')
       }
     }
 
     return data
   } catch (error: any) {
-    console.error('ensureUserProfile error:', error.message)
+    logger.error('ensureUserProfile error', { error: error.message, userId })
     // Return mock profile to prevent dashboard crash
     return { id: userId, email, nombre, onboarding_completed: true }
   }

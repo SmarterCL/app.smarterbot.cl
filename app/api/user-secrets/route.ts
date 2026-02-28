@@ -1,11 +1,21 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { logger } from "@/lib/logger"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+// Validate required environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl) {
+  throw new Error("NEXT_PUBLIC_SUPABASE_URL is required")
+}
+
+if (!supabaseServiceRoleKey) {
+  throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for admin operations. Never use the anon key for server-side operations.")
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
 // GET - Retrieve user's secrets (masked)
 export async function GET() {
@@ -23,13 +33,13 @@ export async function GET() {
             .eq("user_id", userId)
 
         if (error) {
-            console.error("Error fetching secrets:", error)
+            logger.error("Error fetching secrets", { error: error.message, userId })
             return NextResponse.json({ error: "Error al obtener secretos" }, { status: 500 })
         }
 
         return NextResponse.json({ secrets: data || [] })
     } catch (error) {
-        console.error("User secrets GET error:", error)
+        logger.error("User secrets GET error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -70,15 +80,15 @@ export async function POST(request: Request) {
         })
 
         if (vaultError) {
-            console.error("Vault error:", vaultError)
+            logger.error("Vault error", { vaultError: vaultError.message, userId, secret_name })
             // Try alternative method - direct insert to user_secrets table
             const { error: insertError } = await supabase
                 .from("user_secrets")
                 .upsert({
                     user_id: userId,
                     secret_name: secret_name,
-                    vault_secret_id: null, // Will use separate encrypted storage
-                    encrypted_value: secret_value, // In production, encrypt this client-side
+                    vault_secret_id: null,
+                    encrypted_value: secret_value,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 }, {
@@ -86,7 +96,7 @@ export async function POST(request: Request) {
                 })
 
             if (insertError) {
-                console.error("Insert error:", insertError)
+                logger.error("Insert error", { insertError: insertError.message, userId, secret_name })
                 return NextResponse.json({ error: "Error al guardar secreto" }, { status: 500 })
             }
 
@@ -110,7 +120,7 @@ export async function POST(request: Request) {
             })
 
         if (refError) {
-            console.error("Reference save error:", refError)
+            logger.error("Reference save error", { refError: refError.message, userId, secret_name })
         }
 
         return NextResponse.json({
@@ -118,7 +128,7 @@ export async function POST(request: Request) {
             vault_id: vaultData
         })
     } catch (error) {
-        console.error("User secrets POST error:", error)
+        logger.error("User secrets POST error", { error: error instanceof Error ? error.message : String(error), userId })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
@@ -147,7 +157,7 @@ export async function DELETE(request: Request) {
             .eq("secret_name", secretName)
 
         if (error) {
-            console.error("Delete error:", error)
+            logger.error("Delete error", { error: error.message, userId, secretName })
             return NextResponse.json({ error: "Error al eliminar secreto" }, { status: 500 })
         }
 
@@ -163,7 +173,7 @@ export async function DELETE(request: Request) {
 
         return NextResponse.json({ message: "Secreto eliminado" })
     } catch (error) {
-        console.error("User secrets DELETE error:", error)
+        logger.error("User secrets DELETE error", { error: error instanceof Error ? error.message : String(error) })
         return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }

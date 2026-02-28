@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { z } from "zod"
 import { createClient, createTenant } from "@/lib/supabase"
+import { validateRUT } from "@/app/tenant/validate-rut"
+import { logger } from "@/lib/logger"
 
 // Validación RUT chileno (formato: 12345678-9 o 12345678-K)
 const rutRegex = /^\d{7,8}-[\dkK]$/
@@ -58,6 +60,15 @@ export async function POST(req: Request) {
     // Normalize RUT (uppercase K, remove spaces)
     const normalizedRut = rut.trim().toUpperCase().replace(/\s/g, "")
 
+    // Validar dígito verificador del RUT (algoritmo chileno)
+    if (!validateRUT(normalizedRut)) {
+      logger.warn("RUT con dígito verificador inválido", { rut: normalizedRut, userId: user.id })
+      return NextResponse.json(
+        { error: "RUT inválido", message: "El RUT ingresado no es válido" },
+        { status: 400 }
+      )
+    }
+
     // Create tenant via Supabase helper
     const tenant = await createTenant({
       rut: normalizedRut,
@@ -86,11 +97,11 @@ export async function POST(req: Request) {
           services: tenant.services_enabled,
         }),
       }).catch((err) => {
-        console.error('[N8N] Bootstrap webhook failed:', err)
+        logger.error('[N8N] Bootstrap webhook failed', { error: err, tenantId: tenant.id })
         // Don't fail tenant creation if webhook fails
       })
     } else {
-      console.log('[N8N] Bootstrap webhook not configured, skipping')
+      logger.debug('[N8N] Bootstrap webhook not configured, skipping')
     }
 
     return NextResponse.json(
@@ -107,7 +118,7 @@ export async function POST(req: Request) {
       { status: 201 }
     )
   } catch (error: any) {
-    console.error("Tenant creation error:", error)
+    logger.error("Tenant creation error", { error: error?.message, stack: error?.stack })
 
     // Check for duplicate RUT error
     if (error?.code === "23505" || error?.message?.includes("duplicate key")) {
