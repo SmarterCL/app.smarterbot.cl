@@ -40,9 +40,26 @@ export default function RutOnboardingPage() {
       const chosenPlan = params.get('plan');
 
       if (chosenPlan) {
-        // Redirigir directamente a la pasarela Flow (o procesador) según el plan elegido
-        // Reemplazar con URL real de Flow.cl o Stripe API
-        window.location.href = `https://www.flow.cl/app/webpay/pago.php?token=${chosenPlan}-demo-token-123`;
+        // Enviar a Flow a través de nuestro backend seguro
+        const flowRes = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            plan: chosenPlan,
+            rutPersona,
+            rutEmpresa,
+            email: null // Si tienes el correo del usuario (Clerk session), pásalo aquí. Flow lo requiere para mandar recibo
+          }),
+        })
+
+        const flowData = await flowRes.json()
+
+        if (flowRes.ok && flowData.redirectUrl) {
+          window.location.href = flowData.redirectUrl;
+        } else {
+          setError(flowData.error || "Fallo en pasarela de pago");
+          setLoading(false);
+        }
       } else {
         router.push("/dashboard")
       }
