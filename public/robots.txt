@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /api/private/
+Disallow: /tenant/
+
+Sitemap: https://app.smarterbot.cl/sitemap.xml

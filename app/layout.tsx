@@ -48,21 +48,40 @@ const themeInitScript = `
 `
 
 export const metadata = {
-  title: "SmarterOS",
-  description: "Gestión de automatizaciones y datos para SmarterOS",
-  generator: "v0.dev",
+  title: "SmarterOS | Automatiza WhatsApp, Ventas y Gestión Empresarial",
+  description: "Plataforma integral para gestión de automatizaciones, integración WhatsApp API, CRM, ERP y datos para SmarterOS. Centraliza y agiliza las operaciones de tu empresa.",
+  generator: "SmarterOS",
+  keywords: [
+    "SmarterOS",
+    "SmarterBot",
+    "Automatización WhatsApp",
+    "Chatbot",
+    "Atención al Cliente",
+    "Gestión de Datos",
+    "CRM",
+    "ERP",
+    "Omnicanalidad",
+    "Ventas",
+    "Marketing"
+  ],
+  authors: [{ name: "SmarterOS Contacto", url: "https://app.smarterbot.cl" }],
+  creator: "SmarterOS",
+  publisher: "SmarterOS",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
-      { url: '/images/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/images/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/logo.jpg', sizes: '512x512', type: 'image/jpeg' },
     ],
-    shortcut: ['/images/favicon-16x16.png'],
+    shortcut: ['/logo.jpg'],
     apple: [
-      { url: '/images/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+      { url: '/logo.jpg', sizes: '180x180', type: 'image/jpeg' }
     ],
     other: [
-      { rel: 'icon', url: '/images/favicon.svg' },
+      { rel: 'icon', url: '/logo.jpg' },
     ]
   }
 }
