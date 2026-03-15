@@ -6,7 +6,18 @@ import os
 
 app = FastAPI(title="SmarterMCP HTTP Bridge")
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres_password@db:5432/postgres")
+# Helper para obtener secretos de Docker
+def get_secret(name: str, default: str = None) -> str:
+    file_path = os.getenv(f"{name}_FILE")
+    if file_path and os.path.exists(file_path):
+        try:
+            with open(file_path, "r") as f:
+                return f.read().strip()
+        except Exception:
+            pass
+    return os.getenv(name, default)
+
+DATABASE_URL = get_secret("DATABASE_URL", "postgresql://postgres:postgres_password@db:5432/postgres")
 
 class FlowExecutionRequest(BaseModel):
     client_id: str
@@ -79,7 +90,7 @@ async def execute_flow(request: FlowExecutionRequest, db = Depends(get_db)):
             db_name = f"smarter_{rut}"
             try:
                 # 1. Conectamos al servidor de bases de datos de Odoo (usamos env vars dedicadas)
-                ODOO_DB_URL = os.getenv("ODOO_DB_URL", DATABASE_URL)
+                ODOO_DB_URL = get_secret("ODOO_DB_URL", DATABASE_URL)
                 conn = await asyncpg.connect(ODOO_DB_URL)
                 
                 # 2. Verificamos si ya existe

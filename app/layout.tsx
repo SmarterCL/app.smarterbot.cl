@@ -48,29 +48,35 @@ const themeInitScript = `
 `
 
 export const metadata = {
-  title: "SmarterOS | Automatiza WhatsApp, Ventas y Gestión Empresarial",
-  description: "Plataforma integral para gestión de automatizaciones, integración WhatsApp API, CRM, ERP y datos para SmarterOS. Centraliza y agiliza las operaciones de tu empresa.",
+  title: "SmarterOS + OpenClaw | Infraestructura AI lista en minutos",
+  description: "Todo lo que necesitas para operar un sistema de agentes de IA y automatización empresarial en un solo plan. AI Agents 24/7, CRM, ERP y automatización con workflows.",
   generator: "SmarterOS",
   keywords: [
     "SmarterOS",
-    "SmarterBot",
-    "Automatización WhatsApp",
-    "Chatbot",
-    "Atención al Cliente",
-    "Gestión de Datos",
-    "CRM",
-    "ERP",
-    "Omnicanalidad",
-    "Ventas",
-    "Marketing"
+    "OpenClaw",
+    "Agentes IA",
+    "Infraestructura AI",
+    "Automatización Empresarial",
+    "WhatsApp API",
+    "CRM AI",
+    "ERP IA",
+    "Workflows Autónomos"
   ],
-  authors: [{ name: "SmarterOS Contacto", url: "https://app.smarterbot.cl" }],
+  authors: [{ name: "SmarterOS Support", url: "https://app.smarterbot.cl" }],
   creator: "SmarterOS",
   publisher: "SmarterOS",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
+  },
+  manifest: "/manifest.json",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  themeColor: "#0f172a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "SmarterOS",
   },
   icons: {
     icon: [

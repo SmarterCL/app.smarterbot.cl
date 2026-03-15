@@ -9,9 +9,30 @@ from jose import jwt
 app = FastAPI(title="SmarterOS Orchestrator")
 security = HTTPBearer()
 
+# Helper para obtener secretos de Docker
+def get_secret(name: str, default: Optional[str] = None) -> Optional[str]:
+    file_path = os.getenv(f"{name}_FILE")
+    if file_path and os.path.exists(file_path):
+        try:
+            with open(file_path, "r") as f:
+                return f.read().strip()
+        except Exception:
+            pass
+    return os.getenv(name, default)
+
 # Entornos
 MCP_API_URL = os.getenv("MCP_API_URL", "http://mcp-server:8000")
-SECRET_KEY = os.getenv("JWT_SECRET", "smarter_secret_2026")
+SECRET_KEY = get_secret("JWT_SECRET")
+
+if not SECRET_KEY:
+    # En producción esto debería fallar catastróficamente por seguridad
+    if os.getenv("ENVIRONMENT") == "production":
+        raise RuntimeError("JWT_SECRET environment variable is NOT SET")
+    else:
+        # Fallback para desarrollo, pero avisando claramente
+        import warnings
+        warnings.warn("JWT_SECRET not set, using development placeholder. DO NOT USE IN PRODUCTION.")
+        SECRET_KEY = "dev_only_unsafe_secret_replace_me"
 
 class N8NTrigger(BaseModel):
     client_id: str
