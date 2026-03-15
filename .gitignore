@@ -39,3 +39,17 @@ next-env.d.ts
 
 # cursor mcp
 .cursor/mcp.json
+
+# secrets directory (keep structure, exclude actual secrets)
+secrets/*
+!secrets/.gitkeep
+
+# SSH keys (never commit private/public keys)
+smarterbot-mcp
+smarterbot-mcp.pub
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
