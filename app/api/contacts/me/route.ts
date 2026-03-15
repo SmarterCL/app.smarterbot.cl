@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth, currentUser } from "@clerk/nextjs/server"
 import { createClient } from "@/lib/supabase"
+import { logger } from "@/lib/logger"
 
 const ensureValue = (value?: string | null, fallback = "") => {
   if (!value) return fallback
@@ -14,11 +15,10 @@ export async function GET() {
     const userId = authData.userId
     const user = await currentUser()
 
-    console.log("[contacts:GET] UserId:", userId)
-    console.log("[contacts:GET] User:", user ? "Defined" : "Undefined")
+    logger.debug("[contacts:GET] Sincronizando contacto", { userId, hasUser: !!user })
 
     if (!userId || !user) {
-      console.warn("[contacts:GET] Unauthorized access attempt or missing session")
+      logger.warn("[contacts:GET] Unauthorized access attempt or missing session")
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
@@ -52,7 +52,7 @@ export async function GET() {
       .single()
 
     if (contactError) {
-      console.error("[contacts:sync] Supabase contacts error", contactError)
+      logger.error("[contacts:sync] Supabase contacts error", contactError)
       return NextResponse.json({ error: "No se pudo sincronizar el contacto" }, { status: 502 })
     }
 
@@ -72,7 +72,7 @@ export async function GET() {
       },
     })
   } catch (error) {
-    console.error("[contacts:sync] Unexpected error", error)
+    logger.error("[contacts:sync] Unexpected error", error instanceof Error ? error : new Error(String(error)))
     return NextResponse.json({ error: "Error al sincronizar el contacto" }, { status: 500 })
   }
 }

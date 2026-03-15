@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase'
+import { logger } from '@/lib/logger'
 
 /**
  * POST /api/azure/verify
@@ -161,7 +162,7 @@ export async function POST(request: Request) {
       n8n_url,
     } as VerifyResponse)
   } catch (error) {
-    console.error('Error in /api/azure/verify:', error)
+    logger.error('Error in /api/azure/verify:', error instanceof Error ? error : new Error(String(error)))
     return NextResponse.json(
       {
         status: 'error',
@@ -217,7 +218,7 @@ async function verifySubscription(subscription_id: string): Promise<{ success: b
       return { success: true }
     } catch {
       // Fallback: Assume valid if CLI not available (dev mode)
-      console.warn('[Azure] CLI not available, skipping subscription verification')
+      logger.warn('[Azure] CLI not available, skipping subscription verification')
       return { success: true }
     }
   } catch (error) {
@@ -247,7 +248,7 @@ async function verifyCredit(subscription_id: string): Promise<{ success: boolean
       return { success: true, credit: 1000 }
     } catch {
       // Fallback: assume sufficient credit in dev mode
-      console.warn('[Azure] Cannot verify credit, assuming sufficient')
+      logger.warn('[Azure] Cannot verify credit, assuming sufficient')
       return { success: true, credit: 195.50 }
     }
   } catch (error) {
@@ -285,14 +286,14 @@ async function verifyProviders(
       }
 
       if (missingProviders.length > 0) {
-        console.warn('[Azure] Missing providers:', missingProviders)
+        logger.warn('[Azure] Missing providers:', { missingProviders })
         return { success: false, missing: missingProviders }
       }
 
       return { success: true, registered: requiredProviders }
     } catch {
       // Fallback: assume all registered in dev mode
-      console.warn('[Azure] Cannot verify providers, assuming registered')
+      logger.warn('[Azure] Cannot verify providers, assuming registered')
       return { success: true, registered: requiredProviders }
     }
   } catch (error) {
@@ -318,10 +319,10 @@ async function verifyResourceGroup(
       // Resource group doesn't exist, try to create it
       try {
         await execAsync(`az group create --name ${resource_group} --location ${location} --subscription ${subscription_id} 2>/dev/null`)
-        console.log('[Azure] Created resource group:', resource_group)
+        logger.info('[Azure] Created resource group:', { resource_group })
         return { success: true }
       } catch (createError) {
-        console.error('[Azure] Failed to create resource group:', createError)
+        logger.error('[Azure] Failed to create resource group:', createError instanceof Error ? createError : new Error(String(createError)))
         return { success: false, error: 'Failed to create resource group' }
       }
     }
@@ -340,13 +341,13 @@ async function saveToVault(userId: string, data: Record<string, unknown>): Promi
 
   // Use Supabase for secret storage (Vault integration optional)
   // In production: Use HashiCorp Vault or Azure Key Vault
-  console.log(`[Vault] Saving to ${vaultPath}`)
+  logger.debug(`[Vault] Saving config for path: ${vaultPath}`)
 
   const vaultAddr = process.env.VAULT_ADDR
   const vaultToken = process.env.VAULT_TOKEN
 
   if (!vaultAddr || !vaultToken) {
-    console.warn('[Vault] VAULT not configured, using Supabase only')
+    logger.warn('[Vault] VAULT not configured, using Supabase only')
     return
   }
 
@@ -364,9 +365,9 @@ async function saveToVault(userId: string, data: Record<string, unknown>): Promi
       throw new Error(`Vault error: ${response.statusText}`)
     }
 
-    console.log('[Vault] Successfully saved Azure config')
+    logger.info('[Vault] Successfully saved Azure config')
   } catch (error) {
-    console.error('[Vault] Error saving to Vault:', error)
+    logger.error('[Vault] Error saving to Vault:', error instanceof Error ? error : new Error(String(error)))
     // Continue anyway - Supabase has the data
   }
 }

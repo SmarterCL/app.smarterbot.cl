@@ -82,7 +82,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/:path*{/}',
+        source: '/:path*',
         headers: [
           {
             key: 'Content-Security-Policy',
@@ -94,6 +94,7 @@ const nextConfig = {
               "font-src 'self' data:",
               "connect-src 'self' https://api.clerk.com https://*.supabase.co https://*.smarterbot.cl",
               "frame-src 'self' https://challenges.cloudflare.com https://*.metabase.com",
+              "upgrade-insecure-requests",
             ].join('; '),
           },
         ],
