@@ -32,6 +32,25 @@ To improve the mobile user experience ("Add to Home Screen") and overall perform
 
 ---
 
+## 🐍 Python 3.14.3 Upgrade & Environment Unification
+
+A major update was performed to the Python backend services to leverage the latest features and ensure environment consistency.
+
+### 1. Version Migration
+- **Local Dev**: Successfully updated to **Python 3.14.3** using `uv`.
+- **Environment Management**: Transitioned from loose virtual environments to a unified **`uv` workspace**.
+    - Created a root `pyproject.toml` managing all services (`orchestrator`, `mcp-server`, `google-stitch-mcp`).
+    - Synchronized all dependencies using `uv sync`, resolving version conflicts.
+
+### 2. Container Parity
+- **Dockerfiles**: Updated all Python-based `Dockerfile`s from `3.11-slim` to **`3.14-slim`**. This ensures that the code runs on the same Python runtime in development, CI, and production.
+
+### 3. Modernized Dependency Management
+- Replaced separate `requirements.txt` tracking with workspace-aware `pyproject.toml` files for each service.
+- Standardized on `fastapi>=0.115.0` and `pydantic>=2.9.0` across the entire project.
+
+---
+
 ## 🚀 Deployment & Push
 
 - All changes have been reviewed for performance and security.
