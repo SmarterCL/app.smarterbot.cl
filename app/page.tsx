@@ -246,9 +246,14 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <Link href="/auth/sign-up?plan=promo" className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-2xl flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none group/btn">
+                                            <a 
+                                                href="https://www.hostinger.com/es?REFERRALCODE=SMARTER" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-2xl flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none group/btn"
+                                            >
                                                 Activar OpenClaw Ahora <Rocket className="ml-2 w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1" />
-                                            </Link>
+                                            </a>
                                         </div>
                                     ) : (
                                         <div className="space-y-6 animate-in fade-in zoom-in duration-300">
