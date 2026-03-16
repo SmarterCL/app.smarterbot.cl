@@ -3,8 +3,11 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 // Rutas que NO requieren autenticación
 const isPublicRoute = createRouteMatcher([
   '/',
-  '/api(.*)',
+  '/api/public(.*)',
   '/auth(.*)',
+  '/login',
+  '/signup',
+  '/onboarding(.*)',
   '/sso-callback',
 ])
 

@@ -215,11 +215,11 @@ export default function Home() {
                                         <div className="space-y-6 animate-in fade-in zoom-in duration-300">
                                             <div className="text-center">
                                                 <div className="flex items-center justify-center gap-3 mb-1">
-                                                    <span className="text-lg text-slate-400 line-through font-bold">21,99 €</span>
-                                                    <span className="text-5xl font-black text-slate-900 tracking-tighter">7,99 €</span>
+                                                    <span className="text-lg text-slate-400 line-through font-bold">$21.990</span>
+                                                    <span className="text-5xl font-black text-slate-900 tracking-tighter">$7.990</span>
                                                 </div>
-                                                <div className="text-[#FFCE00] font-black text-xs uppercase tracking-wider bg-slate-100 py-1.5 px-4 rounded-full inline-block">Plan 24 meses • 191,76 € total</div>
-                                                <div className="text-slate-400 font-bold mt-2 text-[10px] uppercase italic">Luego 14,99 €/mes</div>
+                                                <div className="text-[#FFCE00] font-black text-xs uppercase tracking-wider bg-slate-100 py-1.5 px-4 rounded-full inline-block">Plan 24 meses • Cupón: <span className="text-slate-900">SMARTER</span> • $191.760 total</div>
+                                                <div className="text-slate-400 font-bold mt-2 text-[10px] uppercase italic">Luego $14.990/mes</div>
                                             </div>
                                             
                                             <div className="space-y-4 py-4 border-t border-slate-100">
