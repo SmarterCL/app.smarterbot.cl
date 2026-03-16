@@ -13,7 +13,8 @@ const PLANS: Record<string, { amount: number, name: string }> = {
     "comercio": { amount: 35000, name: "Plan Comercio MYPE" },
     "empresa": { amount: 75000, name: "Plan Avanzado Empresas" },
     "startup": { amount: 150000, name: "Plan Enterprise Premium" },
-    "enterprise": { amount: 75000, name: "Suscripción Avanzada" }
+    "enterprise": { amount: 75000, name: "Suscripción Avanzada" },
+    "promo": { amount: 7990, name: "Plan OpenClaw Promo (Hostinger)" }
 };
 
 export async function POST(req: Request) {

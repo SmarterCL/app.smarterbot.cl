@@ -111,7 +111,7 @@ export default function Home() {
 
                         <div className="flex items-center gap-4">
                             <Link href="/auth/sign-in" className="text-sm font-bold text-slate-600 hover:text-slate-900 px-4">Entrar</Link>
-                            <Link href="/auth/sign-up" className="bg-slate-900 text-[#FFCE00] text-sm font-black px-6 py-2.5 rounded-xl hover:scale-105 transition-transform shadow-lg shadow-yellow-500/10">Activar</Link>
+                            <Link href="/auth/sign-up?referral=SMARTER" className="bg-slate-900 text-[#FFCE00] text-sm font-black px-6 py-2.5 rounded-xl hover:scale-105 transition-transform shadow-lg shadow-yellow-500/10">Activar</Link>
                         </div>
                     </div>
                 </div>
@@ -246,14 +246,12 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <a 
-                                                href="https://www.hostinger.com/es?REFERRALCODE=SMARTER" 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
+                                            <Link 
+                                                href="/auth/sign-up?plan=promo&referral=SMARTER" 
                                                 className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-2xl flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none group/btn"
                                             >
                                                 Activar OpenClaw Ahora <Rocket className="ml-2 w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1" />
-                                            </a>
+                                            </Link>
                                         </div>
                                     ) : (
                                         <div className="space-y-6 animate-in fade-in zoom-in duration-300">
@@ -286,7 +284,7 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <Link href="/auth/sign-up?plan=enterprise" className="w-full h-14 bg-[#FFCE00] hover:bg-[#E0B800] text-slate-900 font-black rounded-2xl flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
+                                            <Link href="/auth/sign-up?plan=enterprise&referral=SMARTER" className="w-full h-14 bg-[#FFCE00] hover:bg-[#E0B800] text-slate-900 font-black rounded-2xl flex items-center justify-center transition-all mt-6 shadow-xl hover:scale-[1.02] border-none">
                                                 Suscribirse Plan Senior
                                             </Link>
                                         </div>
