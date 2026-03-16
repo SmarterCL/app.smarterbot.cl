@@ -41,6 +41,12 @@ import {
   Users,
   Zap,
   CreditCard,
+  FileText,
+  Globe,
+  Cloud,
+  Layers,
+  Cpu,
+  Terminal,
 } from "lucide-react"
 
 const overviewStats = [
@@ -52,12 +58,12 @@ const overviewStats = [
 
 const tabItems = [
   { value: "overview", label: "Overview", icon: BarChart3 },
-  { value: "messages", label: "Mensajes", icon: MessageSquare },
-  { value: "contacts", label: "Contactos", icon: Users },
-  { value: "subscriptions", label: "Suscripciones", icon: CreditCard },
-  { value: "automation", label: "Automatización", icon: Zap },
-  { value: "qr", label: "QR Codes", icon: QrCode },
-  { value: "api", label: "API Keys", icon: Key },
+  { value: "ai", label: "AI Agents", icon: Bot },
+  { value: "documents", label: "DOK & RAG", icon: FileText },
+  { value: "mcp", label: "MCP Cluster", icon: Shield },
+  { value: "payments", label: "Pagos & Opt", icon: CreditCard },
+  { value: "chile", label: "Chile Gateway", icon: Globe },
+  { value: "contacts", label: "CRM Contactos", icon: Users },
   { value: "settings", label: "Configuración", icon: Settings },
 ]
 
@@ -516,14 +522,14 @@ export default function DashboardContent() {
                 </SelectContent>
               </Select>
             </div>
-            <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-2xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-3 lg:grid-cols-6">
+            <TabsList className="hidden w-full grid-cols-2 gap-2 rounded-2xl border border-border bg-secondary p-1 sm:grid sm:grid-cols-4 lg:grid-cols-8">
               {tabItems.map(({ value, label, icon: Icon }) => (
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-transparent text-sm font-semibold text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground"
+                  className="flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-transparent text-[11px] font-bold text-muted-foreground transition data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-foreground uppercase tracking-tight"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-3.5 w-3.5" />
                   {label}
                 </TabsTrigger>
               ))}
@@ -618,10 +624,166 @@ export default function DashboardContent() {
               </div>
             </TabsContent>
 
-            <TabsContent value="messages" className="space-y-6 sm:space-y-8">
-              <ChatwootWidget />
+            <TabsContent value="ai" className="space-y-6 sm:space-y-8">
+              <Card className="border border-border bg-card shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bot className="h-5 w-5 text-amber-500" />
+                    AI Agents (SmarterOS v3.3.0)
+                  </CardTitle>
+                  <CardDescription>Gestión de modelos y agentes autónomos</CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-6 md:grid-cols-2">
+                  <div className="rounded-xl border border-border bg-secondary p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-sm uppercase">Qwen Model</h4>
+                      <Badge className="bg-amber-100 text-amber-700">/ai/qwen</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Modelo optimizado para razonamiento y herramientas.</p>
+                    <Button size="sm" className="w-full">Probar Chat</Button>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-sm uppercase">OpenRouter Bridge</h4>
+                      <Badge className="bg-blue-100 text-blue-700">/ai/openrouter</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Acceso a Claude, GPT-4 y Llama vía bridge unificado.</p>
+                    <Button size="sm" variant="outline" className="w-full">Configurar Tokens</Button>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
+            <TabsContent value="documents" className="space-y-6 sm:space-y-8">
+              <Card className="border border-border bg-card shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-amber-500" />
+                    DOK & RAG Architecture
+                  </CardTitle>
+                  <CardDescription>Procesamiento de documentos e inteligencia vectorial</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="p-3 rounded-lg border border-border bg-secondary text-center">
+                      <Upload className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
+                      <span className="text-[10px] font-bold uppercase block mb-1">Upload</span>
+                      <code className="text-[9px]">/v1/documents/upload</code>
+                    </div>
+                    <div className="p-3 rounded-lg border border-border bg-secondary text-center">
+                      <Search className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
+                      <span className="text-[10px] font-bold uppercase block mb-1">RAG Search</span>
+                      <code className="text-[9px]">/v1/rag/search</code>
+                    </div>
+                    <div className="p-3 rounded-lg border border-border bg-secondary text-center">
+                      <Activity className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
+                      <span className="text-[10px] font-bold uppercase block mb-1">RAG Stats</span>
+                      <code className="text-[9px]">/v1/rag/stats</code>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs">
+                    <p className="text-amber-400"># Docling External Service</p>
+                    <p>Docling Status: https://docling.smarterbot.store/health</p>
+                    <p className="mt-2 text-blue-400"># Native RAG Query</p>
+                    <p>POST /v1/rag/query {"{ 'prompt': '...' }"}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="mcp" className="space-y-6 sm:space-y-8">
+              <Card className="border border-border bg-card shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Cpu className="h-5 w-5 text-amber-500" />
+                    MCP Cluster Management
+                  </CardTitle>
+                  <CardDescription>Protocolo de Contexto de Modelo (Model Context Protocol)</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-100">
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-4 w-4 text-emerald-600" />
+                      <span className="text-sm font-bold text-emerald-700 uppercase">Cluster Status</span>
+                    </div>
+                    <Badge className="bg-emerald-500 text-white border-0">RUNNING v3.3.0</Badge>
+                  </div>
+                  <div className="grid gap-3">
+                    <Button variant="outline" className="justify-between text-xs h-10">
+                      <span className="flex items-center gap-2"><Terminal className="h-3.5 w-3.5" /> List Tools</span>
+                      <code className="text-muted-foreground">/mcp/tools/list</code>
+                    </Button>
+                    <Button variant="outline" className="justify-between text-xs h-10">
+                      <span className="flex items-center gap-2"><Layers className="h-3.5 w-3.5" /> Schema Explorer</span>
+                      <code className="text-muted-foreground">/mcp/tools/schema</code>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="payments" className="space-y-6 sm:space-y-8">
+              <Card className="border border-border bg-card shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5 text-amber-500" />
+                    Pagos & Optimization
+                  </CardTitle>
+                  <CardDescription>Orquestación de pagos y analíticas inteligentes</CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl border border-border bg-secondary">
+                      <h4 className="text-xs font-bold uppercase mb-2">Payment Optimizer</h4>
+                      <p className="text-[10px] text-muted-foreground mb-3">Enrutamiento dinámico según tasa de aprobación.</p>
+                      <Badge variant="outline" className="text-[9px]">/v1/payments/optimize</Badge>
+                    </div>
+                    <div className="p-4 rounded-xl border border-border bg-secondary">
+                      <h4 className="text-xs font-bold uppercase mb-2">Khipu Gateway</h4>
+                      <p className="text-[10px] text-muted-foreground mb-3">Integración nativa para transferencias CL.</p>
+                      <Badge variant="outline" className="text-[9px]">/v1/payments/khipu/create</Badge>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-slate-900">Ver Analytics de Pagos</Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="chile" className="space-y-6 sm:space-y-8">
+              <Card className="border border-border bg-card shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="h-5 w-5 text-amber-500" />
+                    Chile Gateway Tools
+                  </CardTitle>
+                  <CardDescription>Servicios específicos para el mercado chileno</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="p-4 rounded-xl border border-border bg-card">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Shield className="h-4 w-4 text-amber-600" />
+                        <span className="text-sm font-bold">Validación RUT & SII</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-4">Verificación automática de identidades y datos tributarios.</p>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center justify-between text-[11px] bg-secondary p-2 rounded">
+                          <code className="text-amber-700">/rut/validate/{"{rut}"}</code>
+                          <Badge variant="secondary">GET</Badge>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px] bg-secondary p-2 rounded">
+                          <code className="text-amber-700">/sii/empresa/{"{rut}"}</code>
+                          <Badge variant="secondary">GET</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <Button variant="outline" className="w-full border-amber-200 text-amber-700 hover:bg-amber-50">
+                      Onboarding de Empresa (/onboard/company)
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
             <TabsContent value="contacts" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
@@ -742,99 +904,6 @@ export default function DashboardContent() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="subscriptions" className="space-y-6 sm:space-y-8">
-              <SubscriptionsView />
-            </TabsContent>
-
-            <TabsContent value="automation" className="space-y-6 sm:space-y-8">
-              <Card className="border border-border bg-card shadow-sm">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-foreground">Automatizaciones</CardTitle>
-                      <CardDescription className="text-muted-foreground">Configura flujos automáticos</CardDescription>
-                    </div>
-                    <Button className="inline-flex items-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
-                      <Plus className="h-4 w-4" /> Nueva automatización
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="rounded-xl border border-border bg-secondary py-12 text-center">
-                    <Zap className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">No hay automatizaciones configuradas</p>
-                    <p className="mb-4 text-xs text-muted-foreground">Crea tu primera automatización para WhatsApp</p>
-                    <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Crear automatización</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="qr" className="space-y-6 sm:space-y-8">
-              <Card className="border border-border bg-card shadow-sm">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-foreground">Códigos QR</CardTitle>
-                      <CardDescription className="text-muted-foreground">Genera códigos QR para WhatsApp</CardDescription>
-                    </div>
-                    <Button className="inline-flex items-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
-                      <Plus className="h-4 w-4" /> Generar QR
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="rounded-xl border border-border bg-secondary py-12 text-center">
-                    <QrCode className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">No hay códigos QR generados</p>
-                    <p className="mb-4 text-xs text-muted-foreground">Crea códigos QR para facilitar el contacto</p>
-                    <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Generar primer QR</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="api" className="space-y-6 sm:space-y-8">
-              <Card className="border border-border bg-card shadow-sm">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-foreground">API Keys</CardTitle>
-                      <CardDescription className="text-muted-foreground">Gestiona tus claves de API</CardDescription>
-                    </div>
-                    <Button className="inline-flex items-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
-                      <Plus className="h-4 w-4" /> Nueva API Key
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                      <Label htmlFor="whatsapp-api" className="text-xs font-medium text-muted-foreground">
-                        WhatsApp Business API
-                      </Label>
-                      <Input
-                        id="whatsapp-api"
-                        placeholder="Ingresa tu API key"
-                        className="border-border bg-secondary text-foreground placeholder:text-muted-foreground"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="openai-api" className="text-xs font-medium text-muted-foreground">
-                        OpenAI API Key
-                      </Label>
-                      <Input
-                        id="openai-api"
-                        placeholder="Ingresa tu API key"
-                        className="border-border bg-secondary text-foreground placeholder:text-muted-foreground"
-                      />
-                    </div>
-                  </div>
-                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Guardar configuración</Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
             <TabsContent value="settings" className="space-y-6 sm:space-y-8">
               <Card className="border border-border bg-card shadow-sm">
                 <CardHeader>
@@ -872,6 +941,6 @@ export default function DashboardContent() {
           </Tabs>
         </section>
       </main>
-    </div >
+    </div>
   )
 }

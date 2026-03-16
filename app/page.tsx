@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Bot, Zap, Rocket, X, ChevronDown, Play } from "lucide-react";
+import { Bot, Zap, Rocket, X, ChevronDown, Play, Brain, ShieldCheck, Scale, Globe, Flag, Search, Filter } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 
 function Faq({ title, answer }: { title: string, answer: string }) {
@@ -70,6 +70,7 @@ export default function Home() {
     const [activeMedia, setActiveMedia] = useState('video');
     const [showVideoModal, setShowVideoModal] = useState(false);
     const [activePlanTab, setActivePlanTab] = useState('demo');
+    const [activeCountry, setActiveCountry] = useState('chile');
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -78,9 +79,46 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#FFCE00] selection:text-black">
+        <div className="flex flex-col min-h-screen font-sans bg-white selection:bg-[#FFCE00] selection:text-black">
+            {/* Navigation Header */}
+            <header className="sticky top-0 z-[60] bg-white/80 backdrop-blur-xl border-b border-slate-100">
+                <div className="container mx-auto px-4 lg:px-8">
+                    <div className="flex items-center justify-between h-20">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center shadow-lg">
+                                <Zap className="h-6 w-6 text-[#FFCE00] fill-[#FFCE00]" />
+                            </div>
+                            <span className="text-xl font-black text-slate-900 tracking-tighter italic">
+                                Smarter<span className="text-[#FFCE00]">OS</span>
+                            </span>
+                        </div>
+                        
+                        <nav className="hidden md:flex items-center gap-1 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
+                            {['chile', 'argentina', 'peru', 'uruguay'].map((country) => (
+                                <button
+                                    key={country}
+                                    onClick={() => setActiveCountry(country)}
+                                    className={`px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                                        activeCountry === country 
+                                        ? 'bg-slate-900 text-[#FFCE00] shadow-md' 
+                                        : 'text-slate-400 hover:text-slate-600'
+                                    }`}
+                                >
+                                    {country}
+                                </button>
+                            ))}
+                        </nav>
+
+                        <div className="flex items-center gap-4">
+                            <Link href="/auth/sign-in" className="text-sm font-bold text-slate-600 hover:text-slate-900 px-4">Entrar</Link>
+                            <Link href="/auth/sign-up" className="bg-slate-900 text-[#FFCE00] text-sm font-black px-6 py-2.5 rounded-xl hover:scale-105 transition-transform shadow-lg shadow-yellow-500/10">Activar</Link>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
             {/* Main Hero Section */}
-            <div className="relative min-h-screen flex items-center py-12 lg:py-0 overflow-hidden border-b border-slate-200">
+            <div className="relative min-h-[90vh] flex items-center py-12 lg:py-0 overflow-hidden border-b border-slate-200">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/10 rounded-full blur-[120px] pointer-events-none" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#FFCE00]/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -386,6 +424,143 @@ export default function Home() {
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+
+
+            {/* Neuronal Intelligence & Legal Framework Section */}
+            <div className="py-24 bg-slate-50 relative overflow-hidden">
+                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#FFCE00]/5 rounded-full blur-[120px] pointer-events-none" />
+                
+                <div className="container mx-auto px-4 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                        {/* Text Content */}
+                        <div className="lg:col-span-12">
+                            <div className="flex flex-col items-center text-center mb-16">
+                                <div className="inline-flex items-center justify-center p-3 bg-slate-900 rounded-2xl shadow-xl mb-6 border border-slate-700">
+                                    <Brain className="h-8 w-8 text-[#FFCE00]" />
+                                </div>
+                                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-none mb-6">
+                                    Inteligencia <span className="text-[#FFCE00]">Neuronal</span> &<br /> 
+                                    <span className="italic">Marco Legal Soberano</span>
+                                </h2>
+                                <p className="text-lg text-slate-500 font-bold max-w-2xl leading-relaxed">
+                                    Liderando la vanguardia tecnológica con absoluto respeto a la integridad humana y la soberanía de datos en el Cono Sur.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-16">
+                                {['chile', 'argentina', 'peru', 'uruguay'].map((country) => (
+                                    <button 
+                                        key={country}
+                                        onClick={() => setActiveCountry(country)}
+                                        className={`group relative p-6 rounded-[32px] border transition-all duration-500 text-left overflow-hidden ${
+                                            activeCountry === country 
+                                            ? 'bg-white border-slate-200 shadow-xl' 
+                                            : 'bg-transparent border-transparent hover:border-slate-200 grayscale opacity-60 hover:opacity-100 hover:grayscale-0'
+                                        }`}
+                                    >
+                                        <div className="flex items-center justify-between mb-4">
+                                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Hub Regional</span>
+                                            <Flag className={`h-4 w-4 ${activeCountry === country ? 'text-[#FFCE00]' : 'text-slate-300'}`} />
+                                        </div>
+                                        <h4 className="text-2xl font-black text-slate-900 capitalize mb-2">{country}</h4>
+                                        <p className="text-xs font-bold text-slate-500">Liderazgo en {country === 'chile' ? 'Neuroderechos' : country === 'argentina' ? 'Talento Dev' : country === 'peru' ? 'Operación Cloud' : 'Servicios Globales'}</p>
+                                        
+                                        {activeCountry === country && (
+                                            <div className="absolute bottom-0 left-0 h-1.5 bg-[#FFCE00] w-full" />
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {activeCountry === 'chile' ? (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                        <div className="relative group">
+                                            <div className="absolute -inset-4 bg-gradient-to-tr from-[#FFCE00]/20 to-transparent rounded-[48px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            <div className="relative bg-white p-8 sm:p-12 rounded-[40px] border border-slate-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)]">
+                                                <Badge className="bg-slate-900 text-[#FFCE00] border-none mb-6 px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest">Pionero Mundial</Badge>
+                                                <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                                                    Legislación Neuronal <br /> 
+                                                    <span className="text-slate-400">Senado de Chile</span>
+                                                </h3>
+                                                <p className="text-slate-600 font-bold leading-relaxed mb-8">
+                                                    Chile es pionero mundial en legislación neuronal al aprobar en 2021 la reforma constitucional que protege los neuroderechos. Esta ley resguarda la actividad cerebral, datos neuronales, identidad personal y libre albedrío frente al uso de neurotecnologías.
+                                                </p>
+                                                <div className="space-y-4">
+                                                    <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                        <ShieldCheck className="h-6 w-6 text-green-500 mt-1 shrink-0" />
+                                                        <div>
+                                                            <p className="font-black text-slate-900 text-sm">Protección de Datos</p>
+                                                            <p className="text-xs text-slate-500 font-bold">Los datos cerebrales se clasifican como información sensible, equivalente a órganos humanos.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                        <Scale className="h-6 w-6 text-amber-500 mt-1 shrink-0" />
+                                                        <div>
+                                                            <p className="font-black text-slate-900 text-sm">Precedente Judicial (2023)</p>
+                                                            <p className="text-xs text-slate-500 font-bold">La Corte Suprema dictaminó contra Emotiv (dispositivo Insight) por almacenar datos sin consentimiento explícito.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-8 pl-0 lg:pl-12">
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#FFCE00]" />
+                                                    <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs">Neuroprotección</h5>
+                                                </div>
+                                                <p className="text-slate-500 font-bold text-sm leading-relaxed">
+                                                    Prohíbe la intromisión o manipulación de conexiones neuronales sin consentimiento expreso e informado.
+                                                </p>
+                                            </div>
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#FFCE00]" />
+                                                    <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs">Uso de Neurotecnologías</h5>
+                                                </div>
+                                                <p className="text-slate-500 font-bold text-sm leading-relaxed">
+                                                    Regula el desarrollo y uso de tecnologías, asegurando que estén al servicio de la salud y no para alterar la personalidad.
+                                                </p>
+                                            </div>
+                                            <div className="p-8 rounded-[40px] bg-slate-900 text-white shadow-2xl relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFCE00]/10 rounded-full blur-3xl" />
+                                                <p className="text-[#FFCE00] font-black text-xs uppercase tracking-[0.2em] mb-4">Hito Histórico</p>
+                                                <p className="text-xl font-bold leading-tight mb-6 tracking-tight">
+                                                    "Chile fue el primer país en aprobar una reforma constitucional que protege la integridad mental."
+                                                </p>
+                                                <div className="flex items-center gap-3 pt-6 border-t border-white/10">
+                                                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                                                        <Globe className="h-5 w-5 text-[#FFCE00]" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-black text-white uppercase tracking-wider">Senado de Chile</p>
+                                                        <p className="text-[10px] font-bold text-white/50 italic tracking-wide">Modelo Internacional de Neuroética</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 h-[400px] flex items-center justify-center bg-white rounded-[40px] border border-slate-100 shadow-sm">
+                                    <div className="text-center space-y-4">
+                                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <Globe className="h-8 w-8 text-slate-300" />
+                                        </div>
+                                        <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Expansión Regional: {activeCountry}</h3>
+                                        <p className="text-slate-400 font-bold max-w-md mx-auto">
+                                            Integrando infraestructura SmarterOS y marcos éticos de neuroprotección en toda la región. Próximamente contenido detallado para {activeCountry}.
+                                        </p>
+                                        <Badge variant="outline" className="border-slate-200 text-slate-400">Consulte por activación local</Badge>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
