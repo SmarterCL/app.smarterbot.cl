@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { createBrowserClient } from "@supabase/ssr"
-import { UserButton, useUser, useClerk } from "@clerk/nextjs"
+import { UserButton, useUser, useClerk, useOrganization } from "@clerk/nextjs"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -119,6 +119,7 @@ type SyncedContact = {
 
 export default function DashboardContent() {
   const { user, isLoaded } = useUser()
+  const { organization } = useOrganization()
   const [activeTab, setActiveTab] = useState("overview")
   const [supabaseContact, setSupabaseContact] = useState<SyncedContact | null>(null)
   const [userProfile, setUserProfile] = useState<any>(null)
@@ -716,15 +717,20 @@ export default function DashboardContent() {
                       onClick={() => {
                         const config = {
                           mcpServers: {
-                            smartermcp: {
+                            "clerk-auth": {
                               command: "npx",
-                              args: ["-y", "@smarterbot/mcp-client"],
+                              args: ["-y", "@clerk/mcp-server"],
                               env: {
-                                SMARTER_API_KEY: `sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}`,
-                                SMARTER_NODE: "https://os.smarterbot.cl",
-                                SMARTER_AGENT: "copaw",
-                                wallet: "openclaw",
-                                plan: userServices.find(s => s.service_code === 'smarterchat')?.plan || "demo"
+                                CLERK_TENANT_ID: organization?.id || "ORG_ID_PENDING",
+                                CLERK_SECRET_KEY: "sk_live_..."
+                              }
+                            },
+                            "smarteros-brain": {
+                              command: "npx",
+                              args: ["-y", "@smarterbot/mcp-server"],
+                              env: {
+                                API_URL: "https://api.smarterbot.cl",
+                                API_KEY: `sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}`
                               }
                             }
                           }
@@ -742,18 +748,20 @@ export default function DashboardContent() {
                       <code>
 {`{
   "mcpServers": {
-    "smartermcp": {
+    "clerk-auth": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@smarterbot/mcp-client"
-      ],
+      "args": ["-y", "@clerk/mcp-server"],
       "env": {
-        "SMARTER_API_KEY": "sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}",
-        "SMARTER_NODE": "https://os.smarterbot.cl",
-        "SMARTER_AGENT": "copaw",
-        "wallet": "openclaw",
-        "plan": "${userServices.find(s => s.service_code === 'smarterchat')?.plan || "demo"}"
+        "CLERK_TENANT_ID": "${organization?.id || "ORG_ID_PENDING"}",
+        "CLERK_SECRET_KEY": "sk_live_..."
+      }
+    },
+    "smarteros-brain": {
+      "command": "npx",
+      "args": ["-y", "@smarterbot/mcp-server"],
+      "env": {
+        "API_URL": "https://api.smarterbot.cl",
+        "API_KEY": "sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}"
       }
     }
   }
@@ -1000,30 +1008,62 @@ export default function DashboardContent() {
                   <CardTitle className="text-foreground">Configuración general</CardTitle>
                   <CardDescription className="text-muted-foreground">Personaliza tu experiencia</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-6">
                   <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="business-name">Nombre del negocio</Label>
-                      <Input id="business-name" placeholder="Tu empresa SA" />
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <Building2 className="h-4 w-4" /> Administración de Organización
+                    </h3>
+                    <div className="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                      <Label className="text-xs text-slate-500 font-bold uppercase tracking-tight">Clerk Tenant ID / Organization ID</Label>
+                      <div className="flex gap-2">
+                        <Input 
+                          readOnly 
+                          value={organization?.id || "No detectado (Usa una Organización)"} 
+                          className="bg-white font-mono text-xs" 
+                        />
+                        <Button 
+                          variant="outline" 
+                          size="icon"
+                          onClick={() => {
+                            if (organization?.id) {
+                              navigator.clipboard.writeText(organization.id);
+                              alert("Copiado al portapapeles");
+                            }
+                          }}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <p className="text-[10px] text-slate-400 italic">Este ID es necesario para configurar el MCP de clerk-auth.</p>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="webhook-url">URL de Webhook</Label>
-                      <Input id="webhook-url" placeholder="https://miempresa.com/webhook" />
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">Ajustes del Perfil</h3>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="business-name">Nombre del negocio</Label>
+                        <Input id="business-name" placeholder="Tu empresa SA" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="webhook-url">URL de Webhook</Label>
+                        <Input id="webhook-url" placeholder="https://miempresa.com/webhook" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="timezone">Zona horaria</Label>
+                        <Select>
+                          <SelectTrigger className="rounded-xl">
+                            <SelectValue placeholder="Selecciona tu zona horaria" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="gmt-4">GMT-4 (America/Santiago)</SelectItem>
+                            <SelectItem value="gmt-3">GMT-3 (America/Buenos Aires)</SelectItem>
+                            <SelectItem value="gmt-5">GMT-5 (America/Lima)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Button className="w-full bg-slate-900 rounded-xl h-12 font-bold shadow-lg">Guardar cambios</Button>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="timezone">Zona horaria</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona tu zona horaria" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="gmt-4">GMT-4 (America/Santiago)</SelectItem>
-                          <SelectItem value="gmt-3">GMT-3 (America/Buenos Aires)</SelectItem>
-                          <SelectItem value="gmt-5">GMT-5 (America/Lima)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Guardar cambios</Button>
                   </div>
                 </CardContent>
               </Card>
