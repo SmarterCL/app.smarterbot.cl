@@ -16,11 +16,13 @@ export async function validateAndConsumeKey(key: string, userId: string): Promis
 
   try {
     // 1. Find the key
-    const { data: keyData, error: findError } = await supabase
-      .from("activation_keys")
+    const { data, error: findError } = await supabase
+      .from("activation_keys" as any)
       .select("*")
       .eq("key", key.toUpperCase())
       .single()
+
+    const keyData = data as any;
 
     if (findError || !keyData) {
       logger.warn("Activation key not found", { key })
@@ -39,7 +41,7 @@ export async function validateAndConsumeKey(key: string, userId: string): Promis
 
     // 4. Update activations count (Optimistic or Atomic)
     const { error: updateError } = await supabase
-      .from("activation_keys")
+      .from("activation_keys" as any)
       .update({ 
         activations_count: keyData.activations_count + 1,
         metadata: { 
