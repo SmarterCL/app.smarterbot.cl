@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest) {
   try {
-    const { rutPersona, rutEmpresa } = await req.json()
+    const { rutPersona, rutEmpresa, activationKey } = await req.json()
 
     if (!rutPersona || typeof rutPersona !== "string") {
       return NextResponse.json({ ok: false, error: "RUT Persona requerido" }, { status: 400 })
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "RUT Empresa inválido" }, { status: 400 })
     }
 
-    const result = await linkRutToUser(rutPersona, rutEmpresa)
+    const result = await linkRutToUser(rutPersona, rutEmpresa, activationKey)
 
     if (!result.ok) {
       return NextResponse.json(result, { status: 400 })

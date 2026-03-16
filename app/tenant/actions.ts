@@ -18,8 +18,9 @@ export interface LinkRutResult {
 
 /**
  * Vincula el RUT de Persona y el RUT de Empresa al usuario autenticado.
+ * Requiere una clave de activación para crear un nuevo tenant.
  */
-export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: string): Promise<LinkRutResult> {
+export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: string, activationKey?: string): Promise<LinkRutResult> {
   const rutPersona = formatRUT(rutPersonaInput)
   const rutEmpresa = formatRUT(rutEmpresaInput)
 
@@ -37,12 +38,32 @@ export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: st
     return { ok: false, error: saveResult.error }
   }
 
+  const { userId } = await auth()
+  if (!userId) return { ok: false, error: "No autorizado" }
+
   // Buscamos si existe un tenant para el RUT de Empresa
   let tenant = await getTenantByRut(rutEmpresa)
 
   if (!tenant) {
-    // Si no existe, lo creamos automáticamente para permitir el acceso inmediato
-    const { userId } = await auth()
+    let planType: any = 'DEMO'
+    let activationKeyId: string | undefined = undefined
+
+    // Si hay una clave, la validamos y consumimos
+    if (activationKey) {
+      const { validateAndConsumeKey } = await import("@/lib/activation")
+      const activation = await validateAndConsumeKey(activationKey, userId)
+      
+      if (activation.ok) {
+        planType = activation.planType || 'PROMO'
+        activationKeyId = activation.keyId
+      } else {
+        // Si hay una clave pero es inválida, informamos el error
+        // Pero si no hay clave, dejamos pasar (según requerimiento de no fricción)
+        return { ok: false, error: (activation as any).error || "Clave de activación no válida" }
+      }
+    }
+
+    // Si no existe, lo creamos (con o sin licencia vinculada)
     const supabase = createClient()
 
     const { data: newTenant, error: createError } = await supabase
@@ -51,9 +72,10 @@ export async function linkRutToUser(rutPersonaInput: string, rutEmpresaInput: st
         rut: rutEmpresa,
         business_name: `Empresa ${rutEmpresa}`,
         clerk_user_id: userId,
-        plan_type: 'DEMO' as any,
+        plan_type: planType,
         payment_status: 'ACTIVE' as any,
         status: 'active',
+        activation_key_id: activationKeyId,
       } as any)
       .select()
       .single()

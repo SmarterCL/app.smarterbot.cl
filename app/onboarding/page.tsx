@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowRight, Bot, Building2, User } from "lucide-react"
+import { ArrowRight, Bot, Building2, User, Zap } from "lucide-react"
 import { formatRUT } from "@/lib/utils"
 
 export default function RutOnboardingPage() {
   const router = useRouter()
   const [rutPersona, setRutPersona] = useState("")
   const [rutEmpresa, setRutEmpresa] = useState("")
+  const [activationKey, setActivationKey] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -24,7 +25,7 @@ export default function RutOnboardingPage() {
       const res = await fetch("/api/tenant/link-rut", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rutPersona, rutEmpresa }),
+        body: JSON.stringify({ rutPersona, rutEmpresa, activationKey }),
       })
 
       const data = await res.json()
@@ -160,6 +161,20 @@ export default function RutOnboardingPage() {
                     required
                     className="w-full h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[22px] transition-all border-2 px-6 shadow-sm"
                   />
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="activationKey" className="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                    <Zap className="h-3.5 w-3.5 text-amber-500" /> Clave de Activación (Opcional)
+                  </Label>
+                  <Input
+                    id="activationKey"
+                    placeholder="SMRT-XXXX-XXXX"
+                    value={activationKey}
+                    onChange={(e) => setActivationKey(e.target.value.toUpperCase())}
+                    className="w-full h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/5 text-base rounded-[22px] transition-all border-2 px-6 shadow-sm font-mono"
+                  />
+                  <p className="text-[9px] text-slate-400 ml-4 font-bold italic">Si tienes un código de Partner o Hostinger, ingrésalo aquí.</p>
                 </div>
 
                 {error && (
