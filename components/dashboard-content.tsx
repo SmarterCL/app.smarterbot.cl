@@ -49,6 +49,7 @@ import {
   Terminal,
   Copy,
   Check,
+  Building2,
 } from "lucide-react"
 
 const overviewStats = [
