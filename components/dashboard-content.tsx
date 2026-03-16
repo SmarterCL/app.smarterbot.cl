@@ -709,7 +709,7 @@ export default function DashboardContent() {
                       </Badge>
                     </div>
                     <CardDescription className="text-slate-400">
-                      Usa este fragmento en tu cliente MCP (Cursor, Claude, VSCode) para conectar con tu nodo.
+                      Configuración para el Picoclaw Engine. Usa este fragmento en tu cliente MCP (Cursor, Claude, VSCode) para conectar con tu nodo.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="p-0 relative bg-slate-950">
