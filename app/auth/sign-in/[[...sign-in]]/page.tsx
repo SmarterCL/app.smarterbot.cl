@@ -143,13 +143,14 @@ export default function SignInPage() {
                   />
                 </div>
 
-                <a
-                  href={plan ? `/auth/sign-up?plan=${plan}` : "/auth/sign-up"}
-                  className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-[#FFCE00] font-black rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-[1.02] mt-8"
-                >
-                  <Rocket className="h-5 w-5 mr-3" />
-                  Crear cuenta
-                </a>
+                <div className="pt-6">
+                  <p className="text-sm font-bold text-slate-400">
+                    ¿No tienes cuenta?{" "}
+                    <a href={plan ? `/auth/sign-up?plan=${plan}` : "/auth/sign-up"} className="text-slate-900 hover:text-[#FFCE00] font-black underline underline-offset-4 decoration-2 transition-colors">
+                      Regístrate aquí
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>

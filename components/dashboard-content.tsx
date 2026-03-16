@@ -47,6 +47,8 @@ import {
   Layers,
   Cpu,
   Terminal,
+  Copy,
+  Check,
 } from "lucide-react"
 
 const overviewStats = [
@@ -128,6 +130,7 @@ export default function DashboardContent() {
   // Integration stats from external API
   const [integrationStats, setIntegrationStats] = useState<any>(null)
   const [statsLoading, setStatsLoading] = useState(false)
+  const [configCopied, setConfigCopied] = useState(false)
 
   // Validate environment variables
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -692,34 +695,121 @@ export default function DashboardContent() {
             </TabsContent>
 
             <TabsContent value="mcp" className="space-y-6 sm:space-y-8">
-              <Card className="border border-border bg-card shadow-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Cpu className="h-5 w-5 text-amber-500" />
-                    MCP Cluster Management
-                  </CardTitle>
-                  <CardDescription>Protocolo de Contexto de Modelo (Model Context Protocol)</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-100">
-                    <div className="flex items-center gap-2">
-                      <Activity className="h-4 w-4 text-emerald-600" />
-                      <span className="text-sm font-bold text-emerald-700 uppercase">Cluster Status</span>
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <Card className="lg:col-span-2 border border-border bg-card shadow-sm overflow-hidden">
+                  <CardHeader className="bg-slate-900 text-white pb-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Cpu className="h-5 w-5 text-amber-500" />
+                        <CardTitle className="text-white">Configuración Cliente SmarterMCP</CardTitle>
+                      </div>
+                      <Badge variant="outline" className="border-amber-500/50 text-amber-500 font-bold uppercase tracking-widest text-[10px]">
+                        Recomendado
+                      </Badge>
                     </div>
-                    <Badge className="bg-emerald-500 text-white border-0">RUNNING v3.3.0</Badge>
+                    <CardDescription className="text-slate-400">
+                      Usa este fragmento en tu cliente MCP (Cursor, Claude, VSCode) para conectar con tu nodo.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0 relative bg-slate-950">
+                    <button
+                      onClick={() => {
+                        const config = {
+                          mcpServers: {
+                            smartermcp: {
+                              command: "npx",
+                              args: ["-y", "@smarterbot/mcp-client"],
+                              env: {
+                                SMARTER_API_KEY: `sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}`,
+                                SMARTER_NODE: "https://os.smarterbot.cl",
+                                SMARTER_AGENT: "copaw",
+                                wallet: "openclaw",
+                                plan: userServices.find(s => s.service_code === 'smarterchat')?.plan || "demo"
+                              }
+                            }
+                          }
+                        };
+                        navigator.clipboard.writeText(JSON.stringify(config, null, 2));
+                        setConfigCopied(true);
+                        setTimeout(() => setConfigCopied(false), 2000);
+                      }}
+                      className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+                      title="Copiar configuración"
+                    >
+                      {configCopied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+                    </button>
+                    <pre className="p-6 text-[12px] font-mono text-slate-300 overflow-x-auto">
+                      <code>
+{`{
+  "mcpServers": {
+    "smartermcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smarterbot/mcp-client"
+      ],
+      "env": {
+        "SMARTER_API_KEY": "sk_live_${user?.id?.split('_')[1] || user?.id?.slice(-12) || "xxxxxx"}",
+        "SMARTER_NODE": "https://os.smarterbot.cl",
+        "SMARTER_AGENT": "copaw",
+        "wallet": "openclaw",
+        "plan": "${userServices.find(s => s.service_code === 'smarterchat')?.plan || "demo"}"
+      }
+    }
+  }
+}`}
+                      </code>
+                    </pre>
+                  </CardContent>
+                  <div className="bg-slate-900/50 p-4 border-t border-white/5">
+                    <p className="text-[11px] text-slate-400 leading-relaxed italic">
+                      Al pegar esta llave, SmarterOS aprovisiona automáticamente tu agente, wallet y canal de chat en menos de 5 segundos.
+                    </p>
                   </div>
-                  <div className="grid gap-3">
-                    <Button variant="outline" className="justify-between text-xs h-10">
-                      <span className="flex items-center gap-2"><Terminal className="h-3.5 w-3.5" /> List Tools</span>
-                      <code className="text-muted-foreground">/mcp/tools/list</code>
-                    </Button>
-                    <Button variant="outline" className="justify-between text-xs h-10">
-                      <span className="flex items-center gap-2"><Layers className="h-3.5 w-3.5" /> Schema Explorer</span>
-                      <code className="text-muted-foreground">/mcp/tools/schema</code>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                </Card>
+
+                <div className="space-y-6">
+                  <Card className="border border-border bg-card shadow-sm">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-wider">
+                        <Activity className="h-4 w-4 text-emerald-500" />
+                        Estado del Nodo
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-100">
+                        <span className="text-xs font-bold text-emerald-700 uppercase">Endpoint Externo</span>
+                        <Badge variant="outline" className="bg-white border-emerald-200 text-emerald-600 text-[10px]">
+                          ONLINE
+                        </Badge>
+                      </div>
+                      <code className="block w-full text-[10px] p-2 bg-secondary rounded border border-border truncate text-muted-foreground">
+                        https://os.smarterbot.cl/mcp
+                      </code>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 border border-amber-100">
+                        <span className="text-xs font-bold text-amber-700 uppercase">Local Bridge</span>
+                        <code className="text-[10px] text-amber-600 font-mono">127.0.0.1:8088</code>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border border-border bg-card shadow-sm">
+                    <CardHeader>
+                      <CardTitle className="text-sm uppercase tracking-wider">Herramientas MCP</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid gap-2">
+                      <Button variant="outline" className="justify-between text-xs h-9 font-medium border-slate-200">
+                        <span className="flex items-center gap-2"><Terminal className="h-3.5 w-3.5 text-slate-400" /> Listar Herramientas</span>
+                        <code className="text-[10px] text-muted-foreground">/tools/list</code>
+                      </Button>
+                      <Button variant="outline" className="justify-between text-xs h-9 font-medium border-slate-200">
+                        <span className="flex items-center gap-2"><Layers className="h-3.5 w-3.5 text-slate-400" /> Explorar Schema</span>
+                        <code className="text-[10px] text-muted-foreground">/tools/schema</code>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </TabsContent>
 
             <TabsContent value="payments" className="space-y-6 sm:space-y-8">

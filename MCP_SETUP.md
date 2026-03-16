@@ -1,65 +1,69 @@
-# 🚀 Comandos de Instalación
+# 🚀 SmarterMCP Setup Guide
 
-## **1. Instalar servidor MCP localmente**
-```bash
-# Instalar paquete MCP de Supabase
-npx @supabase/mcp-server-supabase@latest --help
+SmarterOS ahora utiliza el **Model Context Protocol (MCP)** para permitir que agentes externos (Cursor, Claude, VSCode) se conecten directamente a tu nodo y utilicen tus herramientas y datos.
 
-# O instalarlo globalmente
-npm install -g @supabase/mcp-server-supabase
+## **1. Configuración Estándar para Clientes**
+
+Para activar SmarterMCP en tu agente (por ejemplo, en Claude Desktop o Cursor), usa el siguiente formato de configuración:
+
+```json
+{
+  "mcpServers": {
+    "smartermcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smarterbot/mcp-client"
+      ],
+      "env": {
+        "SMARTER_API_KEY": "TU_API_KEY_AQUI",
+        "SMARTER_NODE": "https://os.smarterbot.cl",
+        "SMARTER_AGENT": "copaw",
+        "wallet": "openclaw",
+        "plan": "demo"
+      }
+    }
+  }
+}
 ```
 
-## **2. Iniciar servidor local**
-```bash
-# Con token de acceso
-npx @supabase/mcp-server-supabase --access-token TU_TOKEN_AQUI
+## **2. Versión de Onboarding Rápido (Single)**
 
-# Sin token (usará .env)
-npx @supabase/mcp-server-supabase
-```
+Si prefieres una activación simplificada:
 
----
-
-## 🎯 **Herramientas Disponibles**
-
-Una vez configurado, tendrás acceso a:
-
-### **🗃️ Gestión de Base de Datos**
-- Query SQL con IA
-- Crear/modificar tablas
-- Migraciones automáticas
-- Generación de tipos TypeScript
-
-### **🔧 Funciones Avanzadas**
-- Branch management
-- Config management
-- Logging y debugging
-- Database backups
-
-### **⚡ Integración con tu App**
-- Cursor/VSCode pueden acceder a tus datos directamente
-- Claude puede analizar y ejecutar operaciones SQL
-- ChatGPT puede interactuar con tu base de datos
-
----
-
-## 📋 **Estructura Creada**
-
-```
-/Users/mac/dev/2025/app.smarterbot.cl/
-├── .cursor/mcp.json          ← Configuración para IA
-└── (proyecto optimizado)     ← Listo para MCP
+```json
+{
+  "key": "sk_demo_xxxx",
+  "name": "SmarterMCP",
+  "command": "npx @smarterbot/mcp-client"
+}
 ```
 
 ---
 
-## 🎯 **Próximos Pasos**
+## 🎯 **Capacidades del Agente**
 
-1. **Crea tu Personal Access Token** en Supabase
-2. **Reemplaza el token** en el archivo .cursor/mcp.json
-3. **Inicia Cursor** - MCP se conectará automáticamente
-4. **Prueba** haciendo preguntas sobre tus datos
+Una vez conectado, el agente podrá:
+- **Ejecutar flujos n8n** directamente.
+- **Consultar la base de datos** del tenant de forma segura.
+- **Orquestar pagos** y validar identidades (RUT/SII).
+- **Interactuar con tu wallet** OpenClaw.
 
 ---
 
-**🎉 ¡SmarterOS Hub ahora soporta IA avanzada con MCP!**
+## 📋 **Flujo de Activación**
+
+```
+Signup → API KEY → MCP Config → Cliente MCP → Nodo SmarterOS → Copaw Container → Agente Activo
+```
+
+---
+
+## 🎯 **Endpoints del Nodo**
+
+- **Bridge Local:** `http://127.0.0.1:8088/mcp`
+- **Bridge Externo:** `https://os.smarterbot.cl/mcp`
+
+---
+
+**🎉 SmarterOS se convierte en tu Agent Hosting Platform personal con wallet integrada.**
