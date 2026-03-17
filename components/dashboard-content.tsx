@@ -129,6 +129,17 @@ export default function DashboardContent() {
   const [syncState, setSyncState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [syncError, setSyncError] = useState<string | null>(null)
 
+  const mockUser = {
+    id: "user_2demoSmarter2026",
+    fullName: "Smarter Demo User",
+    primaryEmailAddress: { emailAddress: "demo@smarterbot.cl", verification: { status: "verified" } },
+    imageUrl: "https://img.clerk.com/default-user.png",
+    lastSignInAt: new Date().getTime(),
+    createdAt: new Date().getTime(),
+  }
+
+  const currentUser = user || mockUser
+
   // Integration stats from external API
   const [integrationStats, setIntegrationStats] = useState<any>(null)
   const [statsLoading, setStatsLoading] = useState(false)
@@ -239,18 +250,16 @@ export default function DashboardContent() {
     fetchStats()
   }, [])
 
-  const contactProfile = user
-    ? {
-      id: user.id,
-      name: user.fullName || user.username || user.primaryEmailAddress?.emailAddress || "Usuario sin nombre",
-      email: user.primaryEmailAddress?.emailAddress || "Sin correo registrado",
-      phone: user.primaryPhoneNumber?.phoneNumber || "Sin teléfono",
-      lastAccess: formatDateTime(user.lastSignInAt),
-      createdAt: formatDateTime(user.createdAt),
-      imageUrl: user.imageUrl,
-      emailStatus: user.primaryEmailAddress?.verification?.status === "verified" ? "verified" : "pending",
-    }
-    : null;
+  const contactProfile = {
+    id: currentUser.id,
+    name: currentUser.fullName || "Demo User",
+    email: currentUser.primaryEmailAddress?.emailAddress || "demo@smarterbot.cl",
+    phone: "+56 9 1234 5678",
+    lastAccess: formatDateTime(currentUser.lastSignInAt),
+    createdAt: formatDateTime(currentUser.createdAt),
+    imageUrl: currentUser.imageUrl,
+    emailStatus: currentUser.primaryEmailAddress?.verification?.status === "verified" ? "verified" : "pending",
+  };
 
   const contactDetails = contactProfile
     ? [
@@ -301,14 +310,23 @@ export default function DashboardContent() {
             >
               <a href="/api/logout-telegram">Salir de Telegram</a>
             </Button>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",
-                }
-              }}
-              afterSignOutUrl="/"
-            />
+            {user ? (
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "h-9 w-9 border-2 border-amber-300 shadow-sm",
+                  }
+                }}
+                afterSignOutUrl="/"
+              />
+            ) : (
+              <div className="h-9 w-9 rounded-full border-2 border-amber-300 shadow-sm overflow-hidden bg-slate-100 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity" title="Modo Demo">
+                <Avatar className="h-full w-full">
+                  <AvatarImage src={mockUser.imageUrl} />
+                  <AvatarFallback className="bg-amber-100 text-amber-700 text-[10px] font-black">SD</AvatarFallback>
+                </Avatar>
+              </div>
+            )}
           </div>
         </div>
       </header>
